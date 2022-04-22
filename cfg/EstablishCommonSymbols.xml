@@ -1,0 +1,24 @@
+<JXR>
+
+	<!-- packages that define classes for CalcTools -->
+	<package called='CalctoolsSyms'>net.myorb.calctools.symbols</package>
+	<package called='CalctoolsLibs'>net.myorb.calctools.libraries</package>
+	<package called='CalctoolsCommands'>net.myorb.calctools.commands</package>
+	<package called='CalctoolsDictionary'>net.myorb.calctools.dictionary</package>
+	<common symbols='CalctoolsDictionary CalctoolsSyms CalctoolsLibs CalctoolsCommands' />
+
+	<package called='Algorithms'>net.myorb.math.expressions.algorithms</package>
+	<class   called='CmplxLib'   package='CalctoolsLibs'   name='CmplxOps' />
+	<class   called='Command'    package='CalctoolsSyms'   name='Command' />
+	<common symbols='Algorithms Command CmplxLib' />
+
+	<!-- create symbol object for each symbol of given types -->
+	<class  called='Function' package='CalctoolsSyms' name='Function' />
+	<class  called='Operator' package='CalctoolsSyms' name='Operator' />
+	<class  called='Constant' package='CalctoolsSyms' name='Constant' />
+	<class  called='Value'    package='CalctoolsSyms' name='Value' />
+	<common symbols='Function Operator Value Constant' />
+
+	<ExportAll />
+
+</JXR>

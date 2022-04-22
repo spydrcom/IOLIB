@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"name": "CalcLib",
+			"path": "..\\..\\..\\..\\..\\..\\CalcLib"
+		},
+		{
+			"name": "Anaconda",
+			"path": "..\\..\\..\\..\\..\\..\\Anaconda"
+		},
+		{
+			"name": "Mpmath",
+			"path": "..\\..\\..\\..\\..\\..\\Mpmath"
+		},
+		{
+			"name": "Gral",
+			"path": "..\\..\\..\\..\\..\\..\\Gral"
+		},
+		{
+			"name": "IOLIB",
+			"path": "..\\..\\..\\..\\.."
+		},
+		{
+			"name": "SimpleHttpd",
+			"path": "..\\..\\..\\..\\..\\..\\SimpleHttpd"
+		},
+		{
+			"name": "Oswego",
+			"path": "..\\..\\..\\..\\..\\..\\Oswego"
+		},
+		{
+			"name": "Colt",
+			"path": "..\\..\\..\\..\\..\\..\\Colt"
+		},
+		{
+			"name": "ChartProviders",
+			"path": "..\\..\\..\\..\\..\\..\\ChartProviders"
+		}
+	]
+}

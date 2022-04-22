@@ -1,0 +1,167 @@
+<UnicodeIndex COL_TYPE_1='HEX' COLUMN_COUNT='3' COL_NAME_3='Description' COL_NAME_1='Page Base' COL_TYPE_2='HEX' DISPLAY_TITLE='Unicode Index' COL_NAME_2='Page End' COL_TYPE_3='TXT' COL_ATTR_1='PageBase' COL_ATTR_2='PageEnd' COL_ATTR_3='Description' ELEMENT_NAME='Page'>
+ <Page Description='General Punctuation' PageBase='2000' PageEnd='206F'/>
+ <Page Description='Superscripts and Subscripts' PageBase='2070' PageEnd='209F'/>
+ <Page Description='Currency Symbols' PageBase='20A0' PageEnd='20CF'/>
+ <Page Description='Combining Diacritical Marks for Symbols' PageBase='20D0' PageEnd='20FF'/>
+ <Page Description='Letterlike Symbols' PageBase='2100' PageEnd='214F'/>
+ <Page Description='Number Forms' PageBase='2150' PageEnd='218F'/>
+ <Page Description='Arrows' PageBase='2190' PageEnd='21FF'/>
+ <Page Description='Mathematical Operators' PageBase='2200' PageEnd='22FF'/>
+ <Page Description='Miscellaneous Technical' PageBase='2300' PageEnd='23FF'/>
+ <Page Description='Control Pictures' PageBase='2400' PageEnd='243F'/>
+ <Page Description='Optical Character Recognition' PageBase='2440' PageEnd='245F'/>
+ <Page Description='Enclosed Alphanumerics' PageBase='2460' PageEnd='24FF'/>
+ <Page Description='Box Drawing' PageBase='2500' PageEnd='257F'/>
+ <Page Description='Block Elements' PageBase='2580' PageEnd='259F'/>
+ <Page Description='Geometric Shapes' PageBase='25A0' PageEnd='25FF'/>
+ <Page Description='Miscellaneous Symbols' PageBase='2600' PageEnd='26FF'/>
+ <Page Description='Dingbats' PageBase='2700' PageEnd='27BF'/>
+ <Page Description='Miscellaneous Mathematical Symbols-A' PageBase='27C0' PageEnd='27EF'/>
+ <Page Description='Supplemental Arrows-A' PageBase='27F0' PageEnd='27FF'/>
+ <Page Description='Braille Patterns' PageBase='2800' PageEnd='28FF'/>
+ <Page Description='Supplemental Arrows-B' PageBase='2900' PageEnd='297F'/>
+ <Page Description='Miscellaneous Mathematical Symbols-B' PageBase='2980' PageEnd='29FF'/>
+ <Page Description='Supplemental Mathematical Operators' PageBase='2A00' PageEnd='2AFF'/>
+ <Page Description='Miscellaneous Symbols and Arrows' PageBase='2B00' PageEnd='2BFF'/>
+ <Page Description='Glagolitic' PageBase='2C00' PageEnd='2C5F'/>
+ <Page Description='Latin Extended-C' PageBase='2C60' PageEnd='2C7F'/>
+ <Page Description='Coptic' PageBase='2C80' PageEnd='2CFF'/>
+ <Page Description='Georgian Supplement' PageBase='2D00' PageEnd='2D2F'/>
+ <Page Description='Tifinagh' PageBase='2D30' PageEnd='2D7F'/>
+ <Page Description='Ethiopic Extended' PageBase='2D80' PageEnd='2DDF'/>
+ <Page Description='Cyrillic Extended-A' PageBase='2DE0' PageEnd='2DFF'/>
+ <Page Description='Supplemental Punctuation' PageBase='2E00' PageEnd='2E7F'/>
+ <Page Description='CJK Radicals Supplement' PageBase='2E80' PageEnd='2EFF'/>
+ <Page Description='Kangxi Radicals' PageBase='2F00' PageEnd='2FDF'/>
+ <Page Description='Unassigned' PageBase='2FE0' PageEnd='2FEF'/>
+ <Page Description='Ideographic Description Characters' PageBase='2FF0' PageEnd='2FFF'/>
+ <Page Description='Basic Latin' PageBase='0000' PageEnd='007F'/>
+ <Page Description='Latin-1 Supplement ' PageBase='0080' PageEnd='00FF'/>
+ <Page Description='Latin Extended-A' PageBase='0100' PageEnd='017F'/>
+ <Page Description='Latin Extended-B' PageBase='0180' PageEnd='024F'/>
+ <Page Description='IPA Extensions' PageBase='0250' PageEnd='02AF'/>
+ <Page Description='Spacing Modifier Letters' PageBase='02B0' PageEnd='02FF'/>
+ <Page Description='Greek' PageBase='0300' PageEnd='03FF'/>
+ <Page Description='Cyrillic' PageBase='0400' PageEnd='04FF'/>
+ <Page Description='Latin Extended Additional' PageBase='1E00' PageEnd='1EFF'/>
+ <Page Description='Greek Extended' PageBase='1F00' PageEnd='1FFF'/>
+ <Page Description='Yijing Hexagram Symbols' PageBase='4DC0' PageEnd='4DFF'/>
+ <Page Description='CJK Unified Ideographs' PageBase='4E00' PageEnd='9FFF'/>
+ <Page Description='Yi Syllables' PageBase='A000' PageEnd='A4CF'/>
+ <Page Description='Lisu' PageBase='A4D0' PageEnd='A4FF'/>
+ <Page Description='Vai' PageBase='A500' PageEnd='A63F'/>
+ <Page Description='Cyrillic Extended-B' PageBase='A640' PageEnd='A69F'/>
+ <Page Description='Bamum' PageBase='A6A0' PageEnd='A6FF'/>
+ <Page Description='Modifier Tone Letters' PageBase='A700' PageEnd='A71F'/>
+ <Page Description='Latin Extended-D' PageBase='A720' PageEnd='A7FF'/>
+ <Page Description='Syloti Nagri' PageBase='A800' PageEnd='A82F'/>
+ <Page Description='Common Indic Number Forms' PageBase='A830' PageEnd='A83F'/>
+ <Page Description='Phags-pa' PageBase='A840' PageEnd='A87F'/>
+ <Page Description='Saurashtra' PageBase='A880' PageEnd='A8DF'/>
+ <Page Description='Devanagari Extended' PageBase='A8E0' PageEnd='A8FF'/>
+ <Page Description='Kayah Li' PageBase='A900' PageEnd='A92F'/>
+ <Page Description='Rejang' PageBase='A930' PageEnd='A95F'/>
+ <Page Description='Hangul Jamo Extended-A' PageBase='A960' PageEnd='A97F'/>
+ <Page Description='Javanese' PageBase='A980' PageEnd='A9DF'/>
+ <Page Description='Myanmar Extended-B' PageBase='A9E0' PageEnd='A9FF'/>
+ <Page Description='Cham' PageBase='AA00' PageEnd='AA5F'/>
+ <Page Description='Myanmar Extended-A' PageBase='AA60' PageEnd='AA7F'/>
+ <Page Description='Tai Viet' PageBase='AA80' PageEnd='AADF'/>
+ <Page Description='Meetei Mayek Extensions' PageBase='AAE0' PageEnd='AAFF'/>
+ <Page Description='Ethiopic Extended-A' PageBase='AB00' PageEnd='AB2F'/>
+ <Page Description='Latin Extended-E' PageBase='AB30' PageEnd='AB6F'/>
+ <Page Description='Cherokee Supplement' PageBase='AB70' PageEnd='ABBF'/>
+ <Page Description='Meetei Mayek' PageBase='ABC0' PageEnd='ABFF'/>
+ <Page Description='Hangul Syllables' PageBase='AC00' PageEnd='D7AF'/>
+ <Page Description='Hangul Jamo Extended-B' PageBase='D7B0' PageEnd='D7FF'/>
+ <Page Description='High-Surrogate' PageBase='D800' PageEnd='DB7F'/>
+ <Page Description='Private-Use High-Surrogates' PageBase='DB80' PageEnd='DBFF'/>
+ <Page Description='Low-Surrogate' PageBase='DC00' PageEnd='DFFF'/>
+ <Page Description='Private Use Area' PageBase='E000' PageEnd='F8FF'/>
+ <Page Description='CJK Compatibility Ideographs' PageBase='F900' PageEnd='FAFF'/>
+ <Page Description='Alphabetic Presentation Forms' PageBase='FB00' PageEnd='FB4F'/>
+ <Page Description='Arabic Presentation Forms-A' PageBase='FB50' PageEnd='FDFF'/>
+ <Page Description='Variation Selectors' PageBase='FE00' PageEnd='FE0F'/>
+ <Page Description='Vertical Forms' PageBase='FE10' PageEnd='FE1F'/>
+ <Page Description='Combining Half Marks' PageBase='FE20' PageEnd='FE2F'/>
+ <Page Description='CJK Compatibility Forms' PageBase='FE30' PageEnd='FE4F'/>
+ <Page Description='Small Form Variants' PageBase='FE50' PageEnd='FE6F'/>
+ <Page Description='Arabic Presentation Forms-B' PageBase='FE70' PageEnd='FEFF'/>
+ <Page Description='Halfwidth and Fullwidth Forms' PageBase='FF00' PageEnd='FFEF'/>
+ <Page Description='Specials' PageBase='FFF0' PageEnd='FFFF'/>
+ <Page Description='CJK Symbols and Punctuation' PageBase='3000' PageEnd='303F'/>
+ <Page Description='Hiragana' PageBase='3040' PageEnd='309F'/>
+ <Page Description='Katakana' PageBase='30A0' PageEnd='30FF'/>
+ <Page Description='Bopomofo' PageBase='3100' PageEnd='312F'/>
+ <Page Description='Hangul Compatibility Jamo' PageBase='3130' PageEnd='318F'/>
+ <Page Description='Kanbun' PageBase='3190' PageEnd='319F'/>
+ <Page Description='Bopomofo Extended' PageBase='31A0' PageEnd='31BF'/>
+ <Page Description='CJK Strokes' PageBase='31C0' PageEnd='31EF'/>
+ <Page Description='Katakana Phonetic Extensions' PageBase='31F0' PageEnd='31FF'/>
+ <Page Description='Enclosed CJK Letters and Months' PageBase='3200' PageEnd='32FF'/>
+ <Page Description='CJK Compatibility' PageBase='3300' PageEnd='33FF'/>
+ <Page Description='CJK Unified Ideographs Extension A' PageBase='3400' PageEnd='4DBF'/>
+ <Page Description='Cyrillic Supplement' PageBase='0500' PageEnd='052F'/>
+ <Page Description='Armenian' PageBase='0530' PageEnd='058F'/>
+ <Page Description='Hebrew' PageBase='0590' PageEnd='05FF'/>
+ <Page Description='Arabic' PageBase='0600' PageEnd='06FF'/>
+ <Page Description='Syriac' PageBase='0700' PageEnd='074F'/>
+ <Page Description='Arabic Supplement' PageBase='0750' PageEnd='077F'/>
+ <Page Description='Thaana' PageBase='0780' PageEnd='07BF'/>
+ <Page Description='NKo' PageBase='07C0' PageEnd='07FF'/>
+ <Page Description='Samaritan' PageBase='0800' PageEnd='083F'/>
+ <Page Description='Mandaic' PageBase='0840' PageEnd='085F'/>
+ <Page Description='Syriac Supplement' PageBase='0860' PageEnd='086F'/>
+ <Page Description='Unassigned' PageBase='0870' PageEnd='089F'/>
+ <Page Description='Arabic Extended-A' PageBase='08A0' PageEnd='08FF'/>
+ <Page Description='Devanagari' PageBase='0900' PageEnd='097F'/>
+ <Page Description='Bengali' PageBase='0980' PageEnd='09FF'/>
+ <Page Description='Gurmukhi' PageBase='0A00' PageEnd='0A7F'/>
+ <Page Description='Gujarati' PageBase='0A80' PageEnd='0AFF'/>
+ <Page Description='Oriya' PageBase='0B00' PageEnd='0B7F'/>
+ <Page Description='Tamil' PageBase='0B80' PageEnd='0BFF'/>
+ <Page Description='Telugu' PageBase='0C00' PageEnd='0C7F'/>
+ <Page Description='Kannada' PageBase='0C80' PageEnd='0CFF'/>
+ <Page Description='Malayalam' PageBase='0D00' PageEnd='0D7F'/>
+ <Page Description='Sinhala' PageBase='0D80' PageEnd='0DFF'/>
+ <Page Description='Thai' PageBase='0E00' PageEnd='0E7F'/>
+ <Page Description='Lao' PageBase='0E80' PageEnd='0EFF'/>
+ <Page Description='Tibetan' PageBase='0F00' PageEnd='0FFF'/>
+ <Page Description='Myanmar' PageBase='1000' PageEnd='109F'/>
+ <Page Description='Georgian' PageBase='10A0' PageEnd='10FF'/>
+ <Page Description='Hangul Jamo' PageBase='1100' PageEnd='11FF'/>
+ <Page Description='Ethiopic' PageBase='1200' PageEnd='137F'/>
+ <Page Description='Ethiopic Supplement' PageBase='1380' PageEnd='139F'/>
+ <Page Description='Cherokee' PageBase='13A0' PageEnd='13FF'/>
+ <Page Description='Unified Canadian Aboriginal Syllabics' PageBase='1400' PageEnd='167F'/>
+ <Page Description='Ogham' PageBase='1680' PageEnd='169F'/>
+ <Page Description='Runic' PageBase='16A0' PageEnd='16FF'/>
+ <Page Description='Tagalog' PageBase='1700' PageEnd='171F'/>
+ <Page Description='Hanunoo' PageBase='1720' PageEnd='173F'/>
+ <Page Description='Buhid' PageBase='1740' PageEnd='175F'/>
+ <Page Description='Tagbanwa' PageBase='1760' PageEnd='177F'/>
+ <Page Description='Khmer' PageBase='1780' PageEnd='17FF'/>
+ <Page Description='Mongolian' PageBase='1800' PageEnd='18AF'/>
+ <Page Description='Unified Canadian Aboriginal Syllabics Extended' PageBase='18B0' PageEnd='18FF'/>
+ <Page Description='Limbu' PageBase='1900' PageEnd='194F'/>
+ <Page Description='Tai Le' PageBase='1950' PageEnd='197F'/>
+ <Page Description='New Tai Lue' PageBase='1980' PageEnd='19DF'/>
+ <Page Description='Khmer Symbols' PageBase='19E0' PageEnd='19FF'/>
+ <Page Description='Buginese' PageBase='1A00' PageEnd='1A1F'/>
+ <Page Description='Tai Tham' PageBase='1A20' PageEnd='1AAF'/>
+ <Page Description='Combining Diacritical Marks Extended' PageBase='1AB0' PageEnd='1AFF'/>
+ <Page Description='Balinese' PageBase='1B00' PageEnd='1B7F'/>
+ <Page Description='Sundanese' PageBase='1B80' PageEnd='1BBF'/>
+ <Page Description='Batak' PageBase='1BC0' PageEnd='1BFF'/>
+ <Page Description='Lepcha' PageBase='1C00' PageEnd='1C4F'/>
+ <Page Description='Ol Chiki' PageBase='1C50' PageEnd='1C7F'/>
+ <Page Description='Cyrillic Extended-C' PageBase='1C80' PageEnd='1C8F'/>
+ <Page Description='Unassigned' PageBase='1C90' PageEnd='1CBF'/>
+ <Page Description='Sundanese Supplement' PageBase='1CC0' PageEnd='1CCF'/>
+ <Page Description='Vedic Extensions' PageBase='1CD0' PageEnd='1CFF'/>
+ <Page Description='Phonetic Extensions' PageBase='1D00' PageEnd='1D7F'/>
+ <Page Description='Phonetic Extensions Supplement' PageBase='1D80' PageEnd='1DBF'/>
+ <Page Description='Combining Diacritical Marks Supplement' PageBase='1DC0' PageEnd='1DFF'/>
+ <Page Description='Latin Extended Additional' PageBase='1E00' PageEnd='1EFF'/>
+ <Page Description='Greek Extended' PageBase='1F00' PageEnd='1FFF'/>
+</UnicodeIndex>

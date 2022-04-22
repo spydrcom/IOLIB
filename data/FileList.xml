@@ -1,0 +1,11 @@
+<FileList
+
+	DISPLAY_TITLE='File List' 
+	ROOT_ELEMENT_NAME='FileList' ELEMENT_NAME='File'
+
+	COL_TYPE_1='TEXT'         COL_TYPE_2='INT'            COL_TYPE_3='INT'             COL_TYPE_4='INT'
+	COL_NAME_1='File Name'    COL_NAME_2='File Size'      COL_NAME_3='Record Count'    COL_NAME_4='Is Template'
+	COL_ATTR_1='FileName'     COL_ATTR_2='FileSize'       COL_ATTR_3='RecordCount'     COL_ATTR_4='IsTemplate'
+	COLUMN_COUNT='4'
+>
+</FileList>

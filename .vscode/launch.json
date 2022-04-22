@@ -1,0 +1,140 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch TokenObjects",
+            "request": "launch",
+            "mainClass": "net.myorb.abstraction.tests.TokenObjects",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch JsonReader",
+            "request": "launch",
+            "mainClass": "net.myorb.data.notations.json.JsonReader",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch BlockIndex",
+            "request": "launch",
+            "mainClass": "net.myorb.data.unicode.BlockIndex",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch Nomenclature",
+            "request": "launch",
+            "mainClass": "net.myorb.data.unicode.Nomenclature",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch SimpleFileDirectoryList",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.components.SimpleFileDirectoryList",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch SimpleFileZipEntryList",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.components.SimpleFileZipEntryList",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch SimpleXmlDocumentDisplay",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.components.SimpleXmlDocumentDisplay",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch UnicodeCharacterBlock",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.components.UnicodeCharacterBlock",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch ColorTest",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.tests.ColorTest",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch FileListTest",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.tests.FileListTest",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch ImageDisplay",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.tests.ImageDisplay",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch ImageTest",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.tests.ImageTest",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch MdiPaletteTest",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.tests.MdiPaletteTest",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch MdiTest",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.tests.MdiTest",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch NavDisplay",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.tests.NavDisplay",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch PixelMatrixTests",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.tests.PixelMatrixTests",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch TrueTypeTests",
+            "request": "launch",
+            "mainClass": "net.myorb.gui.tests.TrueTypeTests",
+            "projectName": "IOLIB"
+        },
+        {
+            "type": "java",
+            "name": "Launch FileDump",
+            "request": "launch",
+            "mainClass": "net.myorb.utilities.FileDump",
+            "projectName": "IOLIB"
+        }
+    ]
+}
