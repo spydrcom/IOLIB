@@ -2,9 +2,10 @@
 package net.myorb.data.abstractions;
 
 import net.myorb.data.abstractions.SimpleStreamIO.TextSource;
+import net.myorb.data.abstractions.ErrorHandling;
 
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 import java.net.Socket;
@@ -20,7 +21,7 @@ public class ServerAccess
 	/**
 	 * unique exception for errors originated from RPC exchange
 	 */
-	public static class ServerError extends RuntimeException
+	public static class ServerError extends ErrorHandling.Terminator
 	{
 		public ServerError (String message) { super (message); }
 		public ServerError (String message, Exception e) { super (message, e); }

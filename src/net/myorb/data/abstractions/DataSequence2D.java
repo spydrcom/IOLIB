@@ -109,7 +109,7 @@ public class DataSequence2D<T>
 		while (!ds.spaceManager.lessThan (to, x))
 		{
 			try { ds.addSample (x, equation.eval (x)); }
-			catch (Exception e) { /* ignored */ }
+			catch (Exception e) { ErrorHandling.checkForTermination (e); }
 			x = ds.spaceManager.add (x, by);
 		}
 
@@ -134,7 +134,7 @@ public class DataSequence2D<T>
 		for (T x : overDomain)
 		{
 			try { ds.addSample (x, equation.eval (x)); }
-			catch (Exception e) { /* ignored */ e.printStackTrace(); }
+			catch (Exception e) { ErrorHandling.checkForTermination (e); }
 		}
 
 		return ds;
