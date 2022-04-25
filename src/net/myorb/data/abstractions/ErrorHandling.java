@@ -182,7 +182,9 @@ public class ErrorHandling
 		if ( ! supressingErrorMessages )
 		{
 			stream.println ("*** " + e.getLocalizedMessage ());
+			if (TRACE_FOR_ERROR) e.printStackTrace ();
 		}
 	}
+	public static final boolean TRACE_FOR_ERROR = false;
 
 }
