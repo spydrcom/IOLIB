@@ -138,7 +138,7 @@ public class ErrorHandling
 	}
 
 	/**
-	 * handle conditions caused be a process
+	 * handle conditions caused by a process
 	 * @param e an executable process to be invoked
 	 * @param stream a stream to use for notifications
 	 * @throws Terminator re-thrown when seen
@@ -157,7 +157,7 @@ public class ErrorHandling
 	}
 
 	/**
-	 * handle conditions caused be a process
+	 * handle conditions caused by a process
 	 * @param e an executable process to be invoked
 	 * @param stream a stream to use for notifications
 	 * @param supressingErrorMessages state of error handling selected
@@ -178,7 +178,8 @@ public class ErrorHandling
 		{
 			e.printStackTrace ();
 		}
-		else if ( ! supressingErrorMessages )
+
+		if ( ! supressingErrorMessages )
 		{
 			stream.println ("*** " + e.getLocalizedMessage ());
 		}
