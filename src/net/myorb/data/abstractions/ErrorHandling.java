@@ -2,6 +2,7 @@
 package net.myorb.data.abstractions;
 
 import java.io.PrintStream;
+import java.util.List;
 
 /**
  * exception processing in severity layers
@@ -157,6 +158,51 @@ public class ErrorHandling
 	}
 
 	/**
+	 * display a line of source as part of error handling
+	 * @param fromTokens the tokens of the line being shown
+	 * @param toStream the stream to print the line to
+	 */
+	public static void showErrorLine
+		(
+			List<ExpressionTokenParser.TokenDescriptor> fromTokens,
+			PrintStream toStream
+		)
+	{
+		String line =
+			ExpressionTokenParser.toString (fromTokens);
+		toStream.println (">>> " + line);
+	}
+
+	/**
+	 * handle conditions caused by a process
+	 * @param fromTokens the tokens of the error source line
+	 * @param exceptionSeen an executable process to be invoked
+	 * @param displayStream a stream to use for generated output
+	 * @param supressingErrorMessages state of error handling selected
+	 * @param tracing TRUE when verbose trace is requested
+	 * @throws Terminator re-thrown when seen
+	 */
+	public static void process
+		(
+			List<ExpressionTokenParser.TokenDescriptor> fromTokens,
+			Exception exceptionSeen, PrintStream displayStream,
+			boolean supressingErrorMessages,
+			boolean tracing
+		)
+	throws Terminator
+	{
+		showErrorLine
+		(
+			fromTokens, displayStream
+		);
+		process
+		(
+			exceptionSeen, displayStream,
+			supressingErrorMessages, tracing
+		);
+	}
+
+	/**
 	 * handle conditions caused by a process
 	 * @param e an executable process to be invoked
 	 * @param stream a stream to use for notifications
@@ -185,6 +231,6 @@ public class ErrorHandling
 			if (TRACE_FOR_ERROR) e.printStackTrace ();
 		}
 	}
-	public static final boolean TRACE_FOR_ERROR = false;
+	public static final boolean TRACE_FOR_ERROR = true;
 
 }
