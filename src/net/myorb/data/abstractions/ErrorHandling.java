@@ -203,8 +203,8 @@ public class ErrorHandling
 	}
 
 	/**
-	 * handle conditions caused by a process
-	 * @param e an executable process to be invoked
+	 * handle conditions caused during a process
+	 * @param e the exception seen in invoked process
 	 * @param stream a stream to use for notifications
 	 * @param supressingErrorMessages state of error handling selected
 	 * @param tracing TRUE when verbose trace is requested
@@ -218,15 +218,18 @@ public class ErrorHandling
 		)
 	throws Terminator
 	{
+		// determine severity
 		process (e, stream);
 
 		if (tracing)
 		{
+			// sys-out stack trace for debugging
 			e.printStackTrace ();
 		}
 
 		if ( ! supressingErrorMessages )
 		{
+			// show error message to user
 			stream.println ("*** " + e.getLocalizedMessage ());
 			if (TRACE_FOR_ERROR) e.printStackTrace ();
 		}
