@@ -464,16 +464,18 @@ public class JxrPrimitives
 			JxrProcessingState state, Object object, Class<?> classDescription
 		)
 	{
+		String methodName = "UNKNOWN";
+
 		try
 		{
 			boolean multi =
 				state.attributes.containsKey ("varying");
 			ObjectList p = state.getParameterObjectsFromAttributes ();
-			String methodName = JxrSymManager.getMethod (state.attributes, state.symbols);
+			methodName = JxrSymManager.getMethod (state.attributes, state.symbols);
 			Method m = findMethod (classDescription, methodName, p.getTypes (), multi);
 			return m.invoke (object, getParameterArray (p.asArray (), multi));
 		}
-		catch (Exception e) { throw new RuntimeException ("Unable to execute call", e); }
+		catch (Exception e) { throw new RuntimeException ("Unable to execute call: " + methodName, e); }
 	}
 	static Object[] getParameterArray (Object[] p, boolean multi)
 	{ return multi ? new Object[]{p} : p; }

@@ -6,7 +6,6 @@ import javax.swing.*;
 public class MdiFrameController extends JDesktopPane
 {
 
-
 	public static class InternalFrame extends JInternalFrame
 	{
 

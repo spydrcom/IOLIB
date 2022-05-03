@@ -102,7 +102,12 @@ public class MdiFrameController
 		else if (frames != null) frames.add (newFrame);
 		return newFrame;
 	}
+
+
+	public void
+		releaseFrames () { this.frames = null; }
 	private ArrayList<InternalFrame> frames = null;
+	public static boolean LEGACY_FRAME_ALGORITHM = false;
 
 
 	/**
@@ -111,6 +116,7 @@ public class MdiFrameController
 	public void setMenuBar (JMenuBar menuBar)
 	{ this.menuBar = menuBar; }
 	JMenuBar menuBar = null;
+
 
 	/**
 	 * @param title a title for the master frame
@@ -142,7 +148,7 @@ public class MdiFrameController
 			if (prv != null) f.setLocation (offsetHorizFrom (prv));
 			contentPane.add (prv = f); desk.add (f); f.packAndExpose ();
 		}
-		this.frames = null;
+		if (LEGACY_FRAME_ALGORITHM) { releaseFrames (); }
 	}
 
 
@@ -162,6 +168,7 @@ public class MdiFrameController
 	public void tileVertically ()
 	{
 		JInternalFrame prv = null;
+		if (frames == null) return;
 		for (JInternalFrame f : frames)
 		{
 			if (prv != null) f.setLocation (offsetVertFrom (prv));
