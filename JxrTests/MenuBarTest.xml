@@ -1,0 +1,64 @@
+<JXR>
+
+	<!-- import runtime declarations -->
+	<read path='cfg/runtime.xml'/>
+
+	<!-- refer to action listener -->
+	<package called='test'>net.myorb.gui.tests</package>
+	<class called='testing' package='test' name='MdiPaletteTest'/>
+	<SaveAs toBeCalled='tester'><new class='testing'></new></SaveAs>
+	<saveas toBeCalled='ACT'><evaluate  object='tester' method='getAction'/></saveas>
+
+	<!-- construct display panel class -->
+	<package called='grafx'>net.myorb.gui.tests</package>
+	<class called='ColorDisplays' package='grafx' name='ColorTest'/>
+	<SaveAs toBeCalled='displays'><new class='ColorDisplays'></new></SaveAs>
+
+	<!-- refer to display panels -->
+	<SaveAs toBeCalled='gbMatrix'><evaluate object='displays' method='getMatrixPanel'/></SaveAs>
+	<SaveAs toBeCalled='palette'><evaluate object='displays' method='getPalettePanel'/></SaveAs>
+
+	<!-- construct MDI and MenuBar controllers -->
+	<void><new called='ctrlr' class='MdiFrameController' /></void>
+
+	<READ path='cfg/gui/MenuBar.xml' using='' />
+
+	<!-- declare titles for internal frames -->
+	<SaveAs toBeCalled='f2'><string>Full Color Palette</string></SaveAs>
+	<SaveAs toBeCalled='f1'><string>GB Matrix</string></SaveAs>
+
+	<!-- construct internal frame objects -->
+	<SaveAs toBeCalled='F1'><evaluate object='ctrlr' method='addNewFrame' using='f1'/></SaveAs>
+	<SaveAs toBeCalled='F2'><evaluate object='ctrlr' method='addNewFrame' using='f2'/></SaveAs>
+
+	<!-- add gbMatrix to F1 main panel -->
+	<SaveAs toBeCalled='p1'><evaluate object='F1' method='getMainPanel'/></SaveAs>
+	<call object='F1' method='addComponent' using='gbMatrix'></call>
+
+	<!-- add palette to F2 main panel -->
+	<SaveAs toBeCalled='p2'><evaluate object='F2' method='getMainPanel'/></SaveAs>
+	<call object='F2' method='addComponent' using='palette'></call>
+
+	<!-- pack internal frames and make visible -->
+	<call object='F1' method='packAndExpose'/>
+	<call object='F2' method='packAndExpose'/>
+
+	<!-- use MDI controller to construct master frame -->
+	<SaveAs toBeCalled='masterTitle'><string>Master Frame Via XML v2.0</string></SaveAs>
+	<SaveAs toBeCalled='masterFrame'><evaluate object='ctrlr' method='constructMasterFrame' using='masterTitle'/></SaveAs>
+
+	<!-- connect menu bar to master frame -->
+	<call object='masterFrame' method='setJMenuBar'>
+		<evaluate object='menus' method='getMenuBar'/>
+	</call>
+
+	<!-- organize frames as vertical tiles -->
+	<call object='ctrlr' method='tileVertically'/>
+
+	<!-- show master frame -->
+	<call object='ctrlr' method='showMasterFrame'/>
+
+	<!-- return only selected items (internal frames and principle panels) -->
+	<Export using='masterFrame F1 F2 p1 p2' />
+
+</JXR>

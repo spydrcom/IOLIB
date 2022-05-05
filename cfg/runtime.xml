@@ -10,6 +10,16 @@
 	<class called='MdiFrameController' package='gui' name='MdiFrameController'/>
 	<class called='SimpleMenuBar' package='gui' name='SimpleMenuBar'/>
 
+	<!-- modifiers for HotKey KeyStroke objects -->
+	<saveas toBeCalled='ALT'><field named='ALT_MASK' class='ActionEvent'/></saveas>
+	<saveas toBeCalled='CTL'><field named='CTRL_MASK' class='ActionEvent'/></saveas>
+
+	<saveas toBeCalled='VKR'><field named='VK_R' class='KeyEvent'/></saveas>
+	<saveas toBeCalled='VKS'><field named='VK_S' class='KeyEvent'/></saveas>
+	<saveas toBeCalled='VKT'><field named='VK_T' class='KeyEvent'/></saveas>
+	<saveas toBeCalled='VKF'><field named='VK_F' class='KeyEvent'/></saveas>
+	<saveas toBeCalled='VKH'><field named='VK_H' class='KeyEvent'/></saveas>
+
 	<ExportAll />
 
 </JXR>

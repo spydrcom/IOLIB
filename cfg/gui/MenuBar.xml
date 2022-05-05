@@ -1,0 +1,442 @@
+<JXR>
+
+	<!-- import runtime declarations -->
+	<read path='cfg/runtime.xml'/>
+
+	<!-- refer to action listener -->
+	<package called='test'>net.myorb.gui.tests</package>
+	<class called='testing' package='test' name='MdiPaletteTest'/>
+	<SaveAs toBeCalled='tester'><new class='testing'></new></SaveAs>
+	<saveas toBeCalled='ACT'><evaluate  object='tester' method='getAction'/></saveas>
+
+	<!-- construct MDI and MenuBar controllers -->
+	<void><new called='menus' class='SimpleMenuBar' /></void>
+ 
+	<!-- add a menu to the main menu bar -->
+	<SaveAs toBeCalled='Home'><evaluate object='menus' method='addMenu'><string>Home</string></evaluate></SaveAs>
+	<SaveAs toBeCalled='Data'><evaluate object='menus' method='addMenu'><string>Data</string></evaluate></SaveAs>
+	<SaveAs toBeCalled='Primes'><evaluate object='menus' method='addMenu'><string>Primes</string></evaluate></SaveAs>
+	<SaveAs toBeCalled='Matrices'><evaluate object='menus' method='addMenu'><string>Matrices</string></evaluate></SaveAs>
+	<SaveAs toBeCalled='SimulEQ'><evaluate object='menus' method='addMenu'><string>SimulEQ</string></evaluate></SaveAs>
+	<SaveAs toBeCalled='Polynomials'><evaluate object='menus' method='addMenu'><string>Polynomials</string></evaluate></SaveAs>
+	<SaveAs toBeCalled='Statistics'><evaluate object='menus' method='addMenu'><string>Statistics</string></evaluate></SaveAs>
+	<SaveAs toBeCalled='Regression'><evaluate object='menus' method='addMenu'><string>Regression</string></evaluate></SaveAs>
+	<SaveAs toBeCalled='Fractals'><evaluate object='menus' method='addMenu'><string>Fractals</string></evaluate></SaveAs>
+	<SaveAs toBeCalled='Charts'><evaluate object='menus' method='addMenu'><string>Charts</string></evaluate></SaveAs>
+
+	<!-- menu items for Home -->
+
+	<void><string toBeCalled='Tabulate'>Tabulate</string></void>
+	<void><substring toBeCalled='TAB_NMEM' using='Tabulate 1 1'/></void>
+	<void><string toBeCalled='TAB_TIP'>Show table of available functionality</string></void>
+	<SaveAs toBeCalled='TAB'><evaluate object='menus' method='addMenuItem' using='Tabulate Home'/></SaveAs>
+	<bean references='TAB'><set ItemMnemonic='TAB_NMEM' HotKey='VKT' Modifiers='CTL' Tip='TAB_TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Symbols'>Symbols</string></void>
+	<void><substring toBeCalled='SYM_NMEM' using='Symbols 1 1'/></void>
+	<void><string toBeCalled='SYM_TIP'>Display general symbol information</string></void>
+	<SaveAs toBeCalled='SYM'><evaluate object='menus' method='addMenuItem' using='Symbols Home'/></SaveAs>
+	<bean references='SYM'><set ItemMnemonic='SYM_NMEM' HotKey='VKS' Modifiers='CTL' Tip='SYM_TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Functions'>Functions</string></void>
+	<void><substring toBeCalled='FUN_NMEM' using='Functions 1 1'/></void>
+	<void><string toBeCalled='FUN_TIP'>Display function symbol information</string></void>
+	<SaveAs toBeCalled='FUN'><evaluate object='menus' method='addMenuItem' using='Functions Home'/></SaveAs>
+	<bean references='FUN'><set ItemMnemonic='FUN_NMEM' HotKey='VKF' Modifiers='CTL' Tip='FUN_TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='RPN_TITLE'>RPN</string></void>
+	<void><substring toBeCalled='RPN_NMEM' using='RPN_TITLE 1 1'/></void>
+	<void><string toBeCalled='RPN_TIP'>Reverse Polish Notation calculator</string></void>
+	<SaveAs toBeCalled='RPN'><evaluate object='menus' method='addMenuItem' using='RPN_TITLE Home'/></SaveAs>
+	<bean references='RPN'><set ItemMnemonic='RPN_NMEM' HotKey='VKR' Modifiers='CTL' Tip='RPN_TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Dump'>Dump</string></void>
+	<void><substring toBeCalled='DUMP_NMEM' using='Dump 1 1'/></void>
+	<void><string toBeCalled='DUMP_TIP'>Show trace and structure data for debugging</string></void>
+	<SaveAs toBeCalled='DUMP'><evaluate object='menus' method='addMenuItem' using='Dump Home'/></SaveAs>
+	<bean references='DUMP'><set ItemMnemonic='DUMP_NMEM' Tip='DUMP_TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Save'>Save</string></void>
+	<void><substring toBeCalled='SAVE_NMEM' using='Save 3 1'/></void>
+	<void><string toBeCalled='SAVE_TIP'>Save state of workspace</string></void>
+	<SaveAs toBeCalled='SAVE'><evaluate object='menus' method='addMenuItem' using='Save Home'/></SaveAs>
+	<bean references='SAVE'><set ItemMnemonic='SAVE_NMEM' HotKey='VKS' Modifiers='ALT' Tip='SAVE_TIP' ActionForItem='ACT'/></bean>
+_
+	<void><string toBeCalled='Help'>Help</string></void>
+	<void><substring toBeCalled='HELP_NMEM' using='Help 1 1'/></void>
+	<void><string toBeCalled='HELP_TIP'>Show available help document</string></void>
+	<SaveAs toBeCalled='HELP'><evaluate object='menus' method='addMenuItem' using='Help Home'/></SaveAs>
+	<bean references='HELP'><set ItemMnemonic='HELP_NMEM' HotKey='VKH' Modifiers='CTL' Tip='HELP_TIP' ActionForItem='ACT'/></bean>
+
+	<!-- menu items for Data -->
+
+	<void><string toBeCalled='Pi'>Pi</string></void>
+	<void><substring toBeCalled='NMEM' using='Pi 1 1'/></void>
+	<void><string toBeCalled='TIP'>Computation of product of vector entries</string></void>
+	<SaveAs toBeCalled='PI'><evaluate object='menus' method='addMenuItem' using='Pi Data'/></SaveAs>
+	<bean references='PI'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Sigma'>Sigma</string></void>
+	<void><substring toBeCalled='NMEM' using='Sigma 1 1'/></void>
+	<void><string toBeCalled='TIP'>Computation of sum of vector entries</string></void>
+	<SaveAs toBeCalled='SIG'><evaluate object='menus' method='addMenuItem' using='Sigma Data'/></SaveAs>
+	<bean references='SIG'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Hypot'>Hypot</string></void>
+	<void><substring toBeCalled='NMEM' using='Hypot 1 1'/></void>
+	<void><string toBeCalled='TIP'>Computation of hypotenuse length in multi dimension</string></void>
+	<SaveAs toBeCalled='HYP'><evaluate object='menus' method='addMenuItem' using='Hypot Data'/></SaveAs>
+	<bean references='HYP'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Augment'>Augment</string></void>
+	<void><substring toBeCalled='NMEM' using='Augment 1 1'/></void>
+	<void><string toBeCalled='TIP'>Augmentation of a matrix</string></void>
+	<SaveAs toBeCalled='AUG'><evaluate object='menus' method='addMenuItem' using='Augment Data'/></SaveAs>
+	<bean references='AUG'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Dyadic'>Dyadic</string></void>
+	<void><substring toBeCalled='NMEM' using='Dyadic 2 1'/></void>
+	<void><string toBeCalled='TIP'>Computation of dyadic product of vectors</string></void>
+	<SaveAs toBeCalled='DYAD'><evaluate object='menus' method='addMenuItem' using='Dyadic Data'/></SaveAs>
+	<bean references='DYAD'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Dot'>Dot</string></void>
+	<void><substring toBeCalled='NMEM' using='Dot 1 1'/></void>
+	<void><string toBeCalled='TIP'>Computation of dot product of vectors</string></void>
+	<SaveAs toBeCalled='DOT'><evaluate object='menus' method='addMenuItem' using='Dot Data'/></SaveAs>
+	<bean references='DOT'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<!-- menu items for Primes -->
+
+	<void><string toBeCalled='Sieve'>Sieve</string></void>
+	<void><substring toBeCalled='NMEM' using='Sieve 1 1'/></void>
+	<void><string toBeCalled='TIP'>Populate table of primes with chosen sieve</string></void>
+	<SaveAs toBeCalled='SIEVE'><evaluate object='menus' method='addMenuItem' using='Sieve Primes'/></SaveAs>
+	<bean references='SIEVE'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Tabulated'>Tabulated</string></void>
+	<void><substring toBeCalled='NMEM' using='Tabulated 1 1'/></void>
+	<void><string toBeCalled='TIP'>Produce table of prime factors</string></void>
+	<SaveAs toBeCalled='TAB'><evaluate object='menus' method='addMenuItem' using='Tabulated Primes'/></SaveAs>
+	<bean references='TAB'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Prime'>Primes</string></void>
+	<void><substring toBeCalled='NMEM' using='Prime 1 1'/></void>
+	<void><string toBeCalled='TIP'>Populate table of prime numbers</string></void>
+	<SaveAs toBeCalled='PRIME'><evaluate object='menus' method='addMenuItem' using='Prime Primes'/></SaveAs>
+	<bean references='PRIME'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Factors'>Factors</string></void>
+	<void><substring toBeCalled='NMEM' using='Factors 1 1'/></void>
+	<void><string toBeCalled='TIP'>Compute factors of a value</string></void>
+	<SaveAs toBeCalled='FACT'><evaluate object='menus' method='addMenuItem' using='Factors Primes'/></SaveAs>
+	<bean references='FACT'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Gaps'>Gaps</string></void>
+	<void><substring toBeCalled='NMEM' using='Gaps 1 1'/></void>
+	<void><string toBeCalled='TIP'>Populate table of gaps in listed primes</string></void>
+	<SaveAs toBeCalled='GAPS'><evaluate object='menus' method='addMenuItem' using='Gaps Primes'/></SaveAs>
+	<bean references='GAPS'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='GCF'>GCF</string></void>
+	<void><substring toBeCalled='NMEM' using='GCF 2 1'/></void>
+	<void><string toBeCalled='TIP'>Computation of greatest common factor</string></void>
+	<SaveAs toBeCalled='GCF_BEAN'><evaluate object='menus' method='addMenuItem' using='GCF Primes'/></SaveAs>
+	<bean references='GCF_BEAN'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='LCM'>LCM</string></void>
+	<void><substring toBeCalled='LCM_NMEM' using='LCM 1 1'/></void>
+	<void><string toBeCalled='LCM_TIP'>Computation of lowest common multiplier</string></void>
+	<SaveAs toBeCalled='LCM_BEAN'><evaluate object='menus' method='addMenuItem' using='LCM Primes'/></SaveAs>
+	<bean references='LCM_BEAN'><set ItemMnemonic='LCM_NMEM' Tip='LCM_TIP' ActionForItem='ACT'/></bean>
+
+	<!-- menu items for Polynomials -->
+
+	<void><string toBeCalled='Formats'>Formats</string></void>
+	<void><substring toBeCalled='NMEM' using='Formats 1 1'/></void>
+	<void><string toBeCalled='TIP'>Display a polynomial from coefficient vector</string></void>
+	<SaveAs toBeCalled='FMTS'><evaluate object='menus' method='addMenuItem' using='Formats Polynomials'/></SaveAs>
+	<bean references='FMTS'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Roots'>Roots</string></void>
+	<void><substring toBeCalled='NMEM' using='Roots 1 1'/></void>
+	<void><string toBeCalled='TIP'>Determine roots of a polynomial</string></void>
+	<SaveAs toBeCalled='ROOTS'><evaluate object='menus' method='addMenuItem' using='Roots Polynomials'/></SaveAs>
+	<bean references='ROOTS'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Characterize'>Characterize</string></void>
+	<void><substring toBeCalled='NMEM' using='Characterize 1 1'/></void>
+	<void><string toBeCalled='TIP'>Characterize a polynomial</string></void>
+	<SaveAs toBeCalled='CHR'><evaluate object='menus' method='addMenuItem' using='Characterize Polynomials'/></SaveAs>
+	<bean references='CHR'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Derive'>Derive</string></void>
+	<void><substring toBeCalled='NMEM' using='Derive 1 1'/></void>
+	<void><string toBeCalled='TIP'>Derive a polynomial</string></void>
+	<SaveAs toBeCalled='DER'><evaluate object='menus' method='addMenuItem' using='Derive Polynomials'/></SaveAs>
+	<bean references='DER'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Derivatve'>Derivatve</string></void>
+	<void><substring toBeCalled='NMEM' using='Derivatve 2 1'/></void>
+	<void><string toBeCalled='TIP'>Compute approximation of the derivatve of a polynomial</string></void>
+	<SaveAs toBeCalled='DDX'><evaluate object='menus' method='addMenuItem' using='Derivatve Polynomials'/></SaveAs>
+	<bean references='DDX'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Integral'>Integral</string></void>
+	<void><substring toBeCalled='NMEM' using='Integral 1 1'/></void>
+	<void><string toBeCalled='TIP'>Compute approximation of the integral of a polynomial</string></void>
+	<SaveAs toBeCalled='INT'><evaluate object='menus' method='addMenuItem' using='Integral Polynomials'/></SaveAs>
+	<bean references='INT'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Conv'>Conv</string></void>
+	<void><substring toBeCalled='CONV_NMEM' using='Conv 1 1'/></void>
+	<void><string toBeCalled='TIP'>Computation of algebraic inversion of a Polynomial</string></void>
+	<SaveAs toBeCalled='CONV'><evaluate object='menus' method='addMenuItem' using='Conv Polynomials'/></SaveAs>
+	<bean references='CONV'><set ItemMnemonic='CONV_NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<!-- menu items for Matrices -->
+
+	<void><string toBeCalled='Add'>Add</string></void>
+	<void><substring toBeCalled='NMEM' using='Add 1 1'/></void>
+	<void><string toBeCalled='TIP'>Compute sum of two matrix values</string></void>
+	<SaveAs toBeCalled='ADD'><evaluate object='menus' method='addMenuItem' using='Add Matrices'/></SaveAs>
+	<bean references='ADD'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Mul'>Mul</string></void>
+	<void><substring toBeCalled='NMEM' using='Mul 1 1'/></void>
+	<void><string toBeCalled='TIP'>Compute product of two matrix value</string></void>
+	<SaveAs toBeCalled='MUL'><evaluate object='menus' method='addMenuItem' using='Mul Matrices'/></SaveAs>
+	<bean references='MUL'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Det'>Det</string></void>
+	<void><substring toBeCalled='NMEM' using='Det 1 1'/></void>
+	<void><string toBeCalled='TIP'>Compute determinant of matrix value</string></void>
+	<SaveAs toBeCalled='DET'><evaluate object='menus' method='addMenuItem' using='Det Matrices'/></SaveAs>
+	<bean references='DET'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Eig'>Eig</string></void>
+	<void><substring toBeCalled='NMEM' using='Eig 1 1'/></void>
+	<void><string toBeCalled='TIP'>Compute eigenvalue and eigenvector for equations</string></void>
+	<SaveAs toBeCalled='EIG'><evaluate object='menus' method='addMenuItem' using='Eig Matrices'/></SaveAs>
+	<bean references='EIG'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Transpose'>Transpose</string></void>
+	<void><substring toBeCalled='NMEM' using='Transpose 5 1'/></void>
+	<void><string toBeCalled='TIP'>Compute transpose of a matrix</string></void>
+	<SaveAs toBeCalled='TRA'><evaluate object='menus' method='addMenuItem' using='Transpose Matrices'/></SaveAs>
+	<bean references='TRA'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Characteristic'>Characteristic</string></void>
+	<void><substring toBeCalled='NMEM' using='Characteristic 1 1'/></void>
+	<void><string toBeCalled='TIP'>Compute characteristic of a matrix</string></void>
+	<SaveAs toBeCalled='CHR'><evaluate object='menus' method='addMenuItem' using='Characteristic Matrices'/></SaveAs>
+	<bean references='CHR'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='CoMatrix'>CoMatrix</string></void>
+	<void><substring toBeCalled='NMEM' using='CoMatrix 2 1'/></void>
+	<void><string toBeCalled='TIP'>Compute CoMatrix of a matrix</string></void>
+	<SaveAs toBeCalled='COM'><evaluate object='menus' method='addMenuItem' using='CoMatrix Matrices'/></SaveAs>
+	<bean references='COM'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Adj'>Adj</string></void>
+	<void><substring toBeCalled='NMEM' using='Adj 3 1'/></void>
+	<void><string toBeCalled='TIP'>Compute ADJ of a matrix</string></void>
+	<SaveAs toBeCalled='ADJ'><evaluate object='menus' method='addMenuItem' using='Adj Matrices'/></SaveAs>
+	<bean references='ADJ'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Inv'>Inv</string></void>
+	<void><substring toBeCalled='NMEM' using='Integral 3 1'/></void>
+	<void><string toBeCalled='TIP'>Compute inverse of a matrix</string></void>
+	<SaveAs toBeCalled='INV'><evaluate object='menus' method='addMenuItem' using='Inv Matrices'/></SaveAs>
+	<bean references='INV'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Tr'>Tr</string></void>
+	<void><substring toBeCalled='NMEM' using='Tr 1 1'/></void>
+	<void><string toBeCalled='TIP'>Computation of trace of a matrix</string></void>
+	<SaveAs toBeCalled='TR'><evaluate object='menus' method='addMenuItem' using='Tr Matrices'/></SaveAs>
+	<bean references='TR'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<!-- menu items for SimulEQ -->
+
+	<void><string toBeCalled='Report'>Report</string></void>
+	<void><substring toBeCalled='NMEM' using='Report 1 1'/></void>
+	<void><string toBeCalled='TIP'>Report on matrix characteristics</string></void>
+	<SaveAs toBeCalled='REP'><evaluate object='menus' method='addMenuItem' using='Report SimulEQ'/></SaveAs>
+	<bean references='REP'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='SVD'>SVD</string></void>
+	<void><substring toBeCalled='NMEM' using='SVD 1 1'/></void>
+	<void><string toBeCalled='TIP'>Single Value  matrix decomposition</string></void>
+	<SaveAs toBeCalled='SVD_BEAN'><evaluate object='menus' method='addMenuItem' using='SVD SimulEQ'/></SaveAs>
+	<bean references='SVD_BEAN'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='QRD'>QRD</string></void>
+	<void><substring toBeCalled='NMEM' using='QRD 1 1'/></void>
+	<void><string toBeCalled='TIP'>QRD matrix decomposition</string></void>
+	<SaveAs toBeCalled='QRD_BEAN'><evaluate object='menus' method='addMenuItem' using='QRD SimulEQ'/></SaveAs>
+	<bean references='QRD_BEAN'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Eigen'>Eigen</string></void>
+	<void><substring toBeCalled='NMEM' using='Eigen 1 1'/></void>
+	<void><string toBeCalled='TIP'>Eigenvalues and Eigenvectors</string></void>
+	<SaveAs toBeCalled='EIGEN'><evaluate object='menus' method='addMenuItem' using='Eigen SimulEQ'/></SaveAs>
+	<bean references='EIGEN'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Solve'>Solve</string></void>
+	<void><substring toBeCalled='NMEM' using='Solve 2 1'/></void>
+	<void><string toBeCalled='TIP'>Generate solution for data points</string></void>
+	<SaveAs toBeCalled='SOLVE'><evaluate object='menus' method='addMenuItem' using='Solve SimulEQ'/></SaveAs>
+	<bean references='SOLVE'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Gaussian'>Gaussian</string></void>
+	<void><substring toBeCalled='NMEM' using='Gaussian 1 1'/></void>
+	<void><string toBeCalled='TIP'>Gaussian solution for data points</string></void>
+	<SaveAs toBeCalled='GAUSS'><evaluate object='menus' method='addMenuItem' using='Gaussian SimulEQ'/></SaveAs>
+	<bean references='GAUSS'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+
+	<void><string toBeCalled='VC31'>VC31</string></void>
+	<void><substring toBeCalled='NMEM' using='VC31 1 1'/></void>
+	<void><string toBeCalled='TIP'>VC31 solution for data points</string></void>
+	<SaveAs toBeCalled='VC'><evaluate object='menus' method='addMenuItem' using='VC31 SimulEQ'/></SaveAs>
+	<bean references='VC'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<!-- menu items for Regression -->
+
+	<void><string toBeCalled='Fft'>FFT</string></void>
+	<void><substring toBeCalled='NMEM' using='Fft 1 1'/></void>
+	<void><string toBeCalled='TIP'>Fast Fourier Transform</string></void>
+	<SaveAs toBeCalled='FFT'><evaluate object='menus' method='addMenuItem' using='Fft Regression'/></SaveAs>
+	<bean references='FFT'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Linear'>Linear</string></void>
+	<void><substring toBeCalled='NMEM' using='Linear 1 1'/></void>
+	<void><string toBeCalled='TIP'>Least Squares linear regression</string></void>
+	<SaveAs toBeCalled='LIN'><evaluate object='menus' method='addMenuItem' using='Linear Regression'/></SaveAs>
+	<bean references='LIN'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Nonlinear'>Non-Linear</string></void>
+	<void><substring toBeCalled='NMEM' using='Nonlinear 1 1'/></void>
+	<void><string toBeCalled='TIP'>Least Squares non-linear regression</string></void>
+	<SaveAs toBeCalled='NL'><evaluate object='menus' method='addMenuItem' using='Nonlinear Regression'/></SaveAs>
+	<bean references='NL'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Polynomial'>Polynomial</string></void>
+	<void><substring toBeCalled='NMEM' using='Polynomial 1 1'/></void>
+	<void><string toBeCalled='TIP'>Data point regression using polynomial linear algebra solution</string></void>
+	<SaveAs toBeCalled='POLY'><evaluate object='menus' method='addMenuItem' using='Polynomial Regression'/></SaveAs>
+	<bean references='POLY'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Harmonic'>Harmonic</string></void>
+	<void><substring toBeCalled='NMEM' using='Harmonic 1 1'/></void>
+	<void><string toBeCalled='TIP'>Data point regression using cyclic linear algebra solution</string></void>
+	<SaveAs toBeCalled='TS'><evaluate object='menus' method='addMenuItem' using='Harmonic Regression'/></SaveAs>
+	<bean references='TS'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+
+	<void><string toBeCalled='TimeSeries'>Time Series</string></void>
+	<void><substring toBeCalled='NMEM' using='TimeSeries 1 1'/></void>
+	<void><string toBeCalled='TIP'>Time-Series regression of data vector</string></void>
+	<SaveAs toBeCalled='TS'><evaluate object='menus' method='addMenuItem' using='TimeSeries Regression'/></SaveAs>
+	<bean references='TS'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<!-- menu items for Statistics -->
+
+	<void><string toBeCalled='Min'>Min</string></void>
+	<void><substring toBeCalled='NMEM' using='Min 1 1'/></void>
+	<void><string toBeCalled='TIP'>Minimum value of a vector of elements</string></void>
+	<SaveAs toBeCalled='MIN'><evaluate object='menus' method='addMenuItem' using='Min Statistics'/></SaveAs>
+	<bean references='MIN'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Max'>Max</string></void>
+	<void><substring toBeCalled='NMEM' using='Max 3 1'/></void>
+	<void><string toBeCalled='TIP'>Maximum value of a vector of elements</string></void>
+	<SaveAs toBeCalled='MAX'><evaluate object='menus' method='addMenuItem' using='Max Statistics'/></SaveAs>
+	<bean references='MAX'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Mean'>Mean</string></void>
+	<void><substring toBeCalled='NMEM' using='Mean 2 1'/></void>
+	<void><string toBeCalled='TIP'>Mean of data vector</string></void>
+	<SaveAs toBeCalled='MN'><evaluate object='menus' method='addMenuItem' using='Mean Statistics'/></SaveAs>
+	<bean references='MN'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Median'>Median</string></void>
+	<void><substring toBeCalled='NMEM' using='Median 3 1'/></void>
+	<void><string toBeCalled='TIP'>Median of data vector</string></void>
+	<SaveAs toBeCalled='MED'><evaluate object='menus' method='addMenuItem' using='Median Statistics'/></SaveAs>
+	<bean references='MED'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Stdev'>Stdev</string></void>
+	<void><substring toBeCalled='NMEM' using='Stdev 1 1'/></void>
+	<void><string toBeCalled='TIP'>Standard deviation of data vector</string></void>
+	<SaveAs toBeCalled='STD'><evaluate object='menus' method='addMenuItem' using='Stdev Statistics'/></SaveAs>
+	<bean references='STD'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Var'>Var</string></void>
+	<void><substring toBeCalled='NMEM' using='Var 1 1'/></void>
+	<void><string toBeCalled='TIP'>Variance of data vector</string></void>
+	<SaveAs toBeCalled='VAR'><evaluate object='menus' method='addMenuItem' using='Var Statistics'/></SaveAs>
+	<bean references='VAR'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+
+	<void><string toBeCalled='Cov'>Cov</string></void>
+	<void><substring toBeCalled='NMEM' using='Cov 1 1'/></void>
+	<void><string toBeCalled='TIP'>Co-Variance of data vector</string></void>
+	<SaveAs toBeCalled='COV'><evaluate object='menus' method='addMenuItem' using='Cov Statistics'/></SaveAs>
+	<bean references='COV'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<!-- menu items for Fractals -->
+
+	<void><string toBeCalled='Julia'>Julia</string></void>
+	<void><substring toBeCalled='NMEM' using='Julia 1 1'/></void>
+	<void><string toBeCalled='TIP'>Produce plots of Julia fractals</string></void>
+	<SaveAs toBeCalled='JULIA'><evaluate object='menus' method='addMenuItem' using='Julia Fractals'/></SaveAs>
+	<bean references='JULIA'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Mandelbrot'>Mandelbrot</string></void>
+	<void><substring toBeCalled='NMEM' using='Mandelbrot 1 1'/></void>
+	<void><string toBeCalled='TIP'>Produce plots of Mandelbrot fractals</string></void>
+	<SaveAs toBeCalled='MAN'><evaluate object='menus' method='addMenuItem' using='Mandelbrot Fractals'/></SaveAs>
+	<bean references='MAN'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Newton'>Newton</string></void>
+	<void><substring toBeCalled='NMEM' using='Newton 1 1'/></void>
+	<void><string toBeCalled='TIP'>Produce plots of Newton fractals</string></void>
+	<SaveAs toBeCalled='NEW'><evaluate object='menus' method='addMenuItem' using='Newton Fractals'/></SaveAs>
+	<bean references='NEW'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='List'>List</string></void>
+	<void><substring toBeCalled='NMEM' using='List 1 1'/></void>
+	<void><string toBeCalled='TIP'>Show list of plots generated</string></void>
+	<SaveAs toBeCalled='LIST'><evaluate object='menus' method='addMenuItem' using='List Fractals'/></SaveAs>
+	<bean references='LIST'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<!-- menu items for Charts -->
+
+	<void><string toBeCalled='Scatter'>Scatter</string></void>
+	<void><substring toBeCalled='NMEM' using='Scatter 1 1'/></void>
+	<void><string toBeCalled='TIP'>Produce scatter plot of data points</string></void>
+	<SaveAs toBeCalled='SCAT'><evaluate object='menus' method='addMenuItem' using='Scatter Charts'/></SaveAs>
+	<bean references='SCAT'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Angular'>Angular</string></void>
+	<void><substring toBeCalled='NMEM' using='Angular 1 1'/></void>
+	<void><string toBeCalled='TIP'>Produce plot of from angular algorithms</string></void>
+	<SaveAs toBeCalled='ANG'><evaluate object='menus' method='addMenuItem' using='Angular Charts'/></SaveAs>
+	<bean references='ANG'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='Radial'>Radial</string></void>
+	<void><substring toBeCalled='NMEM' using='Radial 1 1'/></void>
+	<void><string toBeCalled='TIP'>Produce plot of from radial algorithms</string></void>
+	<SaveAs toBeCalled='RAD'><evaluate object='menus' method='addMenuItem' using='Radial Charts'/></SaveAs>
+	<bean references='RAD'><set ItemMnemonic='NMEM' HotKey='VKR' Modifiers='ALT' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<void><string toBeCalled='List'>List</string></void>
+	<void><substring toBeCalled='NMEM' using='List 1 1'/></void>
+	<void><string toBeCalled='TIP'>Show list of charts generated</string></void>
+	<SaveAs toBeCalled='LIST'><evaluate object='menus' method='addMenuItem' using='List Charts'/></SaveAs>
+	<bean references='LIST'><set ItemMnemonic='NMEM' Tip='TIP' ActionForItem='ACT'/></bean>
+
+	<Export using='menus' />
+
+</JXR>

@@ -4,7 +4,7 @@
 	<read path='cfg/runtime.xml'/>
 
 	<!-- import test classes -->
-	<package called='test'>net.myorb.gui.tests</package>
+	<package called='test'>net.myorb.test</package>
 
 	<!-- modifiers for HotKey KeyStroke objects -->
 	<saveas toBeCalled='ALT'><field named='ALT_MASK' class='ActionEvent'/></saveas>
@@ -13,7 +13,6 @@
 	<!-- key codes for HotKey KeyStroke objects -->
 	<saveas toBeCalled='VKT'><field named='VK_T' class='KeyEvent'/></saveas>
 	<saveas toBeCalled='VKW'><field named='VK_W' class='KeyEvent'/></saveas>
-	<saveas toBeCalled='VKX'><field named='VK_X' class='KeyEvent'/></saveas>
 	<saveas toBeCalled='VKZ'><field named='VK_Z' class='KeyEvent'/></saveas>
 
 	<!-- refer to action listener -->
@@ -36,11 +35,9 @@
  
 	<!-- add a menu to the main menu bar -->
 	<SaveAs toBeCalled='mainmenu'><evaluate object='menus' method='addMenu'><string>Main Menu</string></evaluate></SaveAs>
-	<SaveAs toBeCalled='altmenu'><evaluate object='menus' method='addMenu'><string>Alt Menu</string></evaluate></SaveAs>
-	<SaveAs toBeCalled='anomenu'><evaluate object='menus' method='addMenu'><string>Another Menu</string></evaluate></SaveAs>
 
 	<!-- construct menu item using parameter references -->
-	<void><string toBeCalled='FIRST'>First</string><string toBeCalled='TIP'>First Menu Item Tip</string></void>
+	<string toBeCalled='FIRST'>First</string><string toBeCalled='TIP'>First Menu Item Tip</string>
 	<SaveAs toBeCalled='first'><evaluate object='menus' method='addMenuItem' using='FIRST mainmenu'/></SaveAs>
 
 	<!-- construct menu item with explicit parameter references -->
@@ -49,30 +46,8 @@
 		</evaluate>
 	</SaveAs>
 
-	<void><string toBeCalled='THIRD'>Third</string></void>
-	<void><string toBeCalled='T2'>Next Menu Item Tip</string></void>
-	<SaveAs toBeCalled='third'><evaluate object='menus' method='addMenuItem'>
-			<string>Third</string><referto objectCalled='mainmenu'/>
-		</evaluate>
-	</SaveAs>
-
-	<SaveAs toBeCalled='fourth'><evaluate object='menus' method='addMenuItem'>
-			<string>Fourth</string><referto objectCalled='altmenu'/>
-		</evaluate>
-	</SaveAs>
-
-	<SaveAs toBeCalled='fifth'><evaluate object='menus' method='addMenuItem'>
-			<string>Fifth</string><referto objectCalled='anomenu'/>
-		</evaluate>
-	</SaveAs>
-
-	<!-- select mnemonic from computed offset -->
-	<void><substring toBeCalled='mnemonic' using='FIRST 3 1'/></void>
-	<void><substring toBeCalled='mnem2' using='THIRD 5 1'/></void>
-
 	<!-- set menu item properties treating menu item as bean -->
-	<bean references='first'><set ItemMnemonic='mnemonic' HotKey='VKZ' Modifiers='CTL' Tip='TIP' ActionForItem='ACT'/></bean>
-	<bean references='third'><set ItemMnemonic='mnem2' HotKey='VKX' Modifiers='CTL' Tip='T2' ActionForItem='ACT'/></bean>
+	<bean references='first'><set ItemMnemonic='FIRST' HotKey='VKZ' Modifiers='CTL' Tip='TIP' ActionForItem='ACT'/></bean>
 
 	<!-- set menu item field with direct call to menu item object -->
 	<call object='second' method='setToolTipText'><string>The Second of 2 Menu Items</string></call>
@@ -113,13 +88,7 @@
 		<evaluate object='menus' method='getMenuBar'/>
 	</call>
 
-	<!-- organize frames as vertical tiles -->
-	<call object='ctrlr' method='tileVertically'/>
-
 	<!-- show master frame -->
 	<call object='ctrlr' method='showMasterFrame'/>
-
-	<!-- return only selected items (internal frames and principle panels) -->
-	<Export using='masterFrame F1 F2 p1 p2' />
 
 </JXR>
