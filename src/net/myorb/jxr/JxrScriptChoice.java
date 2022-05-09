@@ -32,8 +32,7 @@ public class JxrScriptChoice
 	public static void popUp ()
 	{
 		new OptionPopup ();
-		if (preparation != null)
-		{ preparation.doSteps (); }
+		if (preparation != null) { preparation.doSteps (); }
 	}
 
 	static ArrayList<NameValuePair> scripts = new ArrayList<> ();
@@ -60,7 +59,7 @@ public class JxrScriptChoice
 		if (conclusion != null) { conclusion.doSteps (); }
 		return symbols;
 	}
-	static JxrPrimitives.SymbolTable globalSymbols = null;
+	public static JxrPrimitives.SymbolTable globalSymbols = null;
 
 	/**
 	 * @param path the script holding symbols to be made global
@@ -253,6 +252,7 @@ class OptionPopup extends SimplePopupRequest<NameValuePair>
 	 * @see net.myorb.gui.components.SimplePopupRequest#setSelectedItem(java.lang.Object)
 	 */
 	public void setSelectedItem (NameValuePair item)
-	{ JxrScriptChoice.runScript (item.getPath ()); }
+	{ results = JxrScriptChoice.runScript (item.getPath ()); }
+	JxrPrimitives.SymbolTable results;
 
 }

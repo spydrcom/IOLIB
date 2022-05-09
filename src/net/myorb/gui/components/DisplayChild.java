@@ -7,7 +7,7 @@ import javax.swing.JInternalFrame;
 
 /**
  * JInternalFrame extended as a DisplayContainer
- * @author Michael
+ * @author Michael Druckman
  */
 public class DisplayChild extends JInternalFrame
 	implements DisplayContainer
