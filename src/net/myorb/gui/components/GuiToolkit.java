@@ -8,8 +8,8 @@ import javax.swing.JDesktopPane;
 import javax.swing.SwingUtilities;
 import javax.swing.RootPaneContainer;
 import javax.swing.JInternalFrame;
-import javax.swing.JMenuBar;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuBar;
 import javax.swing.JFrame;
 
 import java.awt.Dialog.ModalityType;
@@ -133,12 +133,9 @@ public class GuiToolkit extends Alerts
     {
         invoke
         (
-        	new Runnable ()
-        	{
-        		public void run ()
-        		{
-        			asComponent (frame).setVisible (true);
-                }
+        	() ->
+       		{
+       			asComponent (frame).setVisible (true);
             }
         );
     }
@@ -531,13 +528,10 @@ public class GuiToolkit extends Alerts
     {
         invoke
         (
-        	new Runnable ()
+        	() ->
         	{
-        		public void run ()
-        		{
-        			c.setVisible (true);
-                }
-            }
+        		c.setVisible (true);
+        	}
         );
     }
 
