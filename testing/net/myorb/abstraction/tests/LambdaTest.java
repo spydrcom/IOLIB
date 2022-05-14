@@ -16,6 +16,16 @@ public class LambdaTest
         xxx ( (a, b) -> a * b );
         xxx ( addition );
         xxx ( imp () );
+        xxx
+        (
+        		(a, b) -> 
+        		{
+        			int x = 2*a - b;
+        			int aa = x * 2;
+        			int bb = x - 1;
+        			return aa - bb;
+        		}
+        );
     }
 
 	static IntegerMath imp ()
@@ -40,5 +50,7 @@ class Calculator
     public int operateBinary
     	(int a, int b, IntegerMath op)
     { return op.operation (a, b); }
+    public int sum (int l, int r)
+    { return operateBinary (l, r, (a,b) -> a+b); }
 }
 
