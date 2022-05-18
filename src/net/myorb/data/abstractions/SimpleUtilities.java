@@ -142,11 +142,7 @@ public class SimpleUtilities
 	 */
 	public static <T extends Comparable<T>> Comparator<T> getComparator ()
 	{
-		return new Comparator<T>()
-		{
-			public int compare (T left, T right)
-			{ return left.compareTo (right); }
-		};
+		return (l, r) -> l.compareTo (r);
 	}
 	
 	/**
@@ -249,23 +245,11 @@ public class SimpleUtilities
 	 */
 	public static <T extends Number> Comparator<T> getRealNumberComparator ()
 	{
-		return new Comparator<T>()
-		{
-			public int compare (T left, T right)
-			{
-				return compareRealNumbers (left, right);
-			}
-		};
+		return (l, r) -> compareRealNumbers (l, r);
 	}
 	public static <T extends Number> Comparator<T> getWholeNumberComparator ()
 	{
-		return new Comparator<T>()
-		{
-			public int compare (T left, T right)
-			{
-				return compareWholeNumbers (left, right);
-			}
-		};
+		return (l, r) -> compareWholeNumbers (l, r);
 	}
 	public static int compareRealNumbers (Number left, Number right)
 	{

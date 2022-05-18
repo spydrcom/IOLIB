@@ -94,15 +94,12 @@ public class NameTable extends BlockManager
 		sorted.addAll (nameRecords);
 		sorted.sort
 		(
-			new java.util.Comparator<NameRecord> ()
+			(l, r) ->
 			{
-				public int compare (NameRecord l, NameRecord r)
-				{
-					int lp, rp;
-					if ((lp=l.getPlatformId()) == (rp=r.getPlatformId()))
-					{ return l.getNameId() < r.getNameId() ? -1 : 1; }
-					else return lp < rp ? -1 : 1;
-				}
+				int lp, rp;
+				if ((lp=l.getPlatformId()) == (rp=r.getPlatformId()))
+				{ return l.getNameId() < r.getNameId() ? -1 : 1; }
+				else return lp < rp ? -1 : 1;
 			}
 		);
 		return sorted;

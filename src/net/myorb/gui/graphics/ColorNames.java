@@ -3,7 +3,6 @@ package net.myorb.gui.graphics;
 
 import net.myorb.gui.components.SimpleScreenIO;
 
-import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Color;
@@ -216,13 +215,7 @@ public class ColorNames extends SimpleScreenIO
 		ColorList list = unsorted ();
 		list.sort
 		(
-			new Comparator <String> ()
-			{
-				public int compare (String left, String right)
-				{
-					return (MAP.get (left).getRGB () & RGB_MASK) < (MAP.get (right).getRGB () & RGB_MASK) ? -1 : 1;
-				}
-			}
+			(l, r) -> (MAP.get (l).getRGB () & RGB_MASK) < (MAP.get (r).getRGB () & RGB_MASK) ? -1 : 1
 		);
 		return list;
 	}
