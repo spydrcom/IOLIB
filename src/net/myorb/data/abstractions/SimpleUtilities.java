@@ -1,6 +1,8 @@
 
 package net.myorb.data.abstractions;
 
+import net.myorb.utilities.Ordering;
+
 import java.util.Comparator;
 import java.util.Collection;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.Map;
  * simple methods for common needs
  * @author Michael Druckman
  */
-public class SimpleUtilities
+public class SimpleUtilities extends Ordering
 {
 
 
@@ -97,9 +99,9 @@ public class SimpleUtilities
 	/**
 	 * provide map from key to list of element
 	 * @param <Key> the type of keys in the map
-	 * @param <Element> the element type
+	 * @param <T> the element type
 	 */
-	public static class MapToList <Key, Element> extends HashMap <Key, List <Element>>
+	public static class MapToList <Key, T> extends HashMap <Key, List <T>>
 	{
 
 		/**
@@ -107,11 +109,11 @@ public class SimpleUtilities
 		 * @param k the value of the key
 		 * @param e the element to add
 		 */
-		public void add (Key k, Element e)
+		public void add (Key k, T e)
 		{
-			List<Element> l;
+			List<T> l;
 			if (containsKey (k)) l = get (k);
-			else put (k, l = new ArrayList<Element>());
+			else put (k, l = new ArrayList<T>());
 			l.add (e);
 		}
 
@@ -134,58 +136,6 @@ public class SimpleUtilities
 		}
 
 		private static final long serialVersionUID = -4633804835986601445L;
-	}
-
-	/**
-	 * @param <T> the Comparable type being to be treated as Comparator
-	 * @return a Comparator that works using the Comparable implementation of a generic type
-	 */
-	public static <T extends Comparable<T>> Comparator<T> getComparator ()
-	{
-		return (l, r) -> l.compareTo (r);
-	}
-	
-	/**
-	 * @param <T> the Comparable type being sorted
-	 * @param list a list of Comparable items to be sorted
-	 * @return same list having been sorted
-	 */
-	public static <T extends Comparable<T>> List<T> sort (List<T> list)
-	{
-		list.sort (getComparator ());
-		return list;
-	}
-
-	/**
-	 * @param <T> the Comparable type being sorted
-	 * @param list the source list of values
-	 * @return a sorted copy of the list
-	 */
-	public static <T extends Comparable<T>> List<T> sortedCopy (List<T> list)
-	{
-		List<T> temp = new ArrayList<T>();
-		temp.addAll (list); List<T> sorted = sort (temp);
-		return sorted;
-	}
-
-	/**
-	 * @param <T> the Comparable type being evaluated
-	 * @param list a list of Comparable values
-	 * @return the largest in the list
-	 */
-	public static <T extends Comparable<T>> T max (List<T> list)
-	{
-		return sortedCopy (list).get (list.size () - 1);
-	}
-
-	/**
-	 * @param <T> the Comparable type being evaluated
-	 * @param list a list of Comparable values
-	 * @return the smallest in the list
-	 */
-	public static <T extends Comparable<T>> T min (List<T> list)
-	{
-		return sortedCopy (list).get (0);
 	}
 
 	/**
@@ -273,51 +223,51 @@ public class SimpleUtilities
 
 	/**
 	 * list items of collection
-	 * @param <Element> the type of items being added to list
+	 * @param <T> the type of items being added to list
 	 * @param items the collection of items
 	 * @return a list of the items
 	 */
-	public static <Element> List<Element> unordered (Collection<Element> items)
+	public static <T> List<T> unordered (Collection<T> items)
 	{
-		List<Element> into = new ArrayList<Element>();
+		List<T> into = new ArrayList<T>();
 		addUnordered (items, into);
 		return into;
 	}
 
 	/**
-	 * @param <Element> the Comparable type being sorted
+	 * @param <T> the Comparable type being sorted
 	 * @param items a Collection of items to be sorted into a list
 	 * @return the sorted list
 	 */
 	public static
-		<Element extends Comparable<Element>> List<Element>
-		ordered (Collection<Element> items)
+		<T extends Comparable<T>> List<T>
+		ordered (Collection<T> items)
 	{
 		return sort (unordered (items));
 	}
 
 	/**
 	 * @param <Key> the Comparable type being sorted
-	 * @param <Element> the type of values found in the map
+	 * @param <T> the type of values found in the map
 	 * @param map a map containing comparable keys to be ordered
 	 * @return a list of the keys naturally ordered
 	 */
 	public static
-		<Key extends Comparable<Key>,Element> List<Key>
-		orderedKeys (Map<Key,Element> map)
+		<Key extends Comparable<Key>,T> List<Key>
+		orderedKeys (Map<Key,T> map)
 	{
 		return ordered (map.keySet ());
 	}
 
 	/**
 	 * @param <Key> the Key type used in the map
-	 * @param <Element> the Comparable type being ordered
+	 * @param <T> the Comparable type being ordered
 	 * @param map a map containing comparable values to be sorted
 	 * @return a list of the values naturally ordered
 	 */
 	public static
-		<Element extends Comparable<Element>,Key> List<Element>
-		orderedValues (Map<Key,Element> map)
+		<T extends Comparable<T>,Key> List<T>
+		orderedValues (Map<Key,T> map)
 	{
 		return ordered (map.values ());
 	}
