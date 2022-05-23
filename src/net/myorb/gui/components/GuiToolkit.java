@@ -81,7 +81,11 @@ public class GuiToolkit extends Alerts
 	 */
 	public static void setMenuBar (JMenuBar menuBar)
 	{ if (desktopControl != null) desktopControl.setMenuBar (menuBar); }
-	public static JDesktopPane getDesktop () { return desktopControl.getDesktop (); }
+	public static JDesktopPane getDesktop ()
+	{
+		if (desktopControl == null) return null;
+		return desktopControl.getDesktop ();
+	}
 
 	/**
 	 * @param title text for title of display object

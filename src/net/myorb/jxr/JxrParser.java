@@ -114,9 +114,22 @@ public class JxrParser extends JxrProcessingState
 		(
 			read
 			(
-				attributes.get ("path"), parameters
+				getSourcePath (), parameters
 			)
 		);
+	}
+
+	/**
+	 * identify the path to the source
+	 * @return the path to the source as identified
+	 * @throws RuntimeException when path not found
+	 */
+	public String getSourcePath () throws RuntimeException
+	{
+		if (attributes.containsKey ("indirect"))
+		{ return symbols.get (attributes.get ("indirect")).toString (); }
+		if (attributes.containsKey ("path")) { return attributes.get ("path"); }
+		throw new RuntimeException ("No source identified");
 	}
 
 
