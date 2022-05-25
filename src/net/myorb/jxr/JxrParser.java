@@ -126,11 +126,12 @@ public class JxrParser extends JxrProcessingState
 	 */
 	public String getSourcePath () throws RuntimeException
 	{
-		if (attributes.containsKey ("indirect"))
-		{ return symbols.get (attributes.get ("indirect")).toString (); }
-		if (attributes.containsKey ("path")) { return attributes.get ("path"); }
+		if (attributes.containsKey (INDIRECT))
+		{ return symbols.get (attributes.get (INDIRECT)).toString (); }
+		if (attributes.containsKey (PATH)) { return attributes.get (PATH); }
 		throw new RuntimeException ("No source identified");
 	}
+	static final String PATH = "path", INDIRECT = "indirect";
 
 
 	/**
