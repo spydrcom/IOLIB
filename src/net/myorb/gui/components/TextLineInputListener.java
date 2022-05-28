@@ -36,6 +36,14 @@ public class TextLineInputListener
 		else { line = line + c; }
 	}
 
+	/**
+	 * @param text data to be appended to line
+	 */
+	public void append (String text)
+	{
+		line = line + text;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */

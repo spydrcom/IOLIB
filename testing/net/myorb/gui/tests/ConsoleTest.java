@@ -1,12 +1,13 @@
 
 package net.myorb.gui.tests;
 
-import net.myorb.gui.components.SimpleScreenIO;
 import net.myorb.gui.components.TextLineInputListener;
+import net.myorb.gui.components.DisplayContainer;
+import net.myorb.gui.components.SimpleScreenIO;
+import net.myorb.gui.components.GuiToolkit;
 import net.myorb.gui.components.Console;
 
 import javax.swing.JTextArea;
-
 import java.awt.Color;
 
 public class ConsoleTest extends Console
@@ -50,13 +51,12 @@ public class ConsoleTest extends Console
 		ConsoleTest console = new ConsoleTest
 		(
 			Color.WHITE,
-			300, 300,
-			130
+			700, 700,
+			60
 		);
-		console.show
-		(
-			"console", 300, 300
-		);
+		DisplayContainer f =
+			console.show ("CALCLIB", 700, 700).getSwingComponent ();
+		GuiToolkit.setIcon (f, GuiToolkit.getIcon ("images/CalcTools.gif"));
 	}
 
 	public ConsoleTest
