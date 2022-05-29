@@ -117,6 +117,11 @@ public class MenuManager
 		m.setText (name);
 		return m;
 	}
+
+	/**
+	 * @param items the items of the menu
+	 * @return the popup to use as a mouse listener
+	 */
 	public static MouseListener getMenu (JMenu[] items)
 	{
 		PopupAdapter p = new PopupAdapter ();

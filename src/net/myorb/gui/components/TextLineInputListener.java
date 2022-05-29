@@ -32,24 +32,24 @@ public class TextLineInputListener
 	{
 		char c;
 		if ((c = e.getKeyChar ()) == '\n')
-		{ processor.process (line); line = ""; }
-		else { line = line + c; }
+		{
+			processor.process (line.toString ());
+			line.setLength (0);;
+		}
+		else { line.append (c); }
 	}
 
 	/**
 	 * @param text data to be appended to line
 	 */
-	public void append (String text)
-	{
-		line = line + text;
-	}
+	public void append (String text) { line.append (text); }
+	protected StringBuffer line = new StringBuffer ();
 
 	/* (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	public void keyPressed (KeyEvent e) {}
 	public void keyReleased (KeyEvent e) {}
-	protected String line = "";
 
 	public TextLineInputListener
 	(TextLineProcessor processor)
