@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * exception processing in severity layers
- * @author Michael
+ * @author Michael Druckman
  */
 public class ErrorHandling
 {
