@@ -36,13 +36,13 @@ public class TcpServer
 
 }
 
-class Processor implements ServerConventions.Processor
+class Processor implements ServerConventions.RawTextProcessor
 {
 
 	@Override
 	public String process(String request) {
 		System.out.println (request);
-		return "responding to: " + request;
+		return "OK, size=" + request.length();
 	}
 	
 }

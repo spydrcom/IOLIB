@@ -31,6 +31,16 @@ public class ServerTcpIO
 		String read () throws ServerAccess.ServerError;
 
 		/**
+		 * @return a reader for the socket input stream
+		 */
+		InputStreamReader getStreamReader ();
+
+		/**
+		 * @return input stream from socket
+		 */
+		InputStream getStream ();
+
+		/**
 		 * @param content write content to connection
 		 */
 		void write (String content);
@@ -126,19 +136,43 @@ class ConnectionInstance implements ServerTcpIO.Connection
 	{
 		try
 		{
-			in = new BufferedReader
-			   	(
-			   		new InputStreamReader (clientSocket.getInputStream ())
-			   	);
-			out = new PrintWriter (clientSocket.getOutputStream (), true);
+			// input stream objects
+			streamIn = clientSocket.getInputStream ();
+			streamReader = new InputStreamReader (streamIn);
+			in = new BufferedReader (streamReader);
+
+			// output stream objects
+			streamOut = clientSocket.getOutputStream ();
+			out = new PrintWriter (streamOut, true);
 		}
 		catch (Exception e)
 		{
 			ServerTcpIO.error ("Socket connection creation error", e);
 		}
 	}
+	protected InputStream streamIn;
+	protected OutputStream streamOut;
+	protected InputStreamReader streamReader;
 	protected BufferedReader in;
 	protected PrintWriter out;
+
+
+	/* (non-Javadoc)
+	 * @see net.myorb.data.abstractions.ServerTcpIO.Connection#getStream()
+	 */
+	public InputStream getStream ()
+	{
+		return streamIn;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see net.myorb.data.abstractions.ServerTcpIO.Connection#getStreamReader()
+	 */
+	public InputStreamReader getStreamReader ()
+	{
+		return streamReader;
+	}
 
 
 	/* (non-Javadoc)
