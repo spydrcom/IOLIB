@@ -7,7 +7,16 @@ import net.myorb.data.abstractions.SimpleStreamIO.TextSource;
 import net.myorb.data.notations.json.JsonSemantics;
 import net.myorb.data.notations.json.JsonReader;
 
-import org.w3c.dom.Document;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.parsers.SAXParser;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.SAXException;
+
+import java.io.StringReader;
+import java.io.Reader;
 
 /**
  * establish conventions for simple socket server 
@@ -54,16 +63,20 @@ public class ServerConventions implements Runnable
 	}
 
 	/**
+	 * provide access to a SAX parser handler
+	 */
+	public interface SaxProcessor extends Processor
+	{
+		DefaultHandler getHandler ();
+		String getResponse ();
+	}
+
+	/**
 	 * processor for XML requests
 	 */
 	public interface XmlProcessor extends Processor
 	{
-		/**
-		 * provide simple processing for DOM transaction
-		 * @param document a DOM object of XML nodes
-		 * @return text response to request
-		 */
-		String process (Document document);
+		SaxProcessor getSaxProcessor ();
 	}
 
 	// types of request processors [end of list]
@@ -160,7 +173,7 @@ public class ServerConventions implements Runnable
 	 */
 	public String processJson (String request) throws Exception
 	{
-		TextSource source = new TextSource (new java.io.StringReader (request));
+		TextSource source = new TextSource (readerFor (request));
 		return ((JsonProcessor) processor).process (JsonReader.readFrom (source));
 	}
 
@@ -173,8 +186,27 @@ public class ServerConventions implements Runnable
 	 */
 	public String processXml (String request) throws Exception
 	{
-		throw new RuntimeException ("Processor not implemented");
+		SaxProcessor sax =
+			((XmlProcessor) processor).getSaxProcessor ();
+		parse (readerFor (request), sax);
+		return sax.getResponse ();
 	}
+
+	public void parse (Reader source, SaxProcessor processor) throws Exception
+	{ getSAXParser ().parse (new InputSource (source), processor.getHandler ()); }
+
+	static final SAXParserFactory PARSER_FACTORY = SAXParserFactory.newInstance ();
+	public static SAXParser getSAXParser () throws ParserConfigurationException, SAXException
+	{ return PARSER_FACTORY.newSAXParser (); }
+
+
+	/**
+	 * provider a Reader for text source
+	 * @param text string source for reader
+	 * @return a Reader object
+	 */
+	public static Reader readerFor (String text)
+	{ return new StringReader (text); }
 
 
 }
