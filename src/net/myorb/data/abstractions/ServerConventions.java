@@ -61,7 +61,7 @@ public class ServerConventions implements Runnable
 		 * @param request JSON request for transaction
 		 * @return text response to request
 		 */
-		String process (JsonSemantics.JsonValue value);
+		String process (JsonSemantics.JsonValue request);
 	}
 
 	/**
@@ -141,6 +141,19 @@ public class ServerConventions implements Runnable
 	}
 
 
+	/**
+	 * execute a server loop (in current thread)
+	 * @param port the port number to be provided to socket server
+	 * @param processor an implementation of text transaction conventions
+	 * @param terminator the text of the request that will terminate the service
+	 */
+	public static void runService
+	(int port, Processor processor, String terminator)
+	{
+		new ServerConventions (port, processor, terminator).process ();
+	}
+
+
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
@@ -156,7 +169,7 @@ public class ServerConventions implements Runnable
 	public void process ()
 	{
 		try { do { process (server.accept ()); } while (true); }
-		finally { server.close (); }
+		catch (Exception e) {} finally { server.close (); }
 	}
 
 

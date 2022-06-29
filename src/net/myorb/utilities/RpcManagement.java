@@ -21,6 +21,19 @@ public class RpcManagement
 	serviceManagers = new HashMap<String, ServerConventions.Processor>();
 
 	/**
+	 * search service table for processor
+	 * @param name the name given to the service
+	 * @return the Processor object configured as the service handler
+	 * @throws ErrorHandling.Notification for lookup failure
+	 */
+	public static ServerConventions.Processor lookupProcessor (String name)
+	{
+		ServerConventions.Processor p = serviceManagers.get (name);
+		if (p == null) { throw new ErrorHandling.Notification ("No such service called " + name); }
+		return p;
+	}
+
+	/**
 	 * add to the services table
 	 * @param name the name to give to the service
 	 * @param path the path to a Processor object for the service
@@ -39,10 +52,10 @@ public class RpcManagement
 	 */
 	public static Object startService (String name, String port)
 	{
-		ServerConventions.Processor p = serviceManagers.get (name);
-		if (p == null) { throw new ErrorHandling.Notification ("No such service called " + name); }
-		ServerConventions.provideService (Integer.parseInt (port), p, "\f");
-		return p;
+		ServerConventions.Processor processor = lookupProcessor (name);
+		ServerConventions.provideService (Integer.parseInt (port), processor, "\f");
+		return processor;
 	}
 
 }
+

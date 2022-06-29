@@ -84,7 +84,7 @@ public class ServerTcpIO
 	/**
 	 * accept a socket connection from the ServerSocket object
 	 * @return an Implementation of Connection interface
-	 * @throws ServerAccess.ServerError
+	 * @throws ServerAccess.ServerError for errors
 	 */
 	public Connection accept () throws ServerAccess.ServerError
 	{
