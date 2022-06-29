@@ -100,6 +100,23 @@ public class ServerTcpIO
 	}
 
 
+	/**
+	 * terminate the server socket processing
+	 * @throws ServerAccess.ServerError for error during close
+	 */
+	public void close () throws ServerAccess.ServerError
+	{
+		try
+		{
+			serverSocket.close ();
+		}
+		catch (Exception e)
+		{
+			error ("Server close error", e);
+		}
+	}
+
+
 }
 
 

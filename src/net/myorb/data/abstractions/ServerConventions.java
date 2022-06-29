@@ -1,6 +1,7 @@
 
 package net.myorb.data.abstractions;
 
+import net.myorb.data.abstractions.ErrorHandling;
 import net.myorb.data.abstractions.ServerConventions;
 import net.myorb.data.abstractions.SimpleStreamIO.TextSource;
 
@@ -11,9 +12,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
-import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.InputSource;
 
 import java.io.StringReader;
 import java.io.Reader;
@@ -45,8 +46,9 @@ public class ServerConventions implements Runnable
 		 * provide simple processing for text transaction
 		 * @param request text request for transaction
 		 * @return text response to request
+		 * @throws Exception for errors
 		 */
-		String process (String request);
+		String process (String request) throws Exception;
 	}
 
 	/**
@@ -79,6 +81,11 @@ public class ServerConventions implements Runnable
 		SaxProcessor getSaxProcessor ();
 	}
 
+	/**
+	 * special case for recognized processors
+	 */
+	public interface RpcHandler extends RawTextProcessor {}
+
 	// types of request processors [end of list]
 
 
@@ -89,13 +96,26 @@ public class ServerConventions implements Runnable
 	 */
 	public ServerConventions (int port, Processor processor, String terminator)
 	{
-		server = new ServerTcpIO (port);
+		this.identify (processor);
+		this.server = new ServerTcpIO (port);
 		this.terminator = terminator;
-		this.processor = processor;
 	}
-	protected Processor processor;
 	protected ServerTcpIO server;
 	protected String terminator;
+
+
+	/**
+	 * produce a handler given type of processor
+	 * @param processor the processor object to be used
+	 */
+	public void identify (Processor processor)
+	{
+		if (processor instanceof RawTextProcessor) handler = new TextHandler (processor);
+		else if (processor instanceof JsonProcessor) handler = new JsonHandler (processor);
+		else if (processor instanceof XmlProcessor) handler = new XmlHandler (processor);
+		else throw new ServerAccess.ServerError ("Processor not recognized");
+	}
+	protected RpcHandler handler;
 
 
 	/**
@@ -107,10 +127,17 @@ public class ServerConventions implements Runnable
 	public static void provideService
 	(int port, Processor processor, String terminator)
 	{
-		new Thread
-		(
-			new ServerConventions (port, processor, terminator)
-		).run ();
+		try
+		{
+			new Thread
+			(
+				new ServerConventions (port, processor, terminator)
+			).run ();
+		}
+		catch (Exception e)
+		{
+			System.out.println ("Service on port " + port + " terminating, " + e.getMessage ());
+		}
 	}
 
 
@@ -128,42 +155,65 @@ public class ServerConventions implements Runnable
 	 */
 	public void process ()
 	{
-		try 
-		{
-			do {
-				process (server.accept ());
-			} while (true);
-		}
-		catch (Exception e) {}
+		try { do { process (server.accept ()); } while (true); }
+		finally { server.close (); }
 	}
 
 
 	/**
+	 * process an accepted connection
 	 * @param c a connection to be processed
 	 */
 	public void process (ServerTcpIO.Connection c)
 	{
 		try
 		{
-			String request, response;
-
+			String request;
 			if ((request = c.read ()).equals (terminator))
 			{
 				c.write ("Termination request seen, server exit");
-				throw new RuntimeException ("Termination request seen");
-			}
-
-			if (processor instanceof RawTextProcessor)
-			{ response = ((RawTextProcessor) processor).process (request); }
-			else if (processor instanceof XmlProcessor) response = processXml (request);
-			else if (processor instanceof JsonProcessor) response = processJson (request);
-			else throw new RuntimeException ("Processor not recognized");
-			c.write (response);
+				throw new ErrorHandling.Notification (">>> Termination request seen");
+			} else { c.write (handler.process (request)); }
 		}
+		catch (ErrorHandling.Messages m) { throw m; }
 		catch (Exception e) { ServerTcpIO.error ("Processor error", e); }
 		finally { c.close (); }
 	}
 
+
+}
+
+
+/**
+ * Handler object wrapping RAW-TEXT processor objects
+ */
+class TextHandler implements ServerConventions.RpcHandler
+{
+
+	protected TextHandler (ServerConventions.Processor processor)
+	{ this.processor = (ServerConventions.RawTextProcessor) processor; }
+	protected ServerConventions.RawTextProcessor processor;
+
+	/* (non-Javadoc)
+	 * @see net.myorb.data.abstractions.ServerConventions.RawTextProcessor#process(java.lang.String)
+	 */
+	public String process (String request) throws Exception
+	{
+		return processor.process (request);
+	}
+
+}
+
+
+/**
+* Handler object wrapping JSON processor objects
+*/
+class JsonHandler implements ServerConventions.RpcHandler
+{
+
+	protected JsonHandler (ServerConventions.Processor processor)
+	{ this.processor = (ServerConventions.JsonProcessor) processor; }
+	protected ServerConventions.JsonProcessor processor;
 
 	/**
 	 * process a JSON request packet
@@ -171,12 +221,36 @@ public class ServerConventions implements Runnable
 	 * @return the response generated by the JSON processor
 	 * @throws Exception for JSON parser errors
 	 */
-	public String processJson (String request) throws Exception
+	public String process (String request) throws Exception
 	{
-		TextSource source = new TextSource (readerFor (request));
-		return ((JsonProcessor) processor).process (JsonReader.readFrom (source));
+		return process (new TextSource (new StringReader (request)));
 	}
+	public String process (TextSource source) throws Exception
+	{ return processor.process (JsonReader.readFrom (source)); }
 
+}
+
+
+/**
+* Handler object wrapping XML processor objects
+*/
+class XmlHandler implements ServerConventions.RpcHandler
+{
+
+	protected XmlHandler (ServerConventions.Processor processor)
+	{ this.prepareSaxParser ((ServerConventions.XmlProcessor) processor); }
+
+	/**
+	 * get SAX object from XML processor object
+	 * @param processor the recognized XmlProcessor
+	 */
+	public void prepareSaxParser (ServerConventions.XmlProcessor processor)
+	{
+		this.saxProcessingManager = processor.getSaxProcessor ();
+		this.saxHandler = saxProcessingManager.getHandler ();
+	}
+	protected ServerConventions.SaxProcessor saxProcessingManager;
+	protected DefaultHandler saxHandler;
 
 	/**
 	 * process an XML request packet
@@ -184,30 +258,28 @@ public class ServerConventions implements Runnable
 	 * @return the response generated by the XML processor
 	 * @throws Exception for XML parser errors
 	 */
-	public String processXml (String request) throws Exception
+	public String process (String request) throws Exception
 	{
-		SaxProcessor sax =
-			((XmlProcessor) processor).getSaxProcessor ();
-		parse (readerFor (request), sax);
-		return sax.getResponse ();
+		parse (new StringReader (request));
+		return saxProcessingManager.getResponse ();
 	}
 
-	public void parse (Reader source, SaxProcessor processor) throws Exception
-	{ getSAXParser ().parse (new InputSource (source), processor.getHandler ()); }
-
-	static final SAXParserFactory PARSER_FACTORY = SAXParserFactory.newInstance ();
-	public static SAXParser getSAXParser () throws ParserConfigurationException, SAXException
-	{ return PARSER_FACTORY.newSAXParser (); }
-
+	/**
+	 * @param source a Reader used to feed the parser
+	 * @param processor the SAX processor object supplied in construction
+	 * @throws Exception for errors
+	 */
+	public void parse (Reader source) throws Exception
+	{ getSAXParser ().parse (new InputSource (source), saxHandler); }
 
 	/**
-	 * provider a Reader for text source
-	 * @param text string source for reader
-	 * @return a Reader object
+	 * @return instance of SAX parser
+	 * @throws ParserConfigurationException configuration errors
+	 * @throws SAXException errors in SAX parser
 	 */
-	public static Reader readerFor (String text)
-	{ return new StringReader (text); }
-
+	public static SAXParser getSAXParser ()
+	throws ParserConfigurationException, SAXException { return PARSER_FACTORY.newSAXParser (); }
+	static final SAXParserFactory PARSER_FACTORY = SAXParserFactory.newInstance ();
 
 }
 

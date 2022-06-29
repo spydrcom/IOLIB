@@ -4,6 +4,9 @@ package net.myorb.abstraction.tests;
 import net.myorb.data.abstractions.ServerConventions;
 import net.myorb.data.abstractions.ServerTcpIO;
 
+/**
+ * test class for Raw Text RPC service
+ */
 public class TcpServer
 {
 
@@ -39,7 +42,9 @@ public class TcpServer
 class Processor implements ServerConventions.RawTextProcessor
 {
 
-	@Override
+	/* (non-Javadoc)
+	 * @see net.myorb.data.abstractions.ServerConventions.RawTextProcessor#process(java.lang.String)
+	 */
 	public String process(String request) {
 		System.out.println (request);
 		return "OK, size=" + request.length();

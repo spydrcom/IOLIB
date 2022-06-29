@@ -5,6 +5,9 @@ import net.myorb.data.abstractions.ServerConventions;
 import net.myorb.data.notations.json.JsonLowLevel.JsonValue;
 import net.myorb.data.notations.json.JsonPrettyPrinter;
 
+/**
+ * test class for JSON RPC service
+ */
 public class TcpServerJson
 {
 
