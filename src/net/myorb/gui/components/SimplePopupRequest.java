@@ -121,7 +121,7 @@ public abstract class SimplePopupRequest<T> extends SimpleScreenIO
 		{
 			super.acceptSelection (selected);				// fill field with selection name
 			setSelectedItem (selectedItem = selected);		// selection sent to implementation
-			new Thread (this).start ();						// response to user
+			SimpleScreenIO.startBackgroundTask (this);		// response to user
 		}
 
 		private static final long serialVersionUID = -1699560219197981734L;

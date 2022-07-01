@@ -15,7 +15,7 @@ public class TcpServerJson
 	{
 		System.out.println ("test starts");
 		ServerConventions.provideService (8081, new JsonProcessor (), "\f");
-		System.out.println ("test ends");
+		System.out.println ("server running");
 	}
 
 }

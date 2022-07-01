@@ -4,6 +4,7 @@ package net.myorb.gui.components;
 import net.myorb.data.abstractions.BinaryStateMonitor;
 import net.myorb.data.abstractions.SimpleUtilities;
 import net.myorb.data.abstractions.Status;
+import net.myorb.gui.BackgroundTask;
 
 import javax.swing.SwingUtilities;
 import javax.swing.ImageIcon;
@@ -1103,6 +1104,24 @@ public class SimpleScreenIO
 	public static class CallbackWithDefaultHandler
 		extends SimpleCallback.DefaultForUnexpectedError
 	{}
+
+
+	/*
+	 * wrap time consuming tasks in SwingWorker control objects
+	 * - this prevents screen functionality from time starvation
+	 */
+
+	/**
+	 * start a task in the background using a SwingWorker
+	 * @param task a Runnable object wrapping the task to be run
+	 * @return the SwingWorker for the new task
+	 */
+	public static BackgroundTask startBackgroundTask (Runnable task)
+	{
+		BackgroundTask BG = new BackgroundTask (task);
+		BG.startTask ();
+		return BG;
+	}
 
 
 }

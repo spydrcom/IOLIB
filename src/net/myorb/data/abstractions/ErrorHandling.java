@@ -85,6 +85,14 @@ public class ErrorHandling
 	}
 
 	/**
+	 * @param exception the exception to be reported
+	 */
+	public static void unexpected (Exception exception)
+	{
+		throw new Terminator ("Unexpected Excepton: " + exception.getMessage (), exception);
+	}
+
+	/**
 	 * re-throw an exception when a Terminator is found
 	 * @param e an exception to be verified as a Terminator
 	 * @throws Terminator when Terminator is found

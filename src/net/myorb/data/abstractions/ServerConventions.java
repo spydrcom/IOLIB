@@ -99,9 +99,11 @@ public class ServerConventions implements Runnable
 		this.identify (processor);
 		this.server = new ServerTcpIO (port);
 		this.terminator = terminator;
+		this.port = port;
 	}
 	protected ServerTcpIO server;
 	protected String terminator;
+	protected int port;
 
 
 	/**
@@ -127,17 +129,9 @@ public class ServerConventions implements Runnable
 	public static void provideService
 	(int port, Processor processor, String terminator)
 	{
-		try
-		{
-			new Thread
-			(
-				new ServerConventions (port, processor, terminator)
-			).run ();
-		}
-		catch (Exception e)
-		{
-			System.out.println ("Service on port " + port + " terminating, " + e.getMessage ());
-		}
+		new Thread
+		(new ServerConventions (port, processor, terminator))
+		.start ();
 	}
 
 
@@ -159,9 +153,49 @@ public class ServerConventions implements Runnable
 	 */
 	public void run ()
 	{
-		process ();
+		try
+		{ process (); }
+		catch (Exception e)
+		{ showStateChange (e.getMessage ()); }
 	}
-	
+
+
+	/**
+	 * format message to System.err
+	 * @param message a message for description of the reason
+	 */
+	public void showStateChange (String message) { System.err.println (terminating (message)); }
+
+
+	/**
+	 * @param message a message for description of the reason
+	 * @return a formatted status message
+	 */
+	public String terminating (String message) { return stateChange ("terminating") + ", " + message; }
+
+
+	/**
+	 * @param state the new state of the service
+	 * @return a formatted status message
+	 */
+	public String stateChange (String state) { return identify () + " " + state; }
+
+
+	/**
+	 * @return a formatted identity message
+	 */
+	public String identify ()
+	{
+		return "Service (" + name + ") on port " + port;
+	}
+
+
+	/**
+	 * @param name a name for the service
+	 */
+	public void setName (String name) { this.name = name; }
+	protected String name = "ANONYMOUS";
+
 
 	/**
 	 * infinite loop of accept on socket
@@ -169,28 +203,30 @@ public class ServerConventions implements Runnable
 	public void process ()
 	{
 		try { do { process (server.accept ()); } while (true); }
-		catch (Exception e) {} finally { server.close (); }
+		catch (ErrorHandling.Messages identifiedMessage) { throw identifiedMessage; }
+		catch (Exception e) { ErrorHandling.unexpected (e); }
+		finally { server.close (); }
 	}
 
 
 	/**
 	 * process an accepted connection
-	 * @param c a connection to be processed
+	 * @param connection a connection to be processed
 	 */
-	public void process (ServerTcpIO.Connection c)
+	public void process (ServerTcpIO.Connection connection)
 	{
 		try
 		{
 			String request;
-			if ((request = c.read ()).equals (terminator))
+			if ((request = connection.read ()).equals (terminator))
 			{
-				c.write ("Termination request seen, server exit");
+				connection.write ("Termination request seen, server exit");
 				throw new ErrorHandling.Notification (">>> Termination request seen");
-			} else { c.write (handler.process (request)); }
+			} else { connection.write (handler.process (request)); }
 		}
-		catch (ErrorHandling.Messages m) { throw m; }
-		catch (Exception e) { ServerTcpIO.error ("Processor error", e); }
-		finally { c.close (); }
+		catch (ErrorHandling.Messages identifiedMessage) { throw identifiedMessage; }
+		catch (Exception e) { ErrorHandling.unexpected (e); }
+		finally { connection.close (); }
 	}
 
 
