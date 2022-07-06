@@ -37,7 +37,6 @@ public class XmlInterpreter
 
 	/**
 	 * @param source a Reader used to feed the parser
-	 * @param processor the SAX processor object supplied in construction
 	 * @throws Exception for errors
 	 */
 	public void parse (Reader source) throws Exception
