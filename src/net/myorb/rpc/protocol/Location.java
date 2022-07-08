@@ -1,6 +1,10 @@
 
 package net.myorb.rpc.protocol;
 
+/**
+ * request port assignment given a named service
+ * @author Michael Druckman
+ */
 public interface Location
 {
 	/**
