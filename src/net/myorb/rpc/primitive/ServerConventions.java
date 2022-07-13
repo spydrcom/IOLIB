@@ -8,6 +8,8 @@ import net.myorb.data.abstractions.ErrorHandling;
 
 import net.myorb.data.notations.json.JsonSemantics;
 
+import java.util.HashMap;
+
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -27,6 +29,12 @@ public class ServerConventions implements Runnable
 	 * implementer of just base interface will generate exception.
 	 */
 	public interface Processor {}
+
+	/**
+	 * the table of available service processors
+	 */
+	public static class ServicesTable extends HashMap <String, Processor>
+	{ private static final long serialVersionUID = 857456473159181587L; }
 
 	/**
 	 * processor for simple text requests
@@ -125,6 +133,13 @@ public class ServerConventions implements Runnable
 		.start ();
 	}
 
+	/**
+	 * a named service rather than anonymous
+	 * @param called the name used for the service
+	 * @param onPort the port number to be provided to socket server
+	 * @param using an implementation of text transaction conventions
+	 * @param terminator the text of the request that will terminate the service
+	 */
 	public static void provideService
 	(String called, int onPort, Processor using, String terminator)
 	{

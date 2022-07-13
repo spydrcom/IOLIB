@@ -5,9 +5,6 @@ import net.myorb.rpc.primitive.ServerConventions;
 
 import net.myorb.data.abstractions.ErrorHandling;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * provide RPC service management
  * @author Michael Druckman
@@ -18,8 +15,8 @@ public class RpcManagement
 	/**
 	 * table of installed service processors
 	 */
-	public static final Map<String, ServerConventions.Processor>
-	serviceManagers = new HashMap<String, ServerConventions.Processor>();
+	public static final ServerConventions.ServicesTable
+	serviceManagers = new ServerConventions.ServicesTable ();
 
 	/**
 	 * search service table for processor
@@ -74,7 +71,7 @@ public class RpcManagement
 	 */
 	public static void identifyRegistrar (String registrarPath)
 	{ identifiedRegistrarPath = registrarPath; }
-	static String identifiedRegistrarPath;
+	static String identifiedRegistrarPath = null;
 
 	/**
 	 * check status of Registrar object
@@ -84,7 +81,11 @@ public class RpcManagement
 	public static Registration verifyRegistrar ()
 	{
 		if (registrar == null)
-		{ forceRegistrarConstruction (); }
+		{
+			if (identifiedRegistrarPath == null)
+			{ throw new ErrorHandling.Terminator (BAD_PATH); }
+			forceRegistrarConstruction ();
+		}
 		return registrar;
 	}
 
@@ -106,6 +107,7 @@ public class RpcManagement
 	}
 	static final String
 		BAD_CLASS = "Registrar path is invalid",
+		BAD_PATH = "Registrar was never specified",
 		BAD_INSTANCE = "Registrar could not be constructed",
 		BAD_OBJECT = "Registrar path refers to an invalid object class";
 	static Registration registrar = null;
