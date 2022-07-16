@@ -5,7 +5,7 @@ package net.myorb.rpc.protocol;
  * register a service for use in the system
  * @author Michael Druckman
  */
-public interface Registration
+public interface ServiceRegistration
 {
 	/**
 	 * post a service to the system and request port assignment

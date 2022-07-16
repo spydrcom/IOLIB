@@ -21,6 +21,12 @@ public class ServerConventions implements Runnable
 {
 
 
+	/**
+	 * special control characters in processor protocols
+	 */
+	public static final String DIRECTIVES = "?!@#$%^&*";
+
+
 	// types of request processors
 
 	/**
@@ -29,6 +35,14 @@ public class ServerConventions implements Runnable
 	 * implementer of just base interface will generate exception.
 	 */
 	public interface Processor {}
+
+	/**
+	 * handle directives aside from core syntax
+	 */
+	public interface DirectedProcessor extends Processor
+	{
+		String handle (String directive) throws Exception;
+	}
 
 	/**
 	 * the table of available service processors
@@ -53,7 +67,7 @@ public class ServerConventions implements Runnable
 	/**
 	 * processor for JSON requests
 	 */
-	public interface JsonProcessor extends Processor
+	public interface JsonProcessor extends DirectedProcessor
 	{
 		/**
 		 * provide simple processing for JSON transaction
@@ -66,7 +80,7 @@ public class ServerConventions implements Runnable
 	/**
 	 * provide access to a SAX parser handler
 	 */
-	public interface SaxProcessor extends Processor
+	public interface SaxProcessor
 	{
 		DefaultHandler getHandler ();
 		String getResponse ();
@@ -75,7 +89,7 @@ public class ServerConventions implements Runnable
 	/**
 	 * processor for XML requests
 	 */
-	public interface XmlProcessor extends Processor
+	public interface XmlProcessor extends DirectedProcessor
 	{
 		SaxProcessor getSaxProcessor ();
 	}
@@ -243,6 +257,18 @@ public class ServerConventions implements Runnable
 	}
 
 
+	/**
+	 * determine if a request is a protocol directive
+	 * @param request the request coming in from RPC
+	 * @return TRUE for directives, else FALSE
+	 */
+	public static final boolean isDirected (String request)
+	{
+		String first = request.substring (0, 1);
+		return DIRECTIVES.contains (first);
+	}
+
+
 }
 
 
@@ -286,6 +312,10 @@ class JsonHandler extends JsonInterpreter
 	 */
 	public String process (String request) throws Exception
 	{
+		if (ServerConventions.isDirected (request))
+		{
+			return processor.handle (request);
+		}
 		return processor.process (interpret (request));
 	}
 
@@ -300,7 +330,16 @@ class XmlHandler extends XmlInterpreter
 {
 
 	protected XmlHandler (ServerConventions.Processor processor)
-	{ this (((ServerConventions.XmlProcessor) processor).getSaxProcessor ()); }
+	{
+		this ((ServerConventions.XmlProcessor) processor);
+	}
+
+	protected XmlHandler (ServerConventions.XmlProcessor processor)
+	{
+		this (processor.getSaxProcessor ());
+		this.processor = processor;
+	}
+	protected ServerConventions.XmlProcessor processor;
 
 	protected XmlHandler (ServerConventions.SaxProcessor processor)
 	{
@@ -317,6 +356,10 @@ class XmlHandler extends XmlInterpreter
 	 */
 	public String process (String request) throws Exception
 	{
+		if (ServerConventions.isDirected (request))
+		{
+			return processor.handle (request);
+		}
 		interpret (request);
 		return saxProcessingManager.getResponse ();
 	}
