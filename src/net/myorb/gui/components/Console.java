@@ -38,15 +38,17 @@ public class Console implements TextLineInputListener.TextLineProcessor
 		panel.setBackground (color);
 		panel.setSize (width, height);
 
-		textArea = new JTextArea ();
+		JTextArea area = new JTextArea ();
+
+		textArea = area;
 		textArea.setBackground (color);
 		textArea.setSize (width, height);
 		((JTextArea)textArea).setColumns (columns);
 		panel.add (textArea);
 
 		buffer =
-		new TextLineInputListener
-		(this, textArea);
+		new TextLineInputListener (this, textArea);
+		buffer.setParent (area);
 	}
 
 	/**

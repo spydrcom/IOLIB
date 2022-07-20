@@ -4,6 +4,7 @@ package net.myorb.gui.components;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JTextArea;
 import javax.swing.JComponent;
 
 /**
@@ -25,25 +26,86 @@ public class TextLineInputListener
 		void process (String line);
 	}
 
+
+	/*
+	 * connect with display component
+	 */
+
+	/**
+	 * connect to a parent text component
+	 * @param parent the text component using this as input
+	 */
+	public void setParent (JTextArea parent)
+	{
+		this.parent = parent;
+	}
+	protected JTextArea parent = null;
+
+	/**
+	 * add newline to display
+	 */
+	public void updateParent ()
+	{
+		if (parent != null) parent.append ("\n");
+	}
+
+
+	/*
+	 * command line processing
+	 */
+
+	/**
+	 * @param text data to be appended to line
+	 */
+	public void append (String text) { line.append (text); }
+	protected StringBuffer line;
+
+	/**
+	 * ignore last key entered
+	 */
+	public void processBS ()
+	{
+		line.setLength (line.length () - 1);
+	}
+
+	/**
+	 * ignore key input in ISO CTRL ranges
+	 * @param c character being processed
+	 */
+	public void appendNonISO (char c)
+	{
+		if (Character.isISOControl (c)) return;
+		line.append (c);
+	}
+
+	/**
+	 * process collected line text
+	 */
+	public void processLine ()
+	{
+		updateParent ();
+		processor.process (line.toString ());
+		line = new StringBuffer ();
+	}
+
+
+	/*
+	 * implementation of KeyListener
+	 */
+
 	/* (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
 	public void keyTyped (KeyEvent e)
 	{
 		char c;
-		if ((c = e.getKeyChar ()) == '\n')
+		switch (c = e.getKeyChar ())
 		{
-			processor.process (line.toString ());
-			line.setLength (0);;
+			case '\b':	processBS ();		break;	// backspace
+			case '\n':	processLine ();		break;	// newline
+			default:	appendNonISO (c);
 		}
-		else { line.append (c); }
 	}
-
-	/**
-	 * @param text data to be appended to line
-	 */
-	public void append (String text) { line.append (text); }
-	protected StringBuffer line = new StringBuffer ();
 
 	/* (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
@@ -51,11 +113,22 @@ public class TextLineInputListener
 	public void keyPressed (KeyEvent e) {}
 	public void keyReleased (KeyEvent e) {}
 
-	public TextLineInputListener
-	(TextLineProcessor processor)
-	{ this.processor = processor; }
+
+	/*
+	 * constructors
+	 */
+
+	/**
+	 * @param processor for command line actions
+	 */
+	public TextLineInputListener (TextLineProcessor processor)
+	{ this.processor = processor; line = new StringBuffer (); }
 	protected TextLineProcessor processor;
 
+	/**
+	 * @param processor for command line actions
+	 * @param c component that will use this as KeyListener
+	 */
 	public TextLineInputListener
 	(TextLineProcessor processor, JComponent c)
 	{ this (processor); c.addKeyListener (this); }
