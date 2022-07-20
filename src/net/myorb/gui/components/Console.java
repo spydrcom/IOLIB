@@ -38,33 +38,30 @@ public class Console implements TextLineInputListener.TextLineProcessor
 		panel.setBackground (color);
 		panel.setSize (width, height);
 
-		JTextArea area = new JTextArea ();
-
-		textArea = area;
+		textArea = new JTextArea ();
 		textArea.setBackground (color);
 		textArea.setSize (width, height);
-		((JTextArea)textArea).setColumns (columns);
+		textArea.setColumns (columns);
 		panel.add (textArea);
 
 		buffer =
 		new TextLineInputListener (this, textArea);
-		buffer.setParent (area);
+		buffer.setParent (textArea);
 	}
 
 	/**
 	 * @param text data to be appended to line
 	 */
-	public void append (String text)
-	{
-		buffer.append (text);
-	}
+	public void
+		append (String text) { buffer.append (text); }
 	protected TextLineInputListener buffer;
 
 	/**
 	 * @return the text area of the display
 	 */
-	public JTextComponent getTextArea () { return textArea; }
-	protected JTextComponent textArea;
+	public JTextComponent
+		getTextArea () { return textArea; }
+	protected JTextArea textArea;
 
 	/**
 	 * @return the component inside scroll bars
