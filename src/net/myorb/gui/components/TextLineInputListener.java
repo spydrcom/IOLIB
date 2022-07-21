@@ -65,7 +65,9 @@ public class TextLineInputListener
 	 */
 	public void processBS ()
 	{
-		line.setLength (line.length () - 1);
+		int len = line.length ();
+		if (len == 0) return;
+		line.setLength (len - 1);
 	}
 
 	/**
@@ -75,6 +77,10 @@ public class TextLineInputListener
 	public void appendNonISO (char c)
 	{
 		if (Character.isISOControl (c)) return;
+//			{
+//			System.out.println ("ISO "+c+" "+Integer.toHexString(c));
+//			return;
+//			}
 		line.append (c);
 	}
 
