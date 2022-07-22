@@ -18,6 +18,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.text.JTextComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
@@ -304,6 +306,21 @@ public class SimpleScreenIO
 	{
 		public Grid (int rows, int columns) { super (rows, columns); }
 		private static final long serialVersionUID = -2605043561085487016L;
+	}
+
+
+	/**
+	 * text editing component
+	 */
+	public static class SnipEditor extends JEditorPane implements Widget
+	{
+		public SnipEditor () { setEditable (true); }
+
+		/* (non-Javadoc)
+		 * @see net.myorb.gui.components.SimpleScreenIO.Widget#toComponent()
+		 */
+		public Component toComponent() { return this; }
+		private static final long serialVersionUID = -5533604189898405770L;
 	}
 
 
@@ -842,6 +859,17 @@ public class SimpleScreenIO
 		ComboBox<T> combo = addCombo (parent);
 		combo.addItems (items);
 		return combo;
+	}
+
+
+	/**
+	 * treat object as text component
+	 * @param component the object to be used
+	 * @return the converted object
+	 */
+	public static JTextComponent asTextComponent (Object component)
+	{
+		return (JTextComponent) component;
 	}
 
 

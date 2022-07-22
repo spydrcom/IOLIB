@@ -1,7 +1,6 @@
 
 package net.myorb.gui.tests;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import net.myorb.jxr.JxrParser;
@@ -30,13 +29,9 @@ public class MenuBarTest
 
 	public ActionListener getAction ()
 	{
-		return new ActionListener ()
+		return (e) ->
 		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				System.out.println ("OK NOW");
-			}
+			System.out.println ("OK NOW");
 		};
 	}
 
