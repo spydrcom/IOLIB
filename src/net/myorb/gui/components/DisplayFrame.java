@@ -138,6 +138,15 @@ public class DisplayFrame implements Runnable
         return frame;
 	}
 	protected MdiFrameController mdi = null;
+
+
+	/**
+	 * @param menuBar menu object to be used
+	 */
+	public void setMenuBar (JMenuBar menuBar)
+	{
+		this.menuBar = menuBar;
+	}
 	protected JMenuBar menuBar = null;
 
 
