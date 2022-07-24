@@ -24,7 +24,30 @@ import java.util.List;
 public class FileDrop  implements DropTargetListener
 {
 
+
 	public static DataFlavor FILES = DataFlavor.javaFileListFlavor;
+
+
+	/**
+	 * simple drop where all files get same processing
+	 */
+	public interface IndividualFileProcessor
+	{
+		/**
+		 * @param file the file to process
+		 */
+		void process (File file);
+	}
+
+	/**
+	 * @param component related component
+	 * @param fileProcessor processing object for files
+	 */
+	public static void simpleFileDrop (Component component, IndividualFileProcessor fileProcessor)
+	{
+		new SimpleFileDrop (component, fileProcessor);
+	}
+
 
 	/**
 	 * get control of dropped files
@@ -37,11 +60,16 @@ public class FileDrop  implements DropTargetListener
 		void process (List<File> files);
 	}
 
+	/**
+	 * @param component related component
+	 * @param fileProcessor processing object for files
+	 */
 	public FileDrop (Component component, FileProcessor fileProcessor)
 	{
 		this.fileProcessor = fileProcessor;
 		new DropTarget (component, this);
 	}
+
 
 	/* (non-Javadoc)
 	 * @see java.awt.dnd.DropTargetListener#drop(java.awt.dnd.DropTargetDropEvent)
@@ -80,3 +108,48 @@ public class FileDrop  implements DropTargetListener
 	public void dragExit(DropTargetEvent dte) {}
 
 }
+
+
+/**
+ * most simple form of drop
+ */
+class SimpleFileDrop
+{
+
+	SimpleFileDrop
+		(
+			Component component,
+			FileDrop.IndividualFileProcessor fileProcessor
+		)
+	{
+		connectDrop (component);
+		this.fileProcessor = fileProcessor;
+	}
+	FileDrop.IndividualFileProcessor fileProcessor;
+
+	/**
+	 * allow file drop on target
+	 * @param component the drop target
+	 */
+	void connectDrop (Component component)
+	{
+		drop = new FileDrop (component, (f) -> { process (f); });
+	}
+	FileDrop drop;
+
+
+	/**
+	 * implementation of FileDrop.FileProcessor
+	 * @param files the processing of dropped files
+	 */
+	void process (List<File> files)
+	{
+		for (File f : files)
+		{
+			fileProcessor.process (f);
+		}
+	}
+
+
+}
+
