@@ -116,6 +116,7 @@ public class FileDrop  implements DropTargetListener
 class SimpleFileDrop
 {
 
+
 	SimpleFileDrop
 		(
 			Component component,
@@ -126,6 +127,7 @@ class SimpleFileDrop
 		this.fileProcessor = fileProcessor;
 	}
 	FileDrop.IndividualFileProcessor fileProcessor;
+
 
 	/**
 	 * allow file drop on target

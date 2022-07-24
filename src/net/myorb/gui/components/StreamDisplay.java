@@ -205,6 +205,7 @@ class ConsoleWriter extends Writer
 	}
 	JTextArea console;
 	JScrollBar bar;
+
 }
 
 /**
