@@ -40,13 +40,13 @@ public class FileDrop  implements DropTargetListener
 	}
 
 	/**
+	 * most simple form of drop
 	 * @param component related component
 	 * @param fileProcessor processing object for files
 	 */
-	public static void simpleFileDrop (Component component, IndividualFileProcessor fileProcessor)
-	{
-		new SimpleFileDrop (component, fileProcessor);
-	}
+	public static void simpleFileDrop
+	(Component component, IndividualFileProcessor fileProcessor)
+	{ new SimpleFileDrop (component, fileProcessor); }
 
 
 	/**
@@ -100,7 +100,7 @@ public class FileDrop  implements DropTargetListener
 		evt.getDropTargetContext ().dropComplete (true);
 		fileProcessor.process (files);
 	}
-	FileProcessor fileProcessor;
+	protected FileProcessor fileProcessor;
 
 	public void dragOver(DropTargetDragEvent dtde) {}
 	public void dropActionChanged(DropTargetDragEvent dtde) {}
@@ -116,7 +116,6 @@ public class FileDrop  implements DropTargetListener
 class SimpleFileDrop
 {
 
-
 	SimpleFileDrop
 		(
 			Component component,
@@ -126,8 +125,7 @@ class SimpleFileDrop
 		connectDrop (component);
 		this.fileProcessor = fileProcessor;
 	}
-	FileDrop.IndividualFileProcessor fileProcessor;
-
+	protected FileDrop.IndividualFileProcessor fileProcessor;
 
 	/**
 	 * allow file drop on target
@@ -137,8 +135,7 @@ class SimpleFileDrop
 	{
 		drop = new FileDrop (component, (f) -> { process (f); });
 	}
-	FileDrop drop;
-
+	protected FileDrop drop;
 
 	/**
 	 * implementation of FileDrop.FileProcessor
@@ -151,7 +148,6 @@ class SimpleFileDrop
 			fileProcessor.process (f);
 		}
 	}
-
 
 }
 

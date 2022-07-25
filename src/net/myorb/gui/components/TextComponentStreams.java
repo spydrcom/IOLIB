@@ -26,24 +26,51 @@ public class TextComponentStreams implements Streams.TextPrimitives
 		)
 	{
 		this.component = component;
+		this.useSelected = useSelected;
+		this.eol = "" + eol;
 	}
 	protected JTextComponent component;
 	protected boolean useSelected;
-	protected char eol;
+	protected String eol;
 
 
-	String parse (String source) throws IOException
+	/**
+	 * separate lines at EOL points
+	 * @throws IOException for internal error
+	 */
+	void parse () throws IOException
 	{
-		throw new Streams.EndStream ();
+		String source =
+				useSelected?
+					component.getSelectedText ():
+					component.getText ();
+		buffer = source.split (eol);
+		current = 0;
 	}
+	boolean reused = false;
+	String[] buffer = null;
+	int current;
+
 
 	/* (non-Javadoc)
 	 * @see net.myorb.data.io.Streams.TextPrimitives#getLine()
 	 */
 	public String getLine () throws IOException
 	{
-		return parse (useSelected? component.getSelectedText (): component.getText ());
+		if (reused)
+			throw new IOException ("Attempted reuse");
+		else if (buffer == null) parse ();
+
+		if (current >= buffer.length)
+		{
+			reused = true;
+			buffer = null;
+			return null;
+		}
+
+		return buffer[current++];
 	}
+
 
 	/* (non-Javadoc)
 	 * @see net.myorb.data.io.Streams.TextPrimitives#append(java.lang.String)
@@ -52,6 +79,7 @@ public class TextComponentStreams implements Streams.TextPrimitives
 	{
 		component.setText (component.getText () + content);
 	}
+
 
 	/* (non-Javadoc)
 	 * @see net.myorb.data.io.Streams.TextPrimitives#flush()

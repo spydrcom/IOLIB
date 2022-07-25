@@ -4,8 +4,6 @@ package net.myorb.data.io;
 import net.myorb.data.abstractions.SimpleStreamIO;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.InputStream;
 
 /**
  * enable text stream management with simple interfaces
@@ -74,89 +72,6 @@ public class Streams
 	 */
 	public static SimpleStreamIO.TextSink getTextSink (TextPrimitives primitives)
 	{ return new SimpleStreamIO.TextSink (getTextOutputStream (primitives)); }
-
-}
-
-/**
- * an input stream implementation based on primitive interface
- */
-class TextInputStream extends InputStream
-{
-
-	TextInputStream (Streams.TextPrimitives text)
-	{
-		this.text = text;
-	}
-	Streams.TextPrimitives text;
-
-	StringBuffer buffer = new StringBuffer ();
-	int position = 1;
-
-	String nextLine () throws IOException
-	{
-		String line;
-		if ((line = text.getLine ()) == null)
-		{ throw new Streams.EndStream (); }
-		return line;
-	}
-
-	char getc () throws IOException
-	{
-		if (position > buffer.length ())
-		{
-			buffer.setLength (0);
-			buffer.append (nextLine ());
-			position = 0;
-		}
-		return buffer.charAt (position++);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.InputStream#read()
-	 */
-	public int read () throws IOException
-	{
-		return getc ();
-	}
-	
-}
-
-/**
- * an output stream implementation based on primitive interface
- */
-class TextOutputStream extends OutputStream
-{
-
-	TextOutputStream (Streams.TextPrimitives text)
-	{
-		this.text = text;
-	}
-	Streams.TextPrimitives text;
-	
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#write(byte[])
-	 */
-	public void write (byte[] bytes) throws IOException
-	{
-		text.append (new String (bytes));
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#flush()
-	 */
-	public void flush () throws IOException
-	{
-		super.flush ();
-		text.flush ();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#write(int)
-	 */
-	public void write (int b) throws IOException
-	{
-		text.append (new String (new byte[]{(byte)b}));
-	}
 
 }
 
