@@ -2,9 +2,9 @@
 package net.myorb.gui.components;
 
 import net.myorb.data.abstractions.SimpleUtilities;
+import net.myorb.data.io.TextAreaStreams;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -12,7 +12,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -47,8 +46,10 @@ public class StreamDisplay extends DisplayFrame
 			JTextArea textArea, JScrollPane scrollPane
 		)
 	{
-		map.put (name, new ConsoleOutputStream (textArea, scrollPane));
-		map.put (name + "$WRITER", new ConsoleWriter (textArea, scrollPane));
+		TextAreaStreams streams =
+			new TextAreaStreams (textArea, scrollPane);
+		map.put (name + "$WRITER", streams.getOutputWriter ());
+		map.put (name, streams.getOutputStream ());
 		map.put (name + "$AREA", textArea);
 	}
 
@@ -161,96 +162,6 @@ public class StreamDisplay extends DisplayFrame
 		showConsole (displayArea (name, map), title, size);
 		return getStreamFor (name, map);
 	}
-
-}
-
-/**
- * a writer that writes to component
- */
-class ConsoleWriter extends Writer
-{
-
-	/* (non-Javadoc)
-	 * @see java.io.Writer#close()
-	 */
-	public void close () throws IOException
-	{
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.Writer#flush()
-	 */
-	public void flush () throws IOException
-	{
-		bar.setValue (bar.getMaximum ());
-		console.repaint ();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.Writer#write(char[], int, int)
-	 */
-	public void write (char[] chars, int off, int len) throws IOException
-	{
-		console.append(new String (chars, off, len));
-	}
-
-	/**
-	 * @param console the component that displays stream
-	 * @param scrollPane the scroll component
-	 */
-	public ConsoleWriter (JTextArea console, JScrollPane scrollPane)
-	{
-		this.console = console;
-		this.bar = scrollPane.getVerticalScrollBar ();
-	}
-	JTextArea console;
-	JScrollBar bar;
-
-}
-
-/**
- * an output stream that writes to component
- */
-class ConsoleOutputStream extends OutputStream
-{
-
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#write(byte[])
-	 */
-	public void write (byte[] bytes) throws IOException
-	{
-		console.append (new String (bytes));
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#flush()
-	 */
-	public void flush () throws IOException
-	{
-		super.flush ();
-		bar.setValue (bar.getMaximum ());
-		console.repaint ();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#write(int)
-	 */
-	public void write (int b) throws IOException
-	{
-		console.append (new String (new byte[]{(byte)b}));
-	}
-
-	/**
-	 * @param console the component that displays stream
-	 * @param scrollPane the scroll component
-	 */
-	public ConsoleOutputStream (JTextArea console, JScrollPane scrollPane)
-	{
-		this.console = console;
-		this.bar = scrollPane.getVerticalScrollBar ();
-	}
-	JTextArea console;
-	JScrollBar bar;
 
 }
 

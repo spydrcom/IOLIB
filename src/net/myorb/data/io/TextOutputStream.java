@@ -26,20 +26,18 @@ public class TextOutputStream extends OutputStream
 	}
 
 	/* (non-Javadoc)
+	 * @see java.io.OutputStream#write(int)
+	 */
+	public void write (int b) throws IOException
+	{ write (new byte[]{(byte)b}); }
+
+	/* (non-Javadoc)
 	 * @see java.io.OutputStream#flush()
 	 */
 	public void flush () throws IOException
 	{
 		super.flush ();
 		text.flush ();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.io.OutputStream#write(int)
-	 */
-	public void write (int b) throws IOException
-	{
-		text.append (new String (new byte[]{(byte)b}));
 	}
 
 }
