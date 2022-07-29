@@ -46,8 +46,10 @@ public interface SnipToolPropertyAccess
 	 * factories for model objects
 	 */
 
+	int getMaximumScanValue ();
 	SnipToolContext newContext ();
 	SnipToolDocument newDocument ();
+	SnipToolToken[] getAll ();
 	SnipToolKit newKit ();
 
 }

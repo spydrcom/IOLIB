@@ -12,7 +12,7 @@ import javax.swing.text.Document;
  * EditorKit extension for SnipTool editor
  * @author Michael Druckman
  */
-public class SnipToolKit extends SimpleScreenIO.SnipEditor
+public class SnipToolKit extends SimpleScreenIO.SnipEditor.SnipEditorModel
 {
 
 
