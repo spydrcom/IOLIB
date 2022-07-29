@@ -1,5 +1,5 @@
 
-package net.myorb.gui.editor;
+package net.myorb.gui.javaedit;
 
 import java.io.Reader;
 import java.io.Writer;

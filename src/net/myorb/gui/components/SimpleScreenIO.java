@@ -4,6 +4,7 @@ package net.myorb.gui.components;
 import net.myorb.data.abstractions.BinaryStateMonitor;
 import net.myorb.data.abstractions.SimpleUtilities;
 import net.myorb.data.abstractions.Status;
+
 import net.myorb.gui.BackgroundTask;
 
 import javax.swing.SwingUtilities;
@@ -11,11 +12,13 @@ import javax.swing.ImageIcon;
 
 import javax.swing.RootPaneContainer;
 
-//import javax.swing.JFrame;
+import javax.swing.text.DefaultEditorKit;
+
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
+import javax.swing.JViewport;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.text.JTextComponent;
@@ -33,10 +36,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.BorderFactory;
 
 import java.awt.event.ActionListener;
-
 import java.awt.LayoutManager;
 import java.awt.GridLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Container;
 import java.awt.Component;
 import java.awt.Color;
@@ -244,8 +247,24 @@ public class SimpleScreenIO
 
 	public static class Scrolling extends JScrollPane implements Widget
 	{
+		public void addToViewport (Widget widget)
+		{ getViewport ().add (widget.toComponent ()); }
 		public JComponent toComponent () { return this; }
-		public Scrolling (Widget widget) { super (widget.toComponent ()); }
+		public JViewport getView () { return getViewport (); }
+
+		public Widget getContents ()
+		{
+			return (Widget) getView ().getComponents ()[0];
+		}
+
+		public void configure (int width, int height)
+		{
+			setPreferredSize ( wXh (width, height) );
+			setHorizontalScrollBarPolicy (HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			setVerticalScrollBarPolicy (VERTICAL_SCROLLBAR_AS_NEEDED);
+		}
+
+		public Scrolling (Widget widget) { addToViewport (widget); }
 		private static final long serialVersionUID = 7136003450613049727L;
 	}
 
@@ -314,7 +333,24 @@ public class SimpleScreenIO
 	 */
 	public static class SnipEditor extends JEditorPane implements Widget
 	{
-		public SnipEditor () { setEditable (true); }
+
+		public static class SnipEditorModel extends DefaultEditorKit
+		{ private static final long serialVersionUID = -4369234614973084001L; }
+
+		public SnipEditor (SnipEditorModel model)
+		{
+			this ();
+			String contentType = model.getContentType ();
+			setEditorKitForContentType (contentType, model);
+			setContentType (contentType);
+		}
+
+		public SnipEditor ()
+		{
+			setBackground (Color.white);
+			setFont (new Font ("Courier", 0, 12));
+			setEditable (true);
+		}
 
 		/* (non-Javadoc)
 		 * @see net.myorb.gui.components.SimpleScreenIO.Widget#toComponent()

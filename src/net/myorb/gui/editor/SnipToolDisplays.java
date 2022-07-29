@@ -13,19 +13,21 @@ public class SnipToolDisplays extends SnipToolProcessing
 
 	/**
 	 * construct tab panel with left side index
+	 * @param properties access to display components
 	 */
-	protected static void buildPanel ()
+	protected static void buildPanel (SnipToolPropertyAccess properties)
 	{
-		connectDrop (buildTabbedPanel ());
+		connectDrop (buildTabbedPanel (), properties);
 	}
 
 
 	/**
 	 * add a text panel with an index count as name
+	 * @param properties access to display components
 	 */
-	protected static void add ()
+	protected static void add (SnipToolPropertyAccess properties)
 	{
-		addTab (Integer.toString (tabCount++));
+		addTab (Integer.toString (tabCount++), properties);
 	}
 	protected static int tabCount = 1;
 

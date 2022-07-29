@@ -8,7 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JButton;
 
 import java.awt.event.KeyListener;
-
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -134,7 +134,9 @@ public class DisplayFrame implements Runnable
 		if (preferredSize != null) f.setPreferredSize (preferredSize);
 		if (iconPath != null) GuiToolkit.setIcon (f, GuiToolkit.getIcon (iconPath));
         if (menuBar != null) f.setJMenuBar (menuBar);
-        f.add (component); f.pack (); frame = f;
+		f.getContentPane ().setLayout (new BorderLayout ());
+		f.getContentPane ().add (component);
+		f.pack (); frame = f;
         return frame;
 	}
 	protected MdiFrameController mdi = null;

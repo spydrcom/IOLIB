@@ -31,6 +31,7 @@ public class Token implements Serializable {
 	/**
 	 * Numeric value of this token. This is the value returned by the scanner
 	 * and is the tie between the lexical scanner and the tokens.
+	 * @return the scanValue
 	 */
 	public int getScanValue() {
 		return scanValue;
@@ -39,6 +40,7 @@ public class Token implements Serializable {
 	/**
 	 * Specifies the category of the token as a string that can be used as a
 	 * label.
+	 * @return beginning to dot
 	 */
 	public String getCategory() {
 		String nm = getClass().getName();

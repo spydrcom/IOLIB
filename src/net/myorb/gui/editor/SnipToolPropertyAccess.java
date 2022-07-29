@@ -1,12 +1,21 @@
 
 package net.myorb.gui.editor;
 
+import net.myorb.gui.editor.model.*;
+
+import net.myorb.gui.components.SimpleScreenIO;
+
 /**
  * properties passed from upper layer to independent layer
  * @author Michael Druckman
  */
 public interface SnipToolPropertyAccess
 {
+
+	/**
+	 * @return a newly constructed SnipEditor
+	 */
+	SimpleScreenIO.SnipEditor newEditor ();
 
 	/**
 	 * @return path to JXR configuration file for menus
@@ -32,5 +41,13 @@ public interface SnipToolPropertyAccess
 	 * @return path to source files
 	 */
 	String getDirectoryName ();
+
+	/*
+	 * factories for model objects
+	 */
+
+	SnipToolContext newContext ();
+	SnipToolDocument newDocument ();
+	SnipToolKit newKit ();
 
 }

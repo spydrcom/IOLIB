@@ -25,6 +25,7 @@ public class JavaDocument extends PlainDocument {
 
 	/**
 	 * Create a lexical analyzer for this document.
+	 * @return new scanner object
 	 */
 	public Scanner createScanner() {
 		Scanner s;
@@ -38,8 +39,10 @@ public class JavaDocument extends PlainDocument {
 
 	/**
 	 * Fetch a reasonable location to start scanning given the desired start
-	 * location. This allows for adjustments needed to accomodate multiline
+	 * location. This allows for adjustments needed to accommodate multi-line
 	 * comments.
+	 * @param p value to translate
+	 * @return getStartOffset
 	 */
 	public int getScannerStart(int p) {
 		Element elem = getDefaultRootElement();
@@ -153,6 +156,9 @@ public class JavaDocument extends PlainDocument {
 		/**
 		 * Sets the range of the scanner. This should be called to reinitialize
 		 * the scanner to the desired range of coverage.
+		 * @param p0 start of range
+		 * @param p1 end of range
+		 * @throws IOException for errors
 		 */
 		public void setRange(int p0, int p1) throws IOException {
 			useInputStream(new DocumentInputStream(p0, p1));
@@ -162,6 +168,7 @@ public class JavaDocument extends PlainDocument {
 		/**
 		 * This fetches the starting location of the current token in the
 		 * document.
+		 * @return point plus offset
 		 */
 		public final int getStartOffset() {
 			int begOffs = (int) (pos & MAXFILESIZE);
@@ -171,6 +178,7 @@ public class JavaDocument extends PlainDocument {
 		/**
 		 * This fetches the ending location of the current token in the
 		 * document.
+		 * @return point plus offset
 		 */
 		public final int getEndOffset() {
 			int endOffs = (int) (getEndPos() & MAXFILESIZE);

@@ -18,7 +18,7 @@ public class SnipTool extends SnipToolDisplays
 		if (frame == null)
 		{ new SnipTool (properties); }
 		frame.forceToScreen ();
-		add ();
+		add (properties);
 	}
 
 
@@ -28,12 +28,14 @@ public class SnipTool extends SnipToolDisplays
 	 */
 	public SnipTool (SnipToolPropertyAccess properties)
 	{
-		buildPanel ();
+		buildPanel (properties);
 		this.properties = properties;
 		prepareSnipToolActions (properties);
 		actions.connectTool (this);
 		show ();
 	}
+	public SnipToolPropertyAccess
+	getSnipToolPropertyAccess () { return properties; }
 	protected SnipToolPropertyAccess properties;
 
 

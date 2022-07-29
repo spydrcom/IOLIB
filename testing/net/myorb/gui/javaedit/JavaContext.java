@@ -47,9 +47,10 @@ public class JavaContext extends StyleContext implements ViewFactory {
 	 * Fetch the foreground color to use for a lexical token with the given
 	 * value.
 	 * 
-	 * @param attr
+	 * @param code
 	 *            attribute set from a token element that has a Token in the
 	 *            set.
+	 * @return color
 	 */
 	public Color getForeground(int code) {
 		if (tokenColors == null) {
@@ -68,6 +69,8 @@ public class JavaContext extends StyleContext implements ViewFactory {
 
 	/**
 	 * Fetch the font to use for a lexical token with the given scan value.
+	 * @param code element code
+	 * @return font
 	 */
 	public Font getFont(int code) {
 		if (tokenFonts == null) {
@@ -88,6 +91,8 @@ public class JavaContext extends StyleContext implements ViewFactory {
 	 * Fetches the attribute set to use for the given scan code. The set is
 	 * stored in a table to facilitate relatively fast access to use in
 	 * conjunction with the scanner.
+	 * @param code element code
+	 * @return style to use
 	 */
 	public Style getStyleForScanValue(int code) {
 		if (code < tokenStyles.length) {
