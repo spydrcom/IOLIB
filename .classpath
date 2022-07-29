@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="testing"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="lib/com.sun.tools-1.8.0_jdk8u275-b01_linux_x64.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
