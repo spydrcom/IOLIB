@@ -42,14 +42,16 @@ public interface SnipToolPropertyAccess
 	 */
 	String getDirectoryName ();
 
+
 	/*
 	 * factories for model objects
 	 */
 
-	int getMaximumScanValue ();
-	SnipToolContext newContext ();
+	SnipToolToken.SystemTokens getAll ();
 	SnipToolDocument newDocument ();
-	SnipToolToken[] getAll ();
+	SnipToolContext newContext ();
 	SnipToolKit newKit ();
 
+
 }
+

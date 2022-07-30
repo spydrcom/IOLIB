@@ -140,6 +140,43 @@ public class CommonCommandParser
 	}
 
 
+	/*
+	 * track token location within a document for LSE
+	 */
+
+	public enum Category {WS, MCO, ID, OP, TXT, NUM}
+	
+	public static class TokenTrack
+	{
+		TokenTrack (Category type, int starting)
+		{ this.starting = starting; this.type = type; }
+		public int getLocation () { return starting; }
+		public Category getType () { return type; }
+		Category type; int starting;
+	}
+
+	public static void track
+	(Category cat, int pos, List<TokenTrack> tracking)
+	{ tracking.add (new TokenTrack (cat, pos)); }
+
+	public int parseNext (StringBuffer buffer, SpecialTokenSegments segments, int position, List<TokenDescriptor> tokens, List<TokenTrack> tracking)
+	{
+		if (belongsTo (buffer, position, segments.getWhiteSpace ())) { position = ignoreWhitespace (buffer, position, segments); }
+		else if (belongsTo (buffer, position, segments.getMultiCharacterOperator ())) { track (Category.MCO, position, tracking); position = parseBigOperator (buffer, position, tokens, segments); }
+		else if (belongsTo (buffer, position, segments.getIdnLead ())) { track (Category.ID, position, tracking); position = parseIdentifier (buffer, position, tokens, segments); }
+		else if (belongsTo (buffer, position, segments.getOperator ())) { track (Category.OP, position, tracking); position = parseOperator (buffer, position, tokens); }
+		else if (belongsTo (buffer, position, QUOTE_LEAD)) { track (Category.TXT, position, tracking); position = parseQuote (buffer, position, tokens); }
+		else if (belongsTo (buffer, position, NUM_LEAD)) { track (Category.NUM, position, tracking); position = parseNumber (buffer, position, tokens); }
+		else
+		{
+			System.out.println (buffer);
+			System.out.println (buffer.charAt (position-1));
+			throw new RuntimeException ("Illegal character found: " + buffer.charAt (position) + " @ " + position);
+		}
+		return position;
+	}
+
+
 	/**
 	 * determine if a character
 	 *  of the buffer belongs to a specified set

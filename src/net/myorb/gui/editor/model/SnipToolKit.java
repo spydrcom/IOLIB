@@ -9,7 +9,10 @@ import javax.swing.text.ViewFactory;
 import javax.swing.text.Document;
 
 /**
- * EditorKit extension for SnipTool editor
+ * EditorKit extension for SnipTool editor.
+ * - refactor of original JavaKit example from Sun
+ * - by Timothy Prinzing version 1.2 05/27/99
+ * - refactor done in summer 2022
  * @author Michael Druckman
  */
 public class SnipToolKit extends SimpleScreenIO.SnipEditor.SnipEditorModel
