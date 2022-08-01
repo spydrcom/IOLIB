@@ -52,6 +52,8 @@ public interface SnipToolPropertyAccess
 	SnipToolContext newContext ();
 	SnipToolKit newKit ();
 
+	SnipToolScanner getScanner ();
+	int getDefaultStyleCode ();
 
 }
 

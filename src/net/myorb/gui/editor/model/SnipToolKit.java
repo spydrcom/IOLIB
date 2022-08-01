@@ -5,8 +5,14 @@ import net.myorb.gui.editor.SnipToolPropertyAccess;
 
 import net.myorb.gui.components.SimpleScreenIO;
 
-import javax.swing.text.ViewFactory;
 import javax.swing.text.Document;
+import javax.swing.text.ViewFactory;
+import javax.swing.text.Style;
+
+import java.awt.Color;
+import java.awt.Font;
+
+import java.util.Collection;
 
 /**
  * EditorKit extension for SnipTool editor.
@@ -36,11 +42,46 @@ public class SnipToolKit extends SimpleScreenIO.SnipEditor.SnipEditorModel
 		return preferences;
 	}
 
+
+	/**
+	 * @param prefs updated preferences to use
+	 */
 	public void setStylePreferences (SnipToolContext prefs)
 	{
 		preferences = prefs;
 	}
 	protected SnipToolContext preferences;
+
+
+	/**
+	 * set the attributes for a token
+	 * @param token the token to be configured
+	 * @param font the font to be used in render
+	 * @param color the color to be used
+	 */
+	public void setAttributesFor (SnipToolToken token, Font font, Color color)
+	{
+		SnipToolContext context = getStylePreferences ();
+		Style s = context.getStyleFor (token.getScanValue ());
+		context.setAttributesFor (s, font, color);
+	}
+
+
+	/**
+	 * set the attributes for a style
+	 * @param tokens the tokens to be configured
+	 * @param font the font to be used in render
+	 * @param color the color to be used
+	 */
+	public void setAttributesFor (Collection<SnipToolToken> tokens, Font font, Color color)
+	{
+		SnipToolContext context = getStylePreferences ();
+		for (SnipToolToken token : tokens)
+		{
+			Style s = context.getStyleFor (token.getScanValue ());
+			context.setAttributesFor (s, font, color);
+		}
+	}
 
 
 	// --- EditorKit methods -------------------------

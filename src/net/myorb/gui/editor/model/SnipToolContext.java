@@ -1,12 +1,13 @@
 
 package net.myorb.gui.editor.model;
 
+import net.myorb.gui.StyleManager;
+
+import net.myorb.gui.editor.SnipToolScanner;
 import net.myorb.gui.editor.SnipToolPropertyAccess;
 
 import javax.swing.text.Style;
 import javax.swing.text.Element;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import javax.swing.text.ViewFactory;
 import javax.swing.text.View;
 
@@ -20,26 +21,8 @@ import java.awt.Font;
  * - refactor done in summer 2022
  * @author Michael Druckman
  */
-public class SnipToolContext  extends StyleContext implements ViewFactory
+public class SnipToolContext  extends StyleManager implements ViewFactory
 {
-
-
-	/**
-	 * The styles representing the actual token types.
-	 */
-	Style[] tokenStyles;
-
-
-	/**
-	 * Cache of foreground colors to represent the various tokens.
-	 */
-	transient Color[] tokenColors;
-
-
-	/**
-	 * Cache of fonts to represent the various tokens.
-	 */
-	transient Font[] tokenFonts;
 
 
 	/**
@@ -47,104 +30,24 @@ public class SnipToolContext  extends StyleContext implements ViewFactory
 	 * @param properties access to properties of upper layer
 	 */
 	public SnipToolContext (SnipToolPropertyAccess properties)
-	{ super(); process (properties.getAll ()); }
+	{ super (); this.properties = properties; }
+	protected SnipToolPropertyAccess properties;
 
 
 	/**
-	 * construct the token styles.
-	 * - assign unique category parent styles
-	 * @param tokens the list of tokens in the system
+	 * assign a style code for a style which is just a font and color
+	 * @param font the font to associate with the new style
+	 * @param color the foreground color to assign
+	 * @return the style code for the new style
 	 */
-	public void process (SnipToolToken.SystemTokens tokens)
+	public int postAnonymousStyle (Font font, Color color)
 	{
-		this.allocate (tokens.size ());
-		Style root = getStyle (DEFAULT_STYLE);
-		for (SnipToolToken t : tokens) { link (t, root); }
-	}
-	void link (SnipToolToken token, Style root)
-	{
-		Style style = addStyle
-			(null, parentFor (token.getCategory (), root));
-		style.addAttribute (SnipToolToken.TokenAttribute, token);
-		tokenStyles[token.getScanValue ()] = style;
-	}
-	Style parentFor (String cat, Style root)
-	{
-		Style parent = getStyle (cat);
-		if (parent != null) return parent;
-		else return addStyle (cat, root);
-	}
-	void allocate (int n)
-	{
-		this.tokenCount = n;
-		this.tokenStyles = new Style[n];
-		this.tokenColors = new Color[n];
-		this.tokenFonts = new Font[n];
-	}
-	protected int tokenCount;
-
-
-	/**
-	 * verify code is legal
-	 * @param code the code to check
-	 * @return TRUE for legal
-	 */
-	public boolean isInRange (int code)
-	{
-		return (code < 0) || (code >= tokenCount);
-	}
-
-
-	/**
-	 * Fetch the foreground color to use
-	 * for a lexical token with the given value.
-	 * 
-	 * @param code
-	 *            attribute set from a token element
-	 *            that has a Token in the set.
-	 * @return color from code
-	 */
-	public Color getForeground (int code)
-	{
-		Color colorFromCode;
-		if ( ! isInRange (code) ) return Color.black;
-		if ((colorFromCode = tokenColors[code]) != null) return colorFromCode;
-		return tokenColors[code] = StyleConstants.getForeground (tokenStyles[code]);
-	}
-
-	public Color getForeground (SnipToolToken token)
-	{
-		if (token == null) return Color.black;
-		else return getForeground (token.getScanValue ());
-	}
-
-
-	/**
-	 * Fetch the font to use for a
-	 *  lexical token with the given scan value.
-	 * @param code element code
-	 * @return font for code
-	 */
-	public Font getFont (int code)
-	{
-		Font f;
-		if ( ! isInRange (code) ) return null;
-		if ((f = tokenFonts[code]) != null) return f;
-		return tokenFonts[code] = getFont (tokenStyles[code]);
-	}
-
-
-	/**
-	 * Fetches the attribute set to use for the given scan code.
-	 * The set is stored in a table to facilitate relatively fast
-	 * access to use in conjunction with the scanner.
-	 * @param code assigned to token
-	 * @return style for code
-	 */
-	public Style getStyleForScanValue (int code)
-	{
-		if ( ! isInRange (code) ) return null;
-		else return tokenStyles[code];
+		Style s;
+		int assigned = nextStyleCode++;
+		styles.add (s = addStyle (null));
+		fonts.add (font); colors.add (color);
+		s.addAttribute (STYLE_CODE, assigned);
+		return assigned;
 	}
 
 
@@ -154,6 +57,15 @@ public class SnipToolContext  extends StyleContext implements ViewFactory
 	public View create (Element element)
 	{
 		return new SnipToolView (element, this);
+	}
+
+
+	/**
+	 * @return the scanner allocated for this editor
+	 */
+	public SnipToolScanner getScanner ()
+	{
+		return properties.getScanner ();
 	}
 
 

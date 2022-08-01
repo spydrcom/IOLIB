@@ -47,10 +47,11 @@ public class SnipToolToken
 	protected String category = null;
 
 
-	public SnipToolToken (String representation, int scanValue)
+	public SnipToolToken (String representation, int styleCode)
 	{
 		this.representation = representation;
-		this.scanValue = scanValue;
+		this.scanValue = styleCode;
+		this.styleCode = styleCode;
 	}
 
 
@@ -69,6 +70,10 @@ public class SnipToolToken
 	 */
 	public int getScanValue () { return scanValue; }
 	protected int scanValue;
+
+	public int getStyleCode () { return styleCode; }
+	public void setStyleCode (int styleCode) { this.styleCode = styleCode; }
+	protected int styleCode;
 
 
 	/**

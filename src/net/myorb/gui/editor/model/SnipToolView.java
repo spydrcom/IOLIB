@@ -1,16 +1,15 @@
 
 package net.myorb.gui.editor.model;
 
-import javax.swing.text.Utilities;
+import net.myorb.gui.editor.SnipToolScanner;
+
 import javax.swing.text.WrappedPlainView;
 import javax.swing.text.BadLocationException;
 
-//import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.Segment;
 
 import java.awt.Graphics;
-import java.awt.Color;
 
 /**
  * View specific to SnipTool functionality
@@ -22,8 +21,14 @@ import java.awt.Color;
 public class SnipToolView extends WrappedPlainView
 {
 
+
 	public SnipToolView (Element elem, SnipToolContext context)
-	{ super (elem); this.context = context; this.doc = (SnipToolDocument) getDocument (); }
+	{
+		super (elem); this.context = context;
+		this.doc = (SnipToolDocument) getDocument ();
+		this.scanner = context.getScanner ();
+	}
+	protected SnipToolScanner scanner;
 	protected SnipToolContext context;
 	protected SnipToolDocument doc;
 
@@ -39,30 +44,35 @@ public class SnipToolView extends WrappedPlainView
 		)							// returns X location at end of range
 	throws BadLocationException
 	{
-		Color last = null;
 		int mark = p0;
+		int styleCode = scanner.getDefaultStyleCode ();
+		SnipToolToken lastTokenread;
+
+		scanner.updateSource (new StringBuffer (getText (p0, p1)), p0);
 
 		for (; p0 < p1 ;)
 		{
 
-			updateScanner (p0);
-			int p = adjustedPosition (p0, p1);
-			Color fg = context.getForeground (lastTokenread);
+			lastTokenread = scanner.getToken ();
+			int p = scanner.getLastSourcePosition ();
 
-			if (fg != last && last != null)
+			if (lastTokenread == null) break;
+			int nextStyleCode = lastTokenread.getStyleCode ();
+
+			if (nextStyleCode != styleCode)
 			{
 				// color change, flush what we have
-				x = draw (g, x, y, p0, mark, last);
+				x = draw (g, x, y, p0, mark, styleCode);
 				mark = p0;
 			}
+			styleCode = nextStyleCode;
 
-			last = fg;
 			p0 = p;
 
 		}
 
 		// flush remaining
-		return draw (g, x, y, p1, mark, last);
+		return draw (g, x, y, p1, mark, styleCode);
 	}
 
 
@@ -71,47 +81,24 @@ public class SnipToolView extends WrappedPlainView
 			Graphics g,
 			int x, int y,
 			int end, int mark,
-			Color color
+			int styleCode
 		)
 	throws BadLocationException
 	{
-		g.setColor (color);
 		Segment text = getLineBuffer ();
 		doc.getText (mark, end - mark, text);
-		return Utilities.drawTabbedText (text, x, y, g, this, mark);
+		return context.draw (g, this, text, x, y, mark, styleCode);
 	}
-
-
-	/**
-	 * Update the scanner (if necessary) to point to the appropriate token
-	 * for the given start position needed for rendering.
-	 * @param p point to read up to in document
-	 */
-	void updateScanner (int p)
+	
+	String getText
+	(int from, int to)
+	throws BadLocationException
 	{
-//		try {
-//			if (!lexerValid) {
-//				JavaDocument doc = (JavaDocument) getDocument();
-//				lexer.setRange(doc.getScannerStart(p), doc.getLength());
-//				lexerValid = true;
-//			}
-//			while (lexer.getEndOffset() <= p) {
-//				lexer.scan();
-//			}
-//		} catch (Throwable e) {
-//			// can't adjust scanner... calling logic
-//			// will simply render the remaining text.
-//			e.printStackTrace();
-//		}
+		Segment text = getLineBuffer ();
+		doc.getText (from, to - from, text);
+		return text.toString ();
 	}
 
-	int adjustedPosition (int p0, int p1)
-	{
-		int p = Math.min (getTokenEndOffset (), p1);
-		p = (p <= p0) ? p1 : p;
-		return p;
-	}
-	int getTokenEndOffset () { return 0; }
-	SnipToolToken lastTokenread;
 
 }
+
