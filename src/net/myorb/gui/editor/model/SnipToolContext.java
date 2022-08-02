@@ -25,12 +25,20 @@ public class SnipToolContext  extends StyleManager implements ViewFactory
 {
 
 
+	/*
+	 * redesign done on 8/1/2022 to change from the Prinzing architecture 
+	 * to use the StyleManager architecture built in the IOlib GUI package
+	 */
+
+
 	/**
 	 * establish content for tokens of upper layer
 	 * @param properties access to properties of upper layer
 	 */
 	public SnipToolContext (SnipToolPropertyAccess properties)
-	{ super (); this.properties = properties; }
+	{
+		super (); this.properties = properties;
+	}
 	protected SnipToolPropertyAccess properties;
 
 

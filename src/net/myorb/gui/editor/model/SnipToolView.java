@@ -44,9 +44,9 @@ public class SnipToolView extends WrappedPlainView
 		)							// returns X location at end of range
 	throws BadLocationException
 	{
-		int mark = p0;
-		int styleCode = scanner.getDefaultStyleCode ();
 		SnipToolToken lastTokenread;
+		int nextStyleCode, last, mark = p0;
+		int styleCode = scanner.getDefaultStyleCode ();
 
 		scanner.updateSource (new StringBuffer (getText (p0, p1)), p0);
 
@@ -54,10 +54,10 @@ public class SnipToolView extends WrappedPlainView
 		{
 
 			lastTokenread = scanner.getToken ();
-			int p = scanner.getLastSourcePosition ();
+			last = scanner.getLastSourcePosition ();
 
 			if (lastTokenread == null) break;
-			int nextStyleCode = lastTokenread.getStyleCode ();
+			nextStyleCode = lastTokenread.getStyleCode ();
 
 			if (nextStyleCode != styleCode)
 			{
@@ -67,7 +67,7 @@ public class SnipToolView extends WrappedPlainView
 			}
 			styleCode = nextStyleCode;
 
-			p0 = p;
+			p0 = last;
 
 		}
 

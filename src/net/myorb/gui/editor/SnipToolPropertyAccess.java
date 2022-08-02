@@ -47,12 +47,29 @@ public interface SnipToolPropertyAccess
 	 * factories for model objects
 	 */
 
-	SnipToolToken.SystemTokens getAll ();
+	/**
+	 * @return a Document object to be used as model of the editor source
+	 */
 	SnipToolDocument newDocument ();
+
+	/**
+	 * @return a style context management object
+	 */
 	SnipToolContext newContext ();
+
+	/**
+	 * @return an extended editor kit for implementing snip tool
+	 */
 	SnipToolKit newKit ();
 
+	/**
+	 * @return a token parser that will supply lexical analysis
+	 */
 	SnipToolScanner getScanner ();
+
+	/**
+	 * @return the code that provides a default style in the editor
+	 */
 	int getDefaultStyleCode ();
 
 }
