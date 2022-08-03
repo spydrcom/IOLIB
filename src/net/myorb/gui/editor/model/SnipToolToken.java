@@ -3,9 +3,6 @@ package net.myorb.gui.editor.model;
 
 /**
  * Token representation in the model
- * - refactor of original JavaKit example from Sun
- * - by Timothy Prinzing version 1.2 05/27/99
- * - refactor done in summer 2022
  * @author Michael Druckman
  */
 public class SnipToolToken

@@ -15,7 +15,7 @@ import java.awt.Graphics;
  * View specific to SnipTool functionality
  * - refactor of original JavaKit example from Sun
  * - by Timothy Prinzing version 1.2 05/27/99
- * - refactor done in summer 2022
+ * - 8/1/22 is essentially a rewrite
  * @author Michael Druckman
  */
 public class SnipToolView extends WrappedPlainView
@@ -60,10 +60,10 @@ public class SnipToolView extends WrappedPlainView
 	
 
 	/**
-	 * parse tokens across a segment requested for the view
-	 * @param starting
-	 * @param ending
-	 * @throws BadLocationException
+	 * parse tokens across a segment requested
+	 * @param starting start position of range of interest
+	 * @param ending the end position for the range of interest
+	 * @throws BadLocationException for segment errors
 	 */
 	void loadBuffer (int starting, int ending) throws BadLocationException
 	{
@@ -104,12 +104,11 @@ public class SnipToolView extends WrappedPlainView
 			{
 				// color change, flush what we have
 				x = draw (g, x, y, p0, mark, styleCode);
+				styleCode = nextStyleCode;
 				mark = p0;
 			}
-			styleCode = nextStyleCode;
 
 			p0 = last;
-
 		}
 
 		// flush remaining
@@ -117,28 +116,40 @@ public class SnipToolView extends WrappedPlainView
 	}
 
 
+	/**
+	 * draw a range in model coordinates
+	 * @param g Graphics object being constructed
+	 * @param x the X coordinate in the view architecture
+	 * @param y the Y coordinate in the view architecture
+	 * @param end the end of the range in model coordinates
+	 * @param mark the start of the range in model coordinates
+	 * @param styleCode the code describing the style to use for draw
+	 * @return the x coordinate of end point within the Graphic
+	 * @throws BadLocationException for the text draw layer
+	 */
 	int draw
 		(
 			Graphics g,
-			int x, int y,
-			int end, int mark,
-			int styleCode
+			int x, int y,			// AWT graphics coordinates
+			int end, int mark,		// document model coordinates
+			int styleCode			// context assigned code
 		)
 	throws BadLocationException
 	{
-		try
-		{
-			
-			Segment text = getSegment (mark, end);
-			return context.draw (g, this, text, x, y, mark, styleCode);
-		} catch (Exception e)
-		{
-			System.out.println ("DRAW:"+mark+","+end);
-			throw e;
-		}
+		Segment text = getSegment (mark, end);
+		return context.draw (g, this, text, x, y, mark, styleCode);
 	}
-	
-	Segment getSegment (int from, int to)
+
+
+	/**
+	 * get document text found in range
+	 * @param from start position of range of interest
+	 * @param to the end position for the range of interest
+	 * @return Segment holding content found in specified range
+	 * @throws BadLocationException for segment errors
+	 */
+	Segment getSegment
+		(int from, int to)
 	throws BadLocationException
 	{
 		Segment text = getLineBuffer ();

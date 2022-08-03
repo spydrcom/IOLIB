@@ -1,6 +1,10 @@
 
 package net.myorb.gui.editor.model;
 
+import net.myorb.gui.components.text.LineElementRealization;
+import net.myorb.gui.components.text.SingleLineTokenAlignment;
+import net.myorb.gui.components.text.DocumentAlignmentTool;
+
 import javax.swing.text.Element;
 import javax.swing.text.GapContent;
 import javax.swing.text.AttributeSet;
@@ -8,7 +12,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 import javax.swing.text.Segment;
 
-import javax.swing.event.DocumentEvent;
+//import javax.swing.event.DocumentEvent;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,10 +25,15 @@ import java.io.InputStream;
  * @author Michael Druckman
  */
 public class SnipToolDocument extends PlainDocument
+	implements LineElementRealization
 {
 
 
-	public SnipToolDocument () { super (new GapContent (1024)); }
+	public SnipToolDocument ()
+	{
+		super (new GapContent (1024));
+		prepareDocumentExaminer ();
+	}
 
 
 	// --- AbstractDocument methods ----------------------------
@@ -42,56 +51,9 @@ public class SnipToolDocument extends PlainDocument
 	{
 		super.insertUpdate (chng, attr);
 
-		// update comment marks
-		Element root = getDefaultRootElement ();
-		DocumentEvent.ElementChange ec = chng.getChange (root);
+//		Element root = getDefaultRootElement ();
+//		DocumentEvent.ElementChange ec = chng.getChange (root);
 
-		if (ec != null)
-		{
-			Element[] added = ec.getChildrenAdded ();
-			boolean inComment = false;
-
-			for (int i = 0; i < added.length; i++)
-			{
-				Element elem = added[i];
-				int p0 = elem.getStartOffset ();
-				int p1 = elem.getEndOffset ();
-				String s;
-
-				try { s = getText (p0, p1 - p0); }
-				catch (BadLocationException bl) { s = null; }
-
-				if (inComment)
-				{
-
-//					MutableAttributeSet a =
-//						(MutableAttributeSet) elem.getAttributes ();
-//					a.addAttribute (CommentAttribute, CommentAttribute);
-
-					if (s.indexOf ("*/") >= 0) { inComment = false; } // found an end of comment, turn off marks
-
-				}
-				else
-				{
-
-					// scan for multi-line comment
-					int index = s.indexOf("/*");
-
-					if (index >= 0)
-					{
-						// found a start of comment, see if it spans lines
-						index = s.indexOf("*/", index);
-
-						if (index < 0)
-						{
-							// it spans lines
-							inComment = true;
-						}
-					}
-
-				}
-			}
-		}
 	}
 
 
@@ -102,16 +64,7 @@ public class SnipToolDocument extends PlainDocument
 	 * @param chng the change event
 	 */
 	protected void removeUpdate (DefaultDocumentEvent chng)
-	{ super.removeUpdate (chng); /* update comment marks */ }
-
-
-
-	// --- variables ------------------------------------------------
-
-	/**
-	 * Key to be used in AttributeSet's holding a value of Comment.
-	 */
-	//public static final StyleAttribute CommentAttribute = new StyleAttribute ("Comment");
+	{ super.removeUpdate (chng); }
 
 
 	/**
@@ -185,53 +138,68 @@ public class SnipToolDocument extends PlainDocument
 	}
 
 
+
+	/*
+	 * rewrite of the line start alignment
+	 * - these methods isolate the document model
+	 */
+
+
 	/**
+	 * find start of line of interest
+	 * - this eliminates the break in tokens
 	 * @param starting the start of the portion of current interest
 	 * @return the point closest to the start where EOL was seen
 	 * @throws BadLocationException for loading errors
 	 */
 	int findAlignedStart (int starting) throws BadLocationException
 	{
-		Element line;
-		Element elem = getDefaultRootElement ();
-		int lineNum = elem.getElementIndex (starting);
-
-		// starting at bottom of file
-		if (--lineNum < 0) return 0;
-
-		Segment segment = new Segment ();
-		int p; String text;
-
-		while (true)
-		{
-			// get the text of the line
-			line = elem.getElement (lineNum);
-
-			int
-				s = line.getStartOffset (),
-				e = line.getEndOffset ();
-			getText (s, e-s, segment);
-
-			// check for EOL indicator
-			text = new String (segment.array);
-			p = text.indexOf ("\n");
-			if (p >= 0) break;
-
-			// got back to bottom of document
-			if (--lineNum < 0) return 0;
-		}
-
-		int next;
-
-		while (true)
-		{
-			// find closest EOL
-			next = text.indexOf ("\n", p+1);
-			if (next < 0 || next >= starting) return p+1;
-			p = next;
-		}
+		return documentExaminer.findAlignedStart (getDefaultRootElement (), starting);
 	}
+
+
+	/**
+	 * allocate the examiner object
+	 */
+	void prepareDocumentExaminer ()
+	{ this.documentExaminer = new SingleLineTokenAlignment (this); }
+	protected DocumentAlignmentTool documentExaminer;
+
+
+	/**
+	 * get line of text
+	 * @param line the element holding the text line
+	 * @param segment the Segment object to be filled
+	 * @throws BadLocationException for loading errors
+	 */
+	public void fillSegment
+		(Element line, Segment segment)
+	throws BadLocationException
+	{
+		int
+			s = line.getStartOffset (),
+			e = line.getEndOffset ();
+		getText (s, e-s, segment);
+	}
+
+
+	/**
+	 * get a string containing text of a line
+	 * @param line the element holding the text line
+	 * @param segment the Segment object to be filled
+	 * @return the segment captured text converted to string
+	 * @throws BadLocationException for loading errors
+	 */
+	public String textFor
+		(Element line, Segment segment)
+	throws BadLocationException
+	{
+		fillSegment (line, segment);
+		return new String (segment.array);
+	}
+
 
 	private static final long serialVersionUID = 9048806203569287533L;
 
 }
+
