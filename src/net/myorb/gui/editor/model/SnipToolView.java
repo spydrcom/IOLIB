@@ -33,6 +33,47 @@ public class SnipToolView extends WrappedPlainView
 	protected SnipToolDocument doc;
 
 
+	/**
+	 * align scanner with an EOL indicator
+	 * @param starting start position of range of interest
+	 * @param ending the end position for the range of interest
+	 * @return the location at the end of the token starting the range
+	 * @throws BadLocationException for segment errors
+	 */
+	int alignScannerAround (int starting, int ending) throws BadLocationException
+	{
+		int alignedStart, endToken;
+		// position may lie inside a token
+		// - no EOL conventions are able to be assumed
+		loadBuffer (alignedStart = doc.findAlignedStart (starting), ending);
+
+		while (true)
+		{
+			endToken = scanner.getLastSourcePosition ();
+			if (alignmentFound (starting, endToken)) return alignedStart;
+			lastTokenread = scanner.getToken ();
+			alignedStart = endToken;
+		}
+	}
+	boolean alignmentFound (int startOfSegment, int tokenEndPosition)
+	{ return tokenEndPosition >= startOfSegment || lastTokenread == null; }
+	
+
+	/**
+	 * parse tokens across a segment requested for the view
+	 * @param starting
+	 * @param ending
+	 * @throws BadLocationException
+	 */
+	void loadBuffer (int starting, int ending) throws BadLocationException
+	{
+		Segment segment = getSegment (starting, ending);
+		scanner.updateSource (new StringBuffer (segment.toString ()), starting);
+		lastTokenread = scanner.getToken ();
+	}
+	protected SnipToolToken lastTokenread;
+
+
 	/* (non-Javadoc)
 	 * @see javax.swing.text.WrappedPlainView#drawUnselectedText(java.awt.Graphics, int, int, int, int)
 	 */
@@ -44,15 +85,15 @@ public class SnipToolView extends WrappedPlainView
 		)							// returns X location at end of range
 	throws BadLocationException
 	{
-		SnipToolToken lastTokenread;
-		int nextStyleCode, last, mark = p0;
-		int styleCode = scanner.getDefaultStyleCode ();
+		int nextStyleCode, last, mark;
+		mark = alignScannerAround (p0, p1);
+		p0 = scanner.getLastSourcePosition ();
 
-		scanner.updateSource (new StringBuffer (getText (p0, p1)), p0);
+		if (lastTokenread == null) return x;
+		int styleCode = lastTokenread.getStyleCode ();
 
 		for (; p0 < p1 ;)
 		{
-
 			lastTokenread = scanner.getToken ();
 			last = scanner.getLastSourcePosition ();
 
@@ -85,18 +126,24 @@ public class SnipToolView extends WrappedPlainView
 		)
 	throws BadLocationException
 	{
-		Segment text = getLineBuffer ();
-		doc.getText (mark, end - mark, text);
-		return context.draw (g, this, text, x, y, mark, styleCode);
+		try
+		{
+			
+			Segment text = getSegment (mark, end);
+			return context.draw (g, this, text, x, y, mark, styleCode);
+		} catch (Exception e)
+		{
+			System.out.println ("DRAW:"+mark+","+end);
+			throw e;
+		}
 	}
 	
-	String getText
-	(int from, int to)
+	Segment getSegment (int from, int to)
 	throws BadLocationException
 	{
 		Segment text = getLineBuffer ();
 		doc.getText (from, to - from, text);
-		return text.toString ();
+		return text;
 	}
 
 

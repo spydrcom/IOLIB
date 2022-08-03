@@ -13,6 +13,16 @@ public interface SnipToolPropertyAccess
 {
 
 	/**
+	 * @return default font size
+	 */
+	int getFontSize ();
+
+	/**
+	 * @return default font family name
+	 */
+	String getFontFamily ();
+
+	/**
 	 * @return a newly constructed SnipEditor
 	 */
 	SimpleScreenIO.SnipEditor newEditor ();

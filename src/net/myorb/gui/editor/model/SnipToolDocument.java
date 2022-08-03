@@ -5,7 +5,6 @@ import javax.swing.text.Element;
 import javax.swing.text.GapContent;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.PlainDocument;
 import javax.swing.text.Segment;
 
@@ -65,9 +64,9 @@ public class SnipToolDocument extends PlainDocument
 				if (inComment)
 				{
 
-					MutableAttributeSet a =
-						(MutableAttributeSet) elem.getAttributes ();
-					a.addAttribute (CommentAttribute, CommentAttribute);
+//					MutableAttributeSet a =
+//						(MutableAttributeSet) elem.getAttributes ();
+//					a.addAttribute (CommentAttribute, CommentAttribute);
 
 					if (s.indexOf ("*/") >= 0) { inComment = false; } // found an end of comment, turn off marks
 
@@ -112,7 +111,7 @@ public class SnipToolDocument extends PlainDocument
 	/**
 	 * Key to be used in AttributeSet's holding a value of Comment.
 	 */
-	public static final StyleAttribute CommentAttribute = new StyleAttribute ("Comment");
+	//public static final StyleAttribute CommentAttribute = new StyleAttribute ("Comment");
 
 
 	/**
@@ -186,6 +185,52 @@ public class SnipToolDocument extends PlainDocument
 	}
 
 
+	/**
+	 * @param starting the start of the portion of current interest
+	 * @return the point closest to the start where EOL was seen
+	 * @throws BadLocationException for loading errors
+	 */
+	int findAlignedStart (int starting) throws BadLocationException
+	{
+		Element line;
+		Element elem = getDefaultRootElement ();
+		int lineNum = elem.getElementIndex (starting);
+
+		// starting at bottom of file
+		if (--lineNum < 0) return 0;
+
+		Segment segment = new Segment ();
+		int p; String text;
+
+		while (true)
+		{
+			// get the text of the line
+			line = elem.getElement (lineNum);
+
+			int
+				s = line.getStartOffset (),
+				e = line.getEndOffset ();
+			getText (s, e-s, segment);
+
+			// check for EOL indicator
+			text = new String (segment.array);
+			p = text.indexOf ("\n");
+			if (p >= 0) break;
+
+			// got back to bottom of document
+			if (--lineNum < 0) return 0;
+		}
+
+		int next;
+
+		while (true)
+		{
+			// find closest EOL
+			next = text.indexOf ("\n", p+1);
+			if (next < 0 || next >= starting) return p+1;
+			p = next;
+		}
+	}
 
 	private static final long serialVersionUID = 9048806203569287533L;
 
