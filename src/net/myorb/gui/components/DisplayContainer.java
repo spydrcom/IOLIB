@@ -16,17 +16,66 @@ public interface DisplayContainer
 	extends RootPaneContainer
 {
 
+	/**
+	 * @param title text of title for frame
+	 */
 	void setTitle (String title);
+
+	/**
+	 * @param image icon to use on frame
+	 */
 	void setIconImage (Image image);
+
+	/**
+	 * @param to action to use for close
+	 */
 	void setDefaultCloseOperation (int to);
+
+	/**
+	 * @param preferredSize size for preference
+	 */
 	void setPreferredSize (Dimension preferredSize);
+
+	/**
+	 * @param preferredSize minimum size allowed
+	 */
 	void setMinimumSize (Dimension preferredSize);
+
+	/**
+	 * @param component object to display in frame
+	 * @return same component
+	 */
 	Component add (Component component);
-	void maximize ();
+
+	/**
+	 * @param menuBar menu bar for frame
+	 */
 	void setJMenuBar (JMenuBar menuBar);
+
+	/**
+	 * @param size size for initial display
+	 */
 	void setSize (Dimension size);
-	void setVisible (boolean to);
+
+	/**
+	 * @param w the width
+	 * @param h the height
+	 */
 	void setSize (int w, int h);
+
+	/**
+	 * @param to TRUE for display request
+	 */
+	void setVisible (boolean to);
+
+	/**
+	 * force internal frame to maximum
+	 */
+	void maximize ();
+
+	/**
+	 * standard frame pack
+	 */
 	void pack ();
 
 }

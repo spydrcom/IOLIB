@@ -1,17 +1,13 @@
 
 package net.myorb.gui;
 
-import javax.swing.text.BadLocationException;
+import net.myorb.gui.ScribeEngine.Attribution;
+
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
-import javax.swing.text.TabExpander;
-import javax.swing.text.Utilities;
-import javax.swing.text.Segment;
 import javax.swing.text.Style;
 
 import java.awt.Color;
-import java.awt.Graphics;
-
 import java.awt.font.TextAttribute;
 import java.awt.Font;
 
@@ -23,7 +19,7 @@ import java.util.Map;
  * a manager for attributes making a style
  * @author Michael Druckman
  */
-public class StyleManager extends StyleContext
+public class StyleManager extends StyleContext implements Attribution
 {
 
 
@@ -49,6 +45,7 @@ public class StyleManager extends StyleContext
 
 
 	/**
+	 * add a new style to the StyleContext structure
 	 * @param name the name to associate with the style
 	 * @return a newly created style object
 	 */
@@ -59,6 +56,7 @@ public class StyleManager extends StyleContext
 
 
 	/**
+	 * add a style to the cache at the current style code
 	 * @param style the style object being cached
 	 */
 	public void cacheStyle (Style style)
@@ -71,12 +69,28 @@ public class StyleManager extends StyleContext
 	protected List<Font> fonts;
 
 
+	/*
+	 * ScribeEngine.Attribution implementation
+	 */
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.ScribeEngine.Attribution#getStyleFor(int)
+	 */
 	public Style getStyleFor (int styleCode) { return styles.get (styleCode); }
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.ScribeEngine.Attribution#getColorFor(int)
+	 */
 	public Color getColorFor (int styleCode) { return colors.get (styleCode); }
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.ScribeEngine.Attribution#getFontFor(int)
+	 */
 	public Font getFontFor (int styleCode) { return fonts.get (styleCode); }
 
 
 	/**
+	 * add new style to system and return code
 	 * @param style the style object being posted
 	 * @return the code which identifies the style
 	 */
@@ -91,6 +105,7 @@ public class StyleManager extends StyleContext
 
 
 	/**
+	 * retrieve the code value for the style
 	 * @param style the style object being queried
 	 * @return the code which identifies the style
 	 */
@@ -116,6 +131,7 @@ public class StyleManager extends StyleContext
 	}
 	public int valueOf (Object value) { return ((Number) value).intValue (); }
 
+
 	/**
 	 * set the attributes for a style
 	 * @param s the style to be given the attributes
@@ -130,48 +146,6 @@ public class StyleManager extends StyleContext
 		setAttributesFor (s, font.getAttributes ());
 	}
 
-
-	/**
-	 * @param g the Graphic being constructed for the render
-	 * @param t the tab expander assigned for the render in the caller
-	 * @param text a segment of text to be drawn in the Graphic being constructed
-	 * @param x the x coordinate within the Graphic to start the draw of the text
-	 * @param y the y coordinate within the Graphic to start the draw of the text
-	 * @param mark the start point describing the location within the model
-	 * @param styleCode the style to use which identifies the font and color
-	 * @return the x coordinate within the Graphic ending the draw of the text
-	 * @throws BadLocationException for the tabbed text draw layer
-	 */
-	public int draw
-		(
-			Graphics g,
-			TabExpander t,
-			Segment text,
-			int x, int y,
-			int mark,
-			int styleCode
-		)
-	throws BadLocationException
-	{
-		attribute (g, styleCode);
-		return Utilities.drawTabbedText (text, x, y, g, t, mark);
-	}
-	
-	/**
-	 * apply a style code to a Graphic being rendered
-	 * @param g the Graphic being constructed for the render
-	 * @param styleCode the code that identifies a style
-	 */
-	public void attribute 
-		(
-			Graphics g,
-			int styleCode
-		)
-	{
-		g.setColor (getColorFor (styleCode));
-		g.setFont (getFontFor (styleCode));
-	}
-	
 
 	private static final long serialVersionUID = -6051870418619697463L;
 

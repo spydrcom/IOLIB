@@ -15,6 +15,9 @@ public class DisplayRoot extends JFrame
 	public DisplayRoot (String title) { super (title); }
 	private static final long serialVersionUID = -1615325280046605362L;
 
-	public void maximize () {}
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.components.DisplayContainer#maximize()
+	 */
+	public void maximize () {} // not done this way in JFrame
 
 }

@@ -136,12 +136,17 @@ public class SnipToolProcessing extends SnipToolMenu
 	{
 		SnipToolEditor editor = properties.newLanguageSensitiveEditor ();
 
-		Component c = new Scrolling (editor);
-		DisplayFrame frame = new DisplayFrame (c, getName ());
-		setMenuBar (frame); frame.showOrHide (wXh (W, H));
-		frame.getSwingComponent ().maximize ();
-
+		DisplayFrame frame = new DisplayFrame
+				(
+					new Scrolling (editor).toComponent (),
+					getName ()
+				);
 		editor.setText (getTextContainer ().getText ());
+
+		//setMenuBar (frame); frame.showOrHide (wXh (W, H));
+
+		frame.showOrHide (wXh (W, H));
+		frame.getSwingComponent ().maximize ();
 
 	}
 

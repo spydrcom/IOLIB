@@ -21,7 +21,8 @@ import java.awt.Font;
  * - refactor done in summer 2022
  * @author Michael Druckman
  */
-public class SnipToolContext  extends StyleManager implements ViewFactory
+public class SnipToolContext  extends StyleManager
+		implements ViewFactory
 {
 
 

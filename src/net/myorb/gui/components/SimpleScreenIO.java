@@ -10,38 +10,44 @@ import net.myorb.gui.BackgroundTask;
 import javax.swing.SwingUtilities;
 import javax.swing.ImageIcon;
 
-import javax.swing.RootPaneContainer;
 
-import javax.swing.text.DefaultEditorKit;
-
-import javax.swing.JComponent;
-import javax.swing.JScrollBar;
-import javax.swing.JOptionPane;
-import javax.swing.JToggleButton;
-import javax.swing.JViewport;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.text.JTextComponent;
-import javax.swing.JEditorPane;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
-import javax.swing.JMenuBar;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.text.DefaultEditorKit;
 
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.BorderFactory;
 
+import javax.swing.JViewport;
+import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
+
+import javax.swing.RootPaneContainer;
+import javax.swing.JComponent;
+
+import javax.swing.JToggleButton;
+import javax.swing.JButton;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JEditorPane;
+
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JCheckBox;
+import javax.swing.JMenuBar;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import java.awt.event.ActionListener;
+
 import java.awt.LayoutManager;
 import java.awt.GridLayout;
 import java.awt.Dimension;
-//import java.awt.Font;
 import java.awt.Container;
 import java.awt.Component;
+//import java.awt.Font;
 import java.awt.Color;
 
 import java.lang.reflect.InvocationTargetException;
@@ -348,7 +354,6 @@ public class SimpleScreenIO
 		public SnipEditor ()
 		{
 			setBackground (Color.white);
-			//setFont (new Font ("Courier", 0, 12));
 			setEditable (true);
 		}
 

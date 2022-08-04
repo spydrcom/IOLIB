@@ -4,6 +4,7 @@ package net.myorb.gui.editor.model;
 import net.myorb.gui.components.text.LineElementRealization;
 import net.myorb.gui.components.text.SingleLineTokenAlignment;
 import net.myorb.gui.components.text.DocumentAlignmentTool;
+import net.myorb.gui.components.text.TextSource;
 
 import javax.swing.text.Element;
 import javax.swing.text.GapContent;
@@ -25,7 +26,7 @@ import java.io.InputStream;
  * @author Michael Druckman
  */
 public class SnipToolDocument extends PlainDocument
-	implements LineElementRealization
+	implements LineElementRealization, TextSource
 {
 
 
@@ -197,6 +198,26 @@ public class SnipToolDocument extends PlainDocument
 		fillSegment (line, segment);
 		return new String (segment.array);
 	}
+
+
+	/* (non-Javadoc)
+	 * @see javax.swing.text.AbstractDocument#getText(int, int)
+	 */
+	public String getText
+	(int starting, int length)
+	throws BadLocationException
+	{
+		Segment text = new Segment ();
+		getText (starting, length, text);
+		return text.toString ();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.components.text.TextSource#buffer(int, int)
+	 */
+	public StringBuffer buffer (int starting, int length) throws BadLocationException
+	{ return new StringBuffer (getText (starting, length)); }
 
 
 	private static final long serialVersionUID = 9048806203569287533L;

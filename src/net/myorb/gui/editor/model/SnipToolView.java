@@ -1,13 +1,13 @@
 
 package net.myorb.gui.editor.model;
 
+import net.myorb.gui.ScribeEngine;
 import net.myorb.gui.editor.SnipToolScanner;
 
 import javax.swing.text.WrappedPlainView;
 import javax.swing.text.BadLocationException;
 
 import javax.swing.text.Element;
-import javax.swing.text.Segment;
 
 import java.awt.Graphics;
 
@@ -67,8 +67,8 @@ public class SnipToolView extends WrappedPlainView
 	 */
 	void loadBuffer (int starting, int ending) throws BadLocationException
 	{
-		Segment segment = getSegment (starting, ending);
-		scanner.updateSource (new StringBuffer (segment.toString ()), starting);
+		scanner.updateSource
+		(doc.buffer (starting, ending-starting), starting);
 		lastTokenread = scanner.getToken ();
 	}
 	protected SnipToolToken lastTokenread;
@@ -85,14 +85,39 @@ public class SnipToolView extends WrappedPlainView
 		)							// returns X location at end of range
 	throws BadLocationException
 	{
-		int nextStyleCode, last, mark;
-		mark = alignScannerAround (p0, p1);
+		ScribeEngine scribe =
+			new ScribeEngine (x, y, this, g, context);
+		// the marked point is the start of the token at line start
+		// - note that this may be before p0 to allow correct first token render
+		int mark = alignScannerAround (p0, p1);
+
+		// empty lines will return null for the EOL character
+		if (lastTokenread == null) return x;
+
+		// p0 now becomes the end of the first token
 		p0 = scanner.getLastSourcePosition ();
 
-		if (lastTokenread == null) return x;
-		int styleCode = lastTokenread.getStyleCode ();
+		// the text can now be drawn knowing the correct first token
+		return drawText (scribe, p0, p1, mark);
+	}
 
-		for (; p0 < p1 ;)
+
+	/**
+	 * draw the adjusted text range starting with the full first token
+	 * @param scribe the text draw engine wrapping the graphics object
+	 * @param p0 the adjusted model starting point in the document
+	 * @param p1 the original end point in the model for this draw
+	 * @param mark the point found at the start of the first token
+	 * @return the x coordinate of end point within the Graphic
+	 * @throws BadLocationException for the text draw layer
+	 */
+	protected int drawText
+	(ScribeEngine scribe, int p0, int p1, int mark)
+	throws BadLocationException
+	{
+		int styleCode =
+			lastTokenread.getStyleCode ();
+		for ( int nextStyleCode, last ; p0 < p1 ; p0 = last )
 		{
 			lastTokenread = scanner.getToken ();
 			last = scanner.getLastSourcePosition ();
@@ -103,58 +128,12 @@ public class SnipToolView extends WrappedPlainView
 			if (nextStyleCode != styleCode)
 			{
 				// color change, flush what we have
-				x = draw (g, x, y, p0, mark, styleCode);
+				scribe.draw (doc, mark, p0, styleCode);
 				styleCode = nextStyleCode;
 				mark = p0;
 			}
-
-			p0 = last;
 		}
-
-		// flush remaining
-		return draw (g, x, y, p1, mark, styleCode);
-	}
-
-
-	/**
-	 * draw a range in model coordinates
-	 * @param g Graphics object being constructed
-	 * @param x the X coordinate in the view architecture
-	 * @param y the Y coordinate in the view architecture
-	 * @param end the end of the range in model coordinates
-	 * @param mark the start of the range in model coordinates
-	 * @param styleCode the code describing the style to use for draw
-	 * @return the x coordinate of end point within the Graphic
-	 * @throws BadLocationException for the text draw layer
-	 */
-	int draw
-		(
-			Graphics g,
-			int x, int y,			// AWT graphics coordinates
-			int end, int mark,		// document model coordinates
-			int styleCode			// context assigned code
-		)
-	throws BadLocationException
-	{
-		Segment text = getSegment (mark, end);
-		return context.draw (g, this, text, x, y, mark, styleCode);
-	}
-
-
-	/**
-	 * get document text found in range
-	 * @param from start position of range of interest
-	 * @param to the end position for the range of interest
-	 * @return Segment holding content found in specified range
-	 * @throws BadLocationException for segment errors
-	 */
-	Segment getSegment
-		(int from, int to)
-	throws BadLocationException
-	{
-		Segment text = getLineBuffer ();
-		doc.getText (from, to - from, text);
-		return text;
+		return scribe.draw (doc, mark, p1, styleCode);	// flush remaining
 	}
 
 
