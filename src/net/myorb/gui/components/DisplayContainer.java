@@ -22,6 +22,7 @@ public interface DisplayContainer
 	void setPreferredSize (Dimension preferredSize);
 	void setMinimumSize (Dimension preferredSize);
 	Component add (Component component);
+	void maximize ();
 	void setJMenuBar (JMenuBar menuBar);
 	void setSize (Dimension size);
 	void setVisible (boolean to);

@@ -3,7 +3,7 @@ package net.myorb.gui.editor;
 
 import net.myorb.gui.editor.model.*;
 
-import net.myorb.gui.components.SimpleScreenIO;
+import java.awt.Font;
 
 /**
  * properties passed from upper layer to independent layer
@@ -23,9 +23,20 @@ public interface SnipToolPropertyAccess
 	String getFontFamily ();
 
 	/**
+	 * @param withStyle the style for the font
+	 * @return a Font object with Snip configuration
+	 */
+	Font getFont (int withStyle);
+
+	/**
 	 * @return a newly constructed SnipEditor
 	 */
-	SimpleScreenIO.SnipEditor newEditor ();
+	SnipToolEditor newEditor ();
+
+	/**
+	 * @return a newly constructed SnipEditor with LSE kit
+	 */
+	SnipToolEditor newLanguageSensitiveEditor ();
 
 	/**
 	 * @return path to JXR configuration file for menus

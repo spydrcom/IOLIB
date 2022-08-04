@@ -111,6 +111,15 @@ public class SnipToolActions extends SnipToolProcessing
 		};
 	}
 
+	/**
+	 * eXpand to full screen
+	 * @return action for feature
+	 */
+	public ActionListener getExpandAction ()
+	{
+		return (e) -> { expand (properties); };
+	}
+
 
 	/*
 	 * Execute action items

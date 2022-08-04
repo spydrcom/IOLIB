@@ -1,7 +1,9 @@
 
 package net.myorb.gui.editor;
 
-import net.myorb.gui.components.FileDrop;
+import net.myorb.gui.editor.model.*;
+
+import net.myorb.gui.components.*;
 
 import java.awt.Component;
 
@@ -123,6 +125,24 @@ public class SnipToolProcessing extends SnipToolMenu
 	static void saveAs (SnipToolPropertyAccess properties)
 	{
 		if (setToRequestedName ()) save (properties);
+	}
+
+
+	/**
+	 * expand to full screen
+	 * @param properties access to display components
+	 */
+	static void expand (SnipToolPropertyAccess properties)
+	{
+		SnipToolEditor editor = properties.newLanguageSensitiveEditor ();
+
+		Component c = new Scrolling (editor);
+		DisplayFrame frame = new DisplayFrame (c, getName ());
+		setMenuBar (frame); frame.showOrHide (wXh (W, H));
+		frame.getSwingComponent ().maximize ();
+
+		editor.setText (getTextContainer ().getText ());
+
 	}
 
 

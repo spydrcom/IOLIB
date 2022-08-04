@@ -21,6 +21,11 @@ public class DisplayChild extends JInternalFrame
 	 */
 	public void setIconImage (Image image) {}
 
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.components.DisplayContainer#maximize()
+	 */
+	public void maximize () { try { this.setMaximum (true); } catch (Exception e) {} }
+
 	private static final long serialVersionUID = -1366686439227157871L;
 
 }

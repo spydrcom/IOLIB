@@ -39,7 +39,7 @@ import java.awt.event.ActionListener;
 import java.awt.LayoutManager;
 import java.awt.GridLayout;
 import java.awt.Dimension;
-import java.awt.Font;
+//import java.awt.Font;
 import java.awt.Container;
 import java.awt.Component;
 import java.awt.Color;
@@ -348,7 +348,7 @@ public class SimpleScreenIO
 		public SnipEditor ()
 		{
 			setBackground (Color.white);
-			setFont (new Font ("Courier", 0, 12));
+			//setFont (new Font ("Courier", 0, 12));
 			setEditable (true);
 		}
 
