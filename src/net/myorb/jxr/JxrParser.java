@@ -14,6 +14,27 @@ public class JxrParser extends JxrProcessingState
 
 
 	/**
+	 * simple entry to JXR processing
+	 * - as simple call with a single parameter
+	 * - the source stream is expanded as a JXR macro
+	 * @param source an XML input stream for the parser
+	 * @param parameterName the name of the parameter given the value
+	 * @param value the value of the parameter to pass against the name
+	 * @return the symbols exported from the processing of the source
+	 * @throws Exception for error conditions
+	 */
+	public static SymbolTable read
+		(InputStream source, String parameterName, Object value)
+	throws Exception
+	{
+		JxrSymManager.SymbolHash
+		parameter = new JxrSymManager.SymbolHash ();
+		parameter.put (parameterName, value);
+		return read (source, parameter);
+	}
+
+
+	/**
 	 * construct with empty symbol table
 	 */
 	JxrParser () {}
