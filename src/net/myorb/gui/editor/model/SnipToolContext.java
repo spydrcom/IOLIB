@@ -21,7 +21,7 @@ import java.awt.Font;
  * - refactor done in summer 2022
  * @author Michael Druckman
  */
-public class SnipToolContext  extends StyleManager
+public class SnipToolContext extends StyleManager
 		implements ViewFactory
 {
 
@@ -33,7 +33,21 @@ public class SnipToolContext  extends StyleManager
 
 
 	/**
-	 * establish content for tokens of upper layer
+	 * configure SnipTool properties and include JXR style configuration
+	 * @param properties access to properties of upper layer implementation
+	 * @param configurationScriptPath the path to the JXR style configuration
+	 */
+	public SnipToolContext
+		(
+			SnipToolPropertyAccess properties,
+			String configurationScriptPath
+		)
+	{
+		this (properties); readScript (configurationScriptPath);
+	}
+
+	/**
+	 * establish context for tokens of upper layer
 	 * @param properties access to properties of upper layer
 	 */
 	public SnipToolContext (SnipToolPropertyAccess properties)

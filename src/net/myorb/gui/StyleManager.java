@@ -2,6 +2,7 @@
 package net.myorb.gui;
 
 import net.myorb.gui.ScribeEngine.Attribution;
+import net.myorb.jxr.JxrParser;
 
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -14,6 +15,9 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import java.io.FileInputStream;
+import java.io.File;
 
 /**
  * a manager for attributes making a style
@@ -145,6 +149,22 @@ public class StyleManager extends StyleContext implements Attribution
 		StyleConstants.setItalic (s, font.isItalic ());
 		setAttributesFor (s, font.getAttributes ());
 	}
+
+
+	/**
+	 * use JXR to read configuration script
+	 */
+	public void readScript (String scriptPath)
+	{
+		try
+		{
+			FileInputStream
+			source = new FileInputStream (new File (scriptPath));
+			JxrParser.read (source, SCRIPT_PARAMETER, this);
+		}
+		catch (Exception e) { e.printStackTrace (); }
+	}
+	public static final String SCRIPT_PARAMETER = "StyleManager";
 
 
 	private static final long serialVersionUID = -6051870418619697463L;
