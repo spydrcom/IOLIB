@@ -153,6 +153,7 @@ public class StyleManager extends StyleContext implements Attribution
 
 	/**
 	 * use JXR to read configuration script
+	 * @param scriptPath path to configuration source
 	 */
 	public void readScript (String scriptPath)
 	{
