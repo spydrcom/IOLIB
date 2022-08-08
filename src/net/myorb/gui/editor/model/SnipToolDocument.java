@@ -7,12 +7,14 @@ import net.myorb.gui.components.text.DocumentAlignmentTool;
 import net.myorb.gui.components.text.TextSource;
 
 import javax.swing.text.Element;
-import javax.swing.text.GapContent;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
+import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Segment;
+import javax.swing.text.Style;
 
+//import javax.swing.text.GapContent;
+//import javax.swing.text.PlainDocument;
 //import javax.swing.event.DocumentEvent;
 
 import java.io.IOException;
@@ -25,14 +27,21 @@ import java.io.InputStream;
  * - refactor done in summer 2022
  * @author Michael Druckman
  */
-public class SnipToolDocument extends PlainDocument
+public class SnipToolDocument extends DefaultStyledDocument
 	implements LineElementRealization, TextSource
 {
 
 
+	/*
+	 * 08/08/2022 refactor causing effective re-design
+	 *  EditorPane is now TextPane extending capabilities.
+	 * SEE: replace method allowing full Style functionality.
+	 */
+
+
 	public SnipToolDocument ()
 	{
-		super (new GapContent (1024));
+		//super (new GapContent (1024));
 		prepareDocumentExaminer ();
 	}
 
@@ -138,6 +147,23 @@ public class SnipToolDocument extends PlainDocument
 		Segment segment;
 	}
 
+
+
+	/**
+	 * replace segment of text with alternate source.
+	 * - allows change of style attributes for content.
+	 * @param atPosition the starting position for the text
+	 * @param withText the substitution text for the operation
+	 * @param usingStyle the style attributes to apply to new text
+	 * @throws BadLocationException for Java Text model position error
+	 */
+	public void replace
+	(int atPosition, String withText, Style usingStyle)
+	throws BadLocationException
+	{
+        remove (atPosition, withText.length ());
+        insertString (atPosition, withText, usingStyle);  
+	}
 
 
 	/*

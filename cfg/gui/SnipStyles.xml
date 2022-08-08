@@ -1,0 +1,87 @@
+<JXR>
+
+	<READ path='cfg/runtime.xml'/>
+
+	<void><int toBeCalled='size'>16</int></void>
+	<void><string toBeCalled='family'>SansSerif</string></void>
+
+	<package called='SwingText'>javax.swing.text</package>
+	<class called='StyleConstants' package='SwingText' name='StyleConstants'/>
+
+	<saveas toBeCalled='BLUE'> <field named='BLUE' class='Color'/> </saveas>
+
+
+	<!--
+
+		symbol categories that are given names in semantic analysis:
+
+		Group Delimiters, Assignment Operators, Binary Operators
+		Unary Post-Fix Operators, Unary Operators, Operator Modifiers
+		Built-In Functions, Built-In Symbols, Built-In Delimiter
+		Library, Symbols, Operators, Splines, Functions
+
+		these names can be used as StyleNames to control color legend items
+		in the SnipEditor semantic analysis display
+
+	 -->
+
+
+	<!-- Library category symbols -->
+
+	<SaveAs toBeCalled='LIB_COLOR'> <evaluate class='Color' method='decode' > <string>0x800080</string> </evaluate> </SaveAs>
+
+	<SaveAs toBeCalled='style'>
+		<evaluate object='StyleManager' method='addStyle'>		<!-- add style in StyleManager -->
+			<string>Library</string>							<!--  name of symbol category  -->
+		</evaluate>
+	</SaveAs>
+
+	<call class='StyleConstants' method='setFontSize' using='style size' />
+	<call class='StyleConstants' method='setFontFamily' using='style family' />
+	<call class='StyleConstants' method='setForeground' using='style LIB_COLOR' />
+	<call class='StyleConstants' method='setUnderline' using='style T' />
+	<call class='StyleConstants' method='setItalic' using='style T' />
+	<call class='StyleConstants' method='setBold' using='style T' />
+
+	<SaveAs toBeCalled='styleCode'><evaluate object='StyleManager' method='assignStyleCode' using='style' /></SaveAs>
+
+
+	<!-- Built-In Delimiter category symbols -->
+
+	<SaveAs toBeCalled='BID_COLOR'> <evaluate class='Color' method='decode' > <string>0x2E8B57</string> </evaluate> </SaveAs>
+
+	<SaveAs toBeCalled='style'>
+		<evaluate object='StyleManager' method='addStyle'>		<!-- add style in StyleManager -->
+			<string>Built-In Delimiter</string>					<!--  name of symbol category  -->
+		</evaluate>
+	</SaveAs>
+
+	<call class='StyleConstants' method='setFontSize' using='style size' />
+	<call class='StyleConstants' method='setFontFamily' using='style family' />
+	<call class='StyleConstants' method='setForeground' using='style BID_COLOR' />
+	<call class='StyleConstants' method='setItalic' using='style T' />
+	<call class='StyleConstants' method='setBold' using='style T' />
+
+	<SaveAs toBeCalled='styleCode'><evaluate object='StyleManager' method='assignStyleCode' using='style' /></SaveAs>
+
+
+	<!-- Group Delimiters category symbols -->
+
+	<SaveAs toBeCalled='GD_COLOR'> <evaluate class='Color' method='decode' > <string>0x228B22</string> </evaluate> </SaveAs>
+
+	<SaveAs toBeCalled='style'>
+		<evaluate object='StyleManager' method='addStyle'>		<!-- add style in StyleManager -->
+			<string>Group Delimiters</string>					<!--  name of symbol category  -->
+		</evaluate>
+	</SaveAs>
+
+	<call class='StyleConstants' method='setFontSize' using='style size' />
+	<call class='StyleConstants' method='setFontFamily' using='style family' />
+	<call class='StyleConstants' method='setForeground' using='style GD_COLOR' />
+	<call class='StyleConstants' method='setItalic' using='style T' />
+	<call class='StyleConstants' method='setBold' using='style T' />
+
+	<SaveAs toBeCalled='styleCode'><evaluate object='StyleManager' method='assignStyleCode' using='style' /></SaveAs>
+
+
+</JXR>

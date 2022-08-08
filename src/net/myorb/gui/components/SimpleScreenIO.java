@@ -12,7 +12,8 @@ import javax.swing.ImageIcon;
 
 
 import javax.swing.text.JTextComponent;
-import javax.swing.text.DefaultEditorKit;
+//import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.StyledEditorKit;
 
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -30,7 +31,8 @@ import javax.swing.JButton;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JEditorPane;
+//import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -337,10 +339,10 @@ public class SimpleScreenIO
 	/**
 	 * text editing component
 	 */
-	public static class SnipEditor extends JEditorPane implements Widget
+	public static class SnipEditor extends JTextPane implements Widget
 	{
 
-		public static class SnipEditorModel extends DefaultEditorKit
+		public static class SnipEditorModel extends StyledEditorKit				//DefaultEditorKit
 		{ private static final long serialVersionUID = -4369234614973084001L; }
 
 		public SnipEditor (SnipEditorModel model)

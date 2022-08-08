@@ -1,8 +1,10 @@
 <JXR>
 
+	<package called='AWT'>java.awt</package>
 	<package called='swing'>javax.swing</package>
 	<package called='event'>java.awt.event</package>
 
+	<class called='Color' package='AWT' name='Color'/>
 	<class called='KeyEvent' package='event' name='KeyEvent'/>
 	<class called='ActionEvent' package='event' name='ActionEvent'/>
 

@@ -146,6 +146,9 @@ public class CommonCommandParser
 
 	public enum Category {WS, MCO, ID, OP, TXT, NUM}
 	
+	/**
+	 * simple bean that connects position and category
+	 */
 	public static class TokenTrack
 	{
 		TokenTrack (Category type, int starting)
@@ -155,10 +158,23 @@ public class CommonCommandParser
 		Category type; int starting;
 	}
 
+	/**
+	 * @param cat the category of the token
+	 * @param pos the position in the source line
+	 * @param tracking the list of tracking records being constructed
+	 */
 	public static void track
 	(Category cat, int pos, List<TokenTrack> tracking)
 	{ tracking.add (new TokenTrack (cat, pos)); }
 
+	/**
+	 * @param buffer the text of the expression to be parsed
+	 * @param segments access to data specifying special segments
+	 * @param position the source position to note for tracking retention
+	 * @param tokens the parallel structure to tracking holding the token description
+	 * @param tracking the parallel structure to tokens holding the position description
+	 * @return the position at the conclusion of the parse
+	 */
 	public int parseNext (StringBuffer buffer, SpecialTokenSegments segments, int position, List<TokenDescriptor> tokens, List<TokenTrack> tracking)
 	{
 		if (belongsTo (buffer, position, segments.getWhiteSpace ())) { position = ignoreWhitespace (buffer, position, segments); }
