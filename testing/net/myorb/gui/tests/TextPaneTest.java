@@ -4,17 +4,18 @@ package net.myorb.gui.tests;
 import net.myorb.gui.StyleManager;
 
 import javax.swing.JFrame;  
-import javax.swing.JScrollPane;  
 import javax.swing.JTextPane;  
+import javax.swing.JScrollPane;  
+
 import javax.swing.text.BadLocationException;  
-import javax.swing.text.Document;  
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;  
+import javax.swing.text.Document;  
+import javax.swing.text.Style;
 
 import java.awt.BorderLayout;  
-import java.awt.Color;  
 import java.awt.Container;  
+import java.awt.Color;  
 
 public class TextPaneTest
 {  
@@ -23,12 +24,13 @@ public class TextPaneTest
 	{  
 		StyleManager styles = new StyleManager ();
 		styles.readScript ("cfg/gui/SnipStyles.xml");
-		Style libStyle = styles.getStyle ("Library");
+		Style libStyle = styles.getStyle ("UnknownID");
 
 		JFrame frame = new JFrame("JTextPane Example");  
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         Container cp = frame.getContentPane();  
         JTextPane pane = new JTextPane();  
+
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();  
         StyleConstants.setBold(attributeSet, true);  
   
@@ -48,7 +50,7 @@ public class TextPaneTest
         int pos = doc.getLength();
         doc.insertString(pos, txt, attributeSet);  
   
-        attributeSet = new SimpleAttributeSet();  
+        //attributeSet = new SimpleAttributeSet();  
         doc.insertString(doc.getLength(), "World", attributeSet);  
   
         JScrollPane scrollPane = new JScrollPane(pane);  

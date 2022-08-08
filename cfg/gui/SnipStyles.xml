@@ -26,6 +26,26 @@
 	 -->
 
 
+	<!-- Unrecognized Identifier category symbols -->
+
+	<SaveAs toBeCalled='UNKNOWN_ID_COLOR'> <evaluate class='Color' method='decode' > <string>0xFF0000</string> </evaluate> </SaveAs>
+
+	<SaveAs toBeCalled='style'>
+		<evaluate object='StyleManager' method='addStyle'>		<!-- add style in StyleManager -->
+			<string>UnknownID</string>							<!--  name of symbol category  -->
+		</evaluate>
+	</SaveAs>
+
+	<call class='StyleConstants' method='setFontSize' using='style size' />
+	<call class='StyleConstants' method='setFontFamily' using='style family' />
+	<call class='StyleConstants' method='setForeground' using='style UNKNOWN_ID_COLOR' />
+	<call class='StyleConstants' method='setUnderline' using='style T' />
+	<call class='StyleConstants' method='setItalic' using='style T' />
+	<call class='StyleConstants' method='setBold' using='style T' />
+
+	<SaveAs toBeCalled='styleCode'><evaluate object='StyleManager' method='assignStyleCode' using='style' /></SaveAs>
+
+
 	<!-- Library category symbols -->
 
 	<SaveAs toBeCalled='LIB_COLOR'> <evaluate class='Color' method='decode' > <string>0x800080</string> </evaluate> </SaveAs>

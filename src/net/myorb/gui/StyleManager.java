@@ -122,6 +122,20 @@ public class StyleManager extends StyleContext implements Attribution
 
 
 	/**
+	 * retrieve the code value for the named style
+	 * @param name the name assigned for the style
+	 * @return the code which identifies the style
+	 */
+	public int getStyleCodeFor (String name)
+	{
+		Style s;
+		if ((s = getStyle (name)) != null)
+		{ return getStyleCodeFor (s); }
+		else return -1;
+	}
+
+
+	/**
 	 * set the attributes for a style
 	 * @param s the style to be given the attributes
 	 * @param a the map of TextAttribute taken from the font
@@ -148,6 +162,31 @@ public class StyleManager extends StyleContext implements Attribution
 		StyleConstants.setBold (s, font.isBold ());
 		StyleConstants.setItalic (s, font.isItalic ());
 		setAttributesFor (s, font.getAttributes ());
+	}
+
+
+	/**
+	 * check style for render needs
+	 * @param style the Style to examine for render needs
+	 * @return TRUE for StrikeThru or Underline
+	 */
+	public boolean isSophisticatedStyle (Style style)
+	{
+		boolean
+			ST = StyleConstants.isStrikeThrough (style),
+			UL = StyleConstants.isUnderline (style);
+		return ST || UL;
+	}
+
+
+	/**
+	 * check style for render needs
+	 * @param styleCode the code assigned to the style
+	 * @return TRUE for StrikeThru or Underline
+	 */
+	public boolean isSophisticatedStyle (int styleCode)
+	{
+		return isSophisticatedStyle (styles.get (styleCode));
 	}
 
 
