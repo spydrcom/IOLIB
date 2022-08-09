@@ -127,13 +127,29 @@ public class SnipToolView extends WrappedPlainView
 
 			if (nextStyleCode != styleCode)
 			{
-				// color change, flush what we have
-				scribe.draw (doc, mark, p0, styleCode);
+				if (isSophisticatedStyle (styleCode))
+				{
+					doc.replace
+					(
+						mark, lastTokenread.representation,
+						context.getStyleFor (styleCode)
+					);
+				}
+				else
+				{
+					// color change, flush what we have
+					scribe.draw (doc, mark, p0, styleCode);
+				}
 				styleCode = nextStyleCode;
 				mark = p0;
 			}
 		}
 		return scribe.draw (doc, mark, p1, styleCode);	// flush remaining
+	}
+	boolean isSophisticatedStyle (int styleCode)
+	{
+		//return context.isSophisticatedStyle (styleCode);
+		return false;
 	}
 
 

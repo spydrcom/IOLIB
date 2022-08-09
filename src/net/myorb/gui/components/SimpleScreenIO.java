@@ -356,7 +356,7 @@ public class SimpleScreenIO
 		public SnipEditor ()
 		{
 			setBackground (Color.white);
-			setEditable (true);
+			//setEditable (true);
 		}
 
 		/* (non-Javadoc)

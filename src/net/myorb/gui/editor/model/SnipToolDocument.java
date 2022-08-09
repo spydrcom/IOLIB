@@ -161,8 +161,9 @@ public class SnipToolDocument extends DefaultStyledDocument
 	(int atPosition, String withText, Style usingStyle)
 	throws BadLocationException
 	{
-        remove (atPosition, withText.length ());
-        insertString (atPosition, withText, usingStyle);  
+        //remove (atPosition, withText.length ());
+        //insertString (atPosition, withText, usingStyle);
+        replace (atPosition, withText.length (), withText, usingStyle);
 	}
 
 
