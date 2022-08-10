@@ -1,7 +1,7 @@
 
 package net.myorb.gui.editor;
 
-import net.myorb.gui.editor.model.*;
+//import net.myorb.gui.editor.model.*;
 
 import net.myorb.gui.components.*;
 
@@ -134,20 +134,44 @@ public class SnipToolProcessing extends SnipToolMenu
 	 */
 	static void expand (SnipToolPropertyAccess properties)
 	{
-		SnipToolEditor editor = properties.newLanguageSensitiveEditor ();
-
-		DisplayFrame frame = new DisplayFrame
-				(
-					new Scrolling (editor).toComponent (),
-					getName ()
-				);
+		SnipEditor editor =
+			properties.newLanguageSensitiveEditor ();
+		DisplayFrame frame = makeDisplayFrame (editor);
 		editor.setText (getTextContainer ().getText ());
+		//setMenuBar (frame);
+		show (frame);
+	}
 
-		//setMenuBar (frame); frame.showOrHide (wXh (W, H));
 
+	/**
+	 * analyze content
+	 * @param properties access to display components
+	 */
+	static void analyze (SnipToolPropertyAccess properties)
+	{
+		SnipEditor editor =
+			properties.newSnipAnalyzer
+						(getTextContainer ());
+		DisplayFrame frame = makeDisplayFrame (editor);
+		//setMenuBar (frame);
+		show (frame);
+	}
+
+
+	static DisplayFrame makeDisplayFrame (Widget widget)
+	{
+		return new DisplayFrame
+			(
+				new Scrolling (widget).toComponent (),
+				getName ()
+			);
+	}
+
+
+	static void show (DisplayFrame frame)
+	{
 		frame.showOrHide (wXh (W, H));
 		frame.getSwingComponent ().maximize ();
-
 	}
 
 

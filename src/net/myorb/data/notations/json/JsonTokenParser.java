@@ -3,6 +3,7 @@ package net.myorb.data.notations.json;
 
 import net.myorb.data.abstractions.CommonCommandParser;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,6 +42,7 @@ public class JsonTokenParser extends CommonCommandParser
 	public String getWhiteSpace () { return WHITE_SPACE; }
 	public String getMultiCharacterOperator () { return MULTI_CHARACTER_OPERATOR; }
 	public String getExtendedOperator () { return OPERATOR_EXTENDED; }
+	public Collection<String> getCommentIndicators () { return null; }
 	public String getOperator () { return OPERATOR; }
 	public String getIdnBody () { return IDN_BODY; }
 

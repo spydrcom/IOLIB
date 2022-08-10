@@ -16,6 +16,7 @@ import java.awt.Dimension;
 public class SnipFrame extends SnipEditor
 {
 
+	public SnipFrame () {}
 
 	/**
 	 * @param source the text components with source of text to edit
@@ -53,7 +54,7 @@ public class SnipFrame extends SnipEditor
 	public void show (String title, Dimension size)
 	{
 		DisplayFrame frame = new DisplayFrame
-			(new Scrolling (this).toComponent (), title);
+			(getScrolling ().toComponent (), title);
 		frame.menuBar = menu;
 		frame.show (size);
 	}

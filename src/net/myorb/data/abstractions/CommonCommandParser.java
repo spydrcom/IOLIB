@@ -1,6 +1,7 @@
 
 package net.myorb.data.abstractions;
 
+import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,9 @@ public class CommonCommandParser
 		INT, // an integer value (no decimal point)
 		RDX, // an integer value with specified radix
 		DEC, // a decimal value (decimal point) 
-		FLT  // a floating point value
+		FLT, // a floating point value
+		CMT, // a comment to EOL
+		WS   // white space
 	}
 
 	/**
@@ -100,9 +103,10 @@ public class CommonCommandParser
 	 */
 	public interface SpecialTokenSegments
 	{
-		String getWhiteSpace ();
+		Collection<String> getCommentIndicators ();
 		String getMultiCharacterOperator ();
 		String getExtendedOperator ();
+		String getWhiteSpace ();
 		String getOperator ();
 		String getIdnLead ();
 		String getIdnBody ();
@@ -128,15 +132,23 @@ public class CommonCommandParser
 			else if (belongsTo (buffer, position, segments.getOperator ())) { position = parseOperator (buffer, position, tokens); }
 			else if (belongsTo (buffer, position, QUOTE_LEAD)) { position = parseQuote (buffer, position, tokens); }
 			else if (belongsTo (buffer, position, NUM_LEAD)) { position = parseNumber (buffer, position, tokens); }
-			else
-			{
-				System.out.println (buffer);
-				System.out.println (buffer.charAt (position-1));
-				throw new RuntimeException ("Illegal character found: " + buffer.charAt (position) + " @ " + position);
-			}
+			else illegalCharacter (buffer, position);
 		}
 
 		return tokens;
+	}
+
+
+	/**
+	 * a character in the parsed sequence was not recognized
+	 * @param buffer the text of the expression to be parsed into tokens
+	 * @param position the source position to note for tracking retention
+	 */
+	public static void illegalCharacter (StringBuffer buffer, int position)
+	{
+		System.out.println (buffer);
+		System.out.println (buffer.charAt (position-1));
+		throw new RuntimeException ("Illegal character found: " + buffer.charAt (position) + " @ " + position);
 	}
 
 
@@ -144,7 +156,7 @@ public class CommonCommandParser
 	 * track token location within a document for LSE
 	 */
 
-	public enum Category {WS, MCO, ID, OP, TXT, NUM}
+	public enum Category {WS, EOL, MCO, ID, OP, TXT, NUM}
 	
 	/**
 	 * simple bean that connects position and category
@@ -177,19 +189,81 @@ public class CommonCommandParser
 	 */
 	public int parseNext (StringBuffer buffer, SpecialTokenSegments segments, int position, List<TokenDescriptor> tokens, List<TokenTrack> tracking)
 	{
-		if (belongsTo (buffer, position, segments.getWhiteSpace ())) { position = ignoreWhitespace (buffer, position, segments); }
+		if (belongsTo (buffer, position, segments.getWhiteSpace ())) { position = parseWhitespace (buffer, position, segments, tokens, tracking); }
 		else if (belongsTo (buffer, position, segments.getMultiCharacterOperator ())) { track (Category.MCO, position, tracking); position = parseBigOperator (buffer, position, tokens, segments); }
 		else if (belongsTo (buffer, position, segments.getIdnLead ())) { track (Category.ID, position, tracking); position = parseIdentifier (buffer, position, tokens, segments); }
 		else if (belongsTo (buffer, position, segments.getOperator ())) { track (Category.OP, position, tracking); position = parseOperator (buffer, position, tokens); }
 		else if (belongsTo (buffer, position, QUOTE_LEAD)) { track (Category.TXT, position, tracking); position = parseQuote (buffer, position, tokens); }
 		else if (belongsTo (buffer, position, NUM_LEAD)) { track (Category.NUM, position, tracking); position = parseNumber (buffer, position, tokens); }
-		else
+		else illegalCharacter (buffer, position);
+
+		return commentCheck
+			(
+				buffer, position, tokens, tracking, segments
+			);
+	}
+
+
+	/**
+	 * comments that run to EOL
+	 * @param buffer the source text being parsed
+	 * @param position the position after the last token
+	 * @param tokens the list of tokens compiled so far
+	 * @param tracking the tracking data for the tokens
+	 * @return the position resulting from the check
+	 */
+	public static int commentCheck
+		(
+			StringBuffer buffer, int position,
+			List<TokenDescriptor> tokens, List<TokenTrack> tracking,
+			SpecialTokenSegments segments
+		)
+	{
+		Token tok; TokenTrack trk; int index;
+		if ((index = tokens.size () - 1) < 0) return position;
+
+		Collection<String> comments = segments.getCommentIndicators ();
+		if (comments == null) return position;
+
+		TokenDescriptor td = tokens.get (index);
+		String tokenText = td.getTokenImage ().toUpperCase ();
+
+		if (comments.contains (tokenText))
 		{
-			System.out.println (buffer);
-			System.out.println (buffer.charAt (position-1));
-			throw new RuntimeException ("Illegal character found: " + buffer.charAt (position) + " @ " + position);
+			int bufferEnd = buffer.length () - 1;
+			trk = tracking.get (index);
+
+			tok = newToken
+			(
+				buffer,
+				trk.starting, bufferEnd,
+				TokenType.CMT
+			);
+
+			tokens.set (index, tok);
+			position = bufferEnd + 1;
 		}
+
 		return position;
+	}
+
+
+	/**
+	 * @param buffer the source text being parsed
+	 * @param startingPosition the starting index of the token
+	 * @param endingPosition the ending index of the token
+	 * @param type the type of token to note
+	 * @return the new token object
+	 */
+	public static Token newToken
+		(
+			StringBuffer buffer,
+			int startingPosition,
+			int endingPosition,
+			TokenType type
+		)
+	{
+		return new Token (type, buffer.substring (startingPosition, endingPosition));
 	}
 
 
@@ -238,7 +312,7 @@ public class CommonCommandParser
 			List<TokenDescriptor> tokens, TokenType type
 		)
 	{
-		tokens.add (new Token (type, buffer.substring (startingPosition, endingPosition)));
+		tokens.add (newToken (buffer, startingPosition, endingPosition, type));
 	}
 
 
@@ -275,6 +349,61 @@ public class CommonCommandParser
 	{
 		return parseTokenBody (buffer, position, segments.getWhiteSpace ());
 	}
+
+
+	/**
+	 * treat white space as a token
+	 * @param buffer the text of the expression being parsed
+	 * @param position the position within the buffer of the character in question
+	 * @param segments access to data specifying special segments
+	 * @param tokens the list of parsed tokens collected collected to this point
+	 * @param tracking the tracking data for the tokens
+	 * @return the next token start position
+	 */
+	public int parseWhitespace
+		(
+			StringBuffer buffer, int position,
+			SpecialTokenSegments segments,
+			List<TokenDescriptor> tokens,
+			List<TokenTrack> tracking
+		)
+	{
+		if ( ! trackingWS )
+		{
+			return ignoreWhitespace (buffer, position, segments);
+		}
+		else
+		{
+			return tokenForWhitespace (buffer, position, segments, tokens, tracking);
+		}
+	}
+
+	public static int tokenForWhitespace
+		(
+			StringBuffer buffer, int startingPosition,
+			SpecialTokenSegments segments, List<TokenDescriptor> tokens,
+			List<TokenTrack> tracking
+		)
+	{
+		int position = traverseWhitespaceSegment (buffer, startingPosition, segments.getWhiteSpace ());
+		track (position<buffer.length()&&buffer.charAt(position)!='\n'? Category.WS : Category.EOL, position, tracking);
+		addToken (buffer, startingPosition, position, tokens, TokenType.WS);
+		return position;
+	}
+
+	public static int traverseWhitespaceSegment (StringBuffer buffer, int position, String whiteSpaceCharacters)
+	{
+		do { position++; }
+		while (belongsTo (buffer, position, whiteSpaceCharacters) && buffer.charAt (position) != '\n');
+		return position;
+	}
+
+
+	/**
+	 * request white-space segments be treated as tokens
+	 */
+	public void trackWS () { trackingWS = true; }
+	protected boolean trackingWS = false;
 
 
 	/**

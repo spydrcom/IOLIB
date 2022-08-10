@@ -1,7 +1,10 @@
 
 package net.myorb.gui.editor;
 
+import net.myorb.gui.components.*;
 import net.myorb.gui.editor.model.*;
+
+import javax.swing.text.JTextComponent;
 
 import java.awt.Font;
 
@@ -32,6 +35,11 @@ public interface SnipToolPropertyAccess
 	 * @return a newly constructed SnipEditor
 	 */
 	SnipToolEditor newEditor ();
+
+	/**
+	 * @return a newly constructed analyzer for snip content
+	 */
+	SnipAnalyzer newSnipAnalyzer (JTextComponent component);
 
 	/**
 	 * @return a newly constructed SnipEditor with LSE kit

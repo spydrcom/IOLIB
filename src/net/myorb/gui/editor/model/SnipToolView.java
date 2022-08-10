@@ -4,8 +4,8 @@ package net.myorb.gui.editor.model;
 import net.myorb.gui.ScribeEngine;
 import net.myorb.gui.editor.SnipToolScanner;
 
-import javax.swing.text.WrappedPlainView;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.WrappedPlainView;
 
 import javax.swing.text.Element;
 
@@ -127,29 +127,13 @@ public class SnipToolView extends WrappedPlainView
 
 			if (nextStyleCode != styleCode)
 			{
-				if (isSophisticatedStyle (styleCode))
-				{
-					doc.replace
-					(
-						mark, lastTokenread.representation,
-						context.getStyleFor (styleCode)
-					);
-				}
-				else
-				{
-					// color change, flush what we have
-					scribe.draw (doc, mark, p0, styleCode);
-				}
+				// color change, flush what we have
+				scribe.draw (doc, mark, p0, styleCode);
 				styleCode = nextStyleCode;
 				mark = p0;
 			}
 		}
 		return scribe.draw (doc, mark, p1, styleCode);	// flush remaining
-	}
-	boolean isSophisticatedStyle (int styleCode)
-	{
-		//return context.isSophisticatedStyle (styleCode);
-		return false;
 	}
 
 

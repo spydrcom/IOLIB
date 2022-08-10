@@ -120,6 +120,15 @@ public class SnipToolActions extends SnipToolProcessing
 		return (e) -> { expand (properties); };
 	}
 
+	/**
+	 * analyZe content in full screen
+	 * @return action for feature
+	 */
+	public ActionListener getAnalyzeAction ()
+	{
+		return (e) -> { analyze (properties); };
+	}
+
 
 	/*
 	 * Execute action items

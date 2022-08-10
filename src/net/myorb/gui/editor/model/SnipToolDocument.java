@@ -163,7 +163,8 @@ public class SnipToolDocument extends DefaultStyledDocument
 	{
         //remove (atPosition, withText.length ());
         //insertString (atPosition, withText, usingStyle);
-        replace (atPosition, withText.length (), withText, usingStyle);
+        //replace (atPosition, withText.length (), withText, usingStyle);
+        setCharacterAttributes (atPosition, withText.length (), usingStyle, false);
 	}
 
 

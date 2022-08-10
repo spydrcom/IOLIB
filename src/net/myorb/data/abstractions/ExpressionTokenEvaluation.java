@@ -44,6 +44,8 @@ public class ExpressionTokenEvaluation
 					break;
 				case NUM:
 				case OPR:
+				case CMT:
+				case WS:
 					break;
 			}
 		}

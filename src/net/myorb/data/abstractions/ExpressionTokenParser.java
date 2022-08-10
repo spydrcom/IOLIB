@@ -1,6 +1,7 @@
 
 package net.myorb.data.abstractions;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,9 +41,19 @@ public class ExpressionTokenParser extends CommonCommandParser
 	public static final String
 	IDN_LEAD = LETTER, IDN_BODY = LETTER + DIGIT + UNDERSCORE;
 
+	public static final Collection<String> COMMENT_INDICATORS = new HashSet<String>();
+
+	static
+	{
+		COMMENT_INDICATORS.add ("//");
+		COMMENT_INDICATORS.add ("//*");
+		COMMENT_INDICATORS.add ("ENTITLED");
+	}
+
 	public String getIdnLead () { return IDN_LEAD; }
 	public String getWhiteSpace () { return WHITE_SPACE; }
 	public String getMultiCharacterOperator () { return MULTI_CHARACTER_OPERATOR; }
+	public Collection<String> getCommentIndicators () { return COMMENT_INDICATORS; }
 	public String getExtendedOperator () { return OPERATOR_EXTENDED; }
 	public String getOperator () { return OPERATOR; }
 	public String getIdnBody () { return IDN_BODY; }

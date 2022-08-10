@@ -35,4 +35,9 @@ public interface SnipToolScanner
 	 */
 	int getDefaultStyleCode ();
 
+	/**
+	 * disable WS ignore
+	 */
+	void trackWS ();
+
 }
