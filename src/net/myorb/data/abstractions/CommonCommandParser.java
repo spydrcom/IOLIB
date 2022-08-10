@@ -210,6 +210,7 @@ public class CommonCommandParser
 	 * @param position the position after the last token
 	 * @param tokens the list of tokens compiled so far
 	 * @param tracking the tracking data for the tokens
+	 * @param segments data specifying special segments
 	 * @return the position resulting from the check
 	 */
 	public static int commentCheck

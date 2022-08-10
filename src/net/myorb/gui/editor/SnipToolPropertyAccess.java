@@ -37,6 +37,7 @@ public interface SnipToolPropertyAccess
 	SnipToolEditor newEditor ();
 
 	/**
+	 * @param component the component exporting the source
 	 * @return a newly constructed analyzer for snip content
 	 */
 	SnipAnalyzer newSnipAnalyzer (JTextComponent component);
