@@ -5,6 +5,10 @@ import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * token parser driven by data map rules
+ * @author Michael Druckman
+ */
 public class CommonCommandParser
 {
 
@@ -150,6 +154,13 @@ public class CommonCommandParser
 		System.out.println (buffer.charAt (position-1));
 		throw new RuntimeException ("Illegal character found: " + buffer.charAt (position) + " @ " + position);
 	}
+
+
+
+	/*
+	 * specially packaged version of the token parser
+	 * data structures support higher level of detail
+	 */
 
 
 	/*

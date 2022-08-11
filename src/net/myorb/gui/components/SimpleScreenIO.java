@@ -342,7 +342,8 @@ public class SimpleScreenIO
 	public static class SnipEditor extends JTextPane implements Widget
 	{
 
-		public static class SnipEditorModel extends StyledEditorKit				//DefaultEditorKit
+		public static class SnipEditorModel
+			extends StyledEditorKit				//DefaultEditorKit
 		{ private static final long serialVersionUID = -4369234614973084001L; }
 
 		public SnipEditor (SnipEditorModel model)

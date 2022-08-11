@@ -158,6 +158,11 @@ public class SnipToolProcessing extends SnipToolMenu
 	}
 
 
+	/**
+	 * make frame with widget in scroll bars
+	 * @param widget the content component to place in frame
+	 * @return the frame with a scrolling component
+	 */
 	static DisplayFrame makeDisplayFrame (Widget widget)
 	{
 		return new DisplayFrame
@@ -168,6 +173,10 @@ public class SnipToolProcessing extends SnipToolMenu
 	}
 
 
+	/**
+	 * show content in maximized and sized frame
+	 * @param frame the display frame to show
+	 */
 	static void show (DisplayFrame frame)
 	{
 		frame.showOrHide (wXh (W, H));

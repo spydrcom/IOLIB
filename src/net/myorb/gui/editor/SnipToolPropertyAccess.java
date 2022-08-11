@@ -1,8 +1,12 @@
 
 package net.myorb.gui.editor;
 
-import net.myorb.gui.components.*;
-import net.myorb.gui.editor.model.*;
+import net.myorb.gui.components.SnipAnalyzer;
+
+import net.myorb.gui.editor.model.SnipToolEditor;
+import net.myorb.gui.editor.model.SnipToolDocument;
+import net.myorb.gui.editor.model.SnipToolContext;
+import net.myorb.gui.editor.model.SnipToolKit;
 
 import javax.swing.text.JTextComponent;
 
