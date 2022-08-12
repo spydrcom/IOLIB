@@ -1,7 +1,7 @@
 
 package net.myorb.data.abstractions.language;
 
-import net.myorb.data.abstractions.ExpressionTokenParser;
+import net.myorb.data.abstractions.CommonCommandParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,22 +14,14 @@ public class ContextSpecificParser extends ContextSpecificTokenizer
 {
 
 
-	public ContextSpecificParser ()
-	{
-		this.tokens = new ArrayList<TokenDescriptor>();
-		this.tracking = new ArrayList<TokenTrack>();
-	}
-
-
 	/**
-	 * use common parser
-	 * @param buffer source text for parser
-	 * @return a token sequence of parsed content
+	 * encapsulate token parsing
+	 *  and production of scan representation
+	 * @param segments the application specific parser segments
 	 */
-	public static ExpressionTokenParser.TokenSequence parse (StringBuffer buffer)
-	{
-		return new ExpressionTokenParser.TokenSequence (parseCommon (buffer, new ContextSpecificParser ()));
-	}
+	public ContextSpecificParser
+	(CommonCommandParser.SpecialTokenSegments segments)
+	{ prepareTokenTracking (); this.segments = segments; }
 
 
 	/**
@@ -47,8 +39,9 @@ public class ContextSpecificParser extends ContextSpecificTokenizer
 			List<TokenTrack> tracking
 		)
 	{
-		return parseNext (buffer, this, position, tokens, tracking);
+		return parseNext (buffer, segments, position, tokens, tracking);
 	}
+	protected CommonCommandParser.SpecialTokenSegments segments;
 
 
 	/**
@@ -64,7 +57,18 @@ public class ContextSpecificParser extends ContextSpecificTokenizer
 			if (eolSeen ()) break;
 		}
 	}
-	protected List<TokenDescriptor> tokens; protected List<TokenTrack> tracking;
+
+
+	/**
+	 * allocate token and tracking buffers
+	 */
+	public void prepareTokenTracking ()
+	{
+		this.tokens = new ArrayList<TokenDescriptor>();
+		this.tracking = new ArrayList<TokenTrack>();
+	}
+	protected List<TokenDescriptor> tokens;
+	protected List<TokenTrack> tracking;
 
 
 	/**
@@ -129,17 +133,5 @@ public class ContextSpecificParser extends ContextSpecificTokenizer
 	}
 
 
-	/**
-	 * unit test
-	 * @param args N/A
-	 */
-	public static void main (String[] args)
-	{
-		StringBuffer buf = new StringBuffer ()
-				.append ("RENDER k * psi0(k*z) = k *   ln k   + SIGMA [0 <= n <= k-1] ( psi0 ( z + n/k ) )");
-		ContextSpecificParser parser = new ContextSpecificParser (); parser.trackWS ();
-		for (Scan s : parser.ScanLine (buf)) System.out.println (s);
-	}
-
-
 }
+

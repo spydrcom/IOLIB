@@ -22,6 +22,9 @@ public class SnipAnalyzer extends SnipFrame
 {
 
 
+	public static final String EOL = "\n", CRLF = "\r"+EOL;
+
+
 	public SnipAnalyzer
 		(
 			SnipToolPropertyAccess properties
@@ -98,7 +101,7 @@ public class SnipAnalyzer extends SnipFrame
 			token = scanner.getToken ();
 		}
 
-		append ("\r\n", properties.getDefaultStyleCode ());
+		append (CRLF, properties.getDefaultStyleCode ());
 	}
 
 
@@ -124,7 +127,7 @@ public class SnipAnalyzer extends SnipFrame
 	 */
 	public void splitSourceLines ()
 	{
-		this.lines = source.getText ().split ("\n");
+		this.lines = source.getText ().split (EOL);
 		this.line = 0;
 	}
 	protected String[] lines;

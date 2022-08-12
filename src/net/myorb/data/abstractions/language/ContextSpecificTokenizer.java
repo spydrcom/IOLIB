@@ -135,18 +135,6 @@ public class ContextSpecificTokenizer extends ExpressionTokenParser
 
 
 	/**
-	 * determine if character at position in buffer is EOL
-	 * @param buffer the text of the expression being parsed
-	 * @param at the position within the buffer of the character in question
-	 * @return TRUE when character at position is not EOL AKA newline AKA \n
-	 */
-	public static boolean
-		isNotEol (StringBuffer buffer, int at)
-	{ return  buffer.charAt (at) != EOL;  }
-	public static final char EOL = '\n';
-
-
-	/**
 	 * treat white space as a token
 	 * @param buffer the text of the expression being parsed
 	 * @param position the position within the buffer of the character in question

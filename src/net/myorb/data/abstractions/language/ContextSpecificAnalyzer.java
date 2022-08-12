@@ -1,6 +1,8 @@
 
 package net.myorb.data.abstractions.language;
 
+import net.myorb.data.abstractions.CommonCommandParser;
+
 import net.myorb.gui.editor.SnipToolScanner;
 
 import java.util.List;
@@ -13,8 +15,9 @@ public abstract class ContextSpecificAnalyzer implements SnipToolScanner
 {
 
 
-	public ContextSpecificAnalyzer ()
-	{ this (new ContextSpecificParser ()); }
+	public ContextSpecificAnalyzer
+	(CommonCommandParser.SpecialTokenSegments segments)
+	{ this (new ContextSpecificParser (segments)); }
 
 	public ContextSpecificAnalyzer
 	(ContextSpecificParser parser) { this.parser = parser; }
