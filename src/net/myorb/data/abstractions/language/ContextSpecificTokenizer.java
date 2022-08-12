@@ -31,6 +31,7 @@ public class ContextSpecificTokenizer extends ExpressionTokenParser
 	public int parseNext (StringBuffer buffer, SpecialTokenSegments segments, int position, List<TokenDescriptor> tokens, List<TokenTrack> tracking)
 	{
 		if (belongsTo (buffer, position, segments.getWhiteSpace ())) { position = parseWhitespace (buffer, position, segments, tokens, tracking); }
+		else if (belongsTo (buffer, position, segments.getSequenceCaptureMarkers ())) { track (Category.SEQ, position, tracking); position = parseSequenceCapture (buffer, position, tokens, segments); }
 		else if (belongsTo (buffer, position, segments.getMultiCharacterOperator ())) { track (Category.MCO, position, tracking); position = parseBigOperator (buffer, position, tokens, segments); }
 		else if (belongsTo (buffer, position, segments.getIdnLead ())) { track (Category.ID, position, tracking); position = parseIdentifier (buffer, position, tokens, segments); }
 		else if (belongsTo (buffer, position, segments.getOperator ())) { track (Category.OP, position, tracking); position = parseOperator (buffer, position, tokens); }
@@ -53,6 +54,7 @@ public class ContextSpecificTokenizer extends ExpressionTokenParser
 	{
 		WS,		// white-space
 		EOL,	// end-of-line
+		SEQ,	// captured token sequence
 		MCO,	// multi-character operator
 		ID,		// identifier
 		OP,		// operator

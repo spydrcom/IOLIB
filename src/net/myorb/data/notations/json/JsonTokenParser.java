@@ -43,6 +43,7 @@ public class JsonTokenParser extends CommonCommandParser
 	public String getMultiCharacterOperator () { return MULTI_CHARACTER_OPERATOR; }
 	public String getExtendedOperator () { return OPERATOR_EXTENDED; }
 	public Collection<String> getCommentIndicators () { return null; }
+	public String getSequenceCaptureMarkers () { return null; }
 	public String getOperator () { return OPERATOR; }
 	public String getIdnBody () { return IDN_BODY; }
 

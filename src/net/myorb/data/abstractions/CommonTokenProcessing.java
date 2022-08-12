@@ -95,7 +95,7 @@ public class CommonTokenProcessing
 	 */
 	public static boolean belongsTo (StringBuffer buffer, int location, String set)
 	{
-		if (location >= buffer.length ()) return false;
+		if (set == null || location >= buffer.length ()) return false;
 		return set.indexOf (buffer.charAt (location)) >= 0;
 	}
 
@@ -242,6 +242,29 @@ public class CommonTokenProcessing
 	{
 		return parseTokenAndAdd (buffer, position, segments.getExtendedOperator (), tokens, TokenType.OPR);
 	}
+
+
+	/**
+	 * parse a captured sequence token
+	 * @param buffer the text of the expression being parsed
+	 * @param position the position within the buffer of the character in question
+	 * @param tokens the list of parsed tokens collected to this point
+	 * @param segments access to data specifying special segments
+	 * @return the next token start position
+	 */
+	public static int parseSequenceCapture (StringBuffer buffer, int position, List<TokenDescriptor> tokens, SpecialTokenSegments segments)
+	{
+		String markers;
+		int startingPosition = position, endingPosition = position + 1;
+		if ((markers = segments.getSequenceCaptureMarkers ()) != null)
+		{
+			for ( ;  ! endMarkerFound (buffer, endingPosition, markers) ; endingPosition++ ) ;
+			addToken (buffer, startingPosition, endingPosition, tokens, TokenType.SEQ);
+		}
+		return endingPosition;
+	}
+	static boolean endMarkerFound (StringBuffer buffer, int position, String markers)
+	{ return position >= buffer.length () || markers.indexOf (buffer.charAt (position)) >= 0; }
 
 
 	/*

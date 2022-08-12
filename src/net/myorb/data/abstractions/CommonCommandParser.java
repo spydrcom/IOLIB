@@ -21,9 +21,10 @@ public class CommonCommandParser extends CommonTokenProcessing
 		IDN, // an identifier
 		OPR, // an operator, possible multi-character
 		QOT, // a quoted body of text, a string literal
+		SEQ, // a captured sequence for a lambda expression
+		RDX, // an integer value with specified radix
 		NUM, // any numeric value (with no sub-class)
 		INT, // an integer value (no decimal point)
-		RDX, // an integer value with specified radix
 		DEC, // a decimal value (decimal point) 
 		FLT, // a floating point value
 		CMT, // a comment to EOL
@@ -92,6 +93,7 @@ public class CommonCommandParser extends CommonTokenProcessing
 	 */
 	public interface SpecialTokenSegments
 	{
+		String getSequenceCaptureMarkers ();
 		Collection<String> getCommentIndicators ();
 		String getMultiCharacterOperator ();
 		String getExtendedOperator ();
@@ -116,6 +118,7 @@ public class CommonCommandParser extends CommonTokenProcessing
 		while (position < last)
 		{
 			if (belongsTo (buffer, position, segments.getWhiteSpace ())) { position = ignoreWhitespace (buffer, position, segments); }
+			else if (belongsTo (buffer, position, segments.getSequenceCaptureMarkers ())) { position = parseSequenceCapture (buffer, position, tokens, segments); }
 			else if (belongsTo (buffer, position, segments.getMultiCharacterOperator ())) { position = parseBigOperator (buffer, position, tokens, segments); }
 			else if (belongsTo (buffer, position, segments.getIdnLead ())) { position = parseIdentifier (buffer, position, tokens, segments); }
 			else if (belongsTo (buffer, position, segments.getOperator ())) { position = parseOperator (buffer, position, tokens); }
