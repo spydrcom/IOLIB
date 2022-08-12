@@ -259,9 +259,9 @@ public class CommonTokenProcessing
 		if ((markers = segments.getSequenceCaptureMarkers ()) != null)
 		{
 			for ( ;  ! endMarkerFound (buffer, endingPosition, markers) ; endingPosition++ ) ;
-			addToken (buffer, startingPosition, endingPosition, tokens, TokenType.SEQ);
+			addToken (buffer, startingPosition, endingPosition+1, tokens, TokenType.SEQ);
 		}
-		return endingPosition;
+		return endingPosition+1;
 	}
 	static boolean endMarkerFound (StringBuffer buffer, int position, String markers)
 	{ return position >= buffer.length () || markers.indexOf (buffer.charAt (position)) >= 0; }

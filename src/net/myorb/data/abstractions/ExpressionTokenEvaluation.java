@@ -39,6 +39,7 @@ public class ExpressionTokenEvaluation
 				case FLT:
 					objects.add (new Float (token.getTokenImage ()));
 					break;
+				case SEQ:
 				case QOT:
 					objects.add (token.getTokenImage ());
 					break;
