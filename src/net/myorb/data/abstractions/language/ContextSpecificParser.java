@@ -101,7 +101,8 @@ public class ContextSpecificParser extends ContextSpecificTokenizer
 		public String toString ()
 		{
 			StringBuffer buf = new StringBuffer ()
-					.append ("txt=").append (tokens.getTokenImage ())
+					.append ("txt='").append (tokens.getTokenImage ())
+					.append ("' len=").append (tokens.getTokenImage ().length ())
 					.append (" typ=").append (tokens.getTokenType ())
 					.append (" start=").append (tracking.getLocation ())
 					.append (" cat=").append (tracking.getType ());
@@ -135,13 +136,9 @@ public class ContextSpecificParser extends ContextSpecificTokenizer
 	public static void main (String[] args)
 	{
 		StringBuffer buf = new StringBuffer ()
-				.append ("RENDER k * psi0(k*z) = k * ln k + SIGMA [0 <= n <= k-1] ( psi0 ( z + n/k ) )");
+				.append ("RENDER k * psi0(k*z) = k *   ln k   + SIGMA [0 <= n <= k-1] ( psi0 ( z + n/k ) )");
 		ContextSpecificParser parser = new ContextSpecificParser (); parser.trackWS ();
-		List<Scan> scans = parser.ScanLine (buf);
-		for (Scan s : scans)
-		{
-			System.out.println (s);
-		}
+		for (Scan s : parser.ScanLine (buf)) System.out.println (s);
 	}
 
 

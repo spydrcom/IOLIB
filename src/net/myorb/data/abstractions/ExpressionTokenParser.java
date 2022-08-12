@@ -43,13 +43,6 @@ public class ExpressionTokenParser extends CommonCommandParser
 
 	public static final Collection<String> COMMENT_INDICATORS = new HashSet<String>();
 
-	static
-	{
-		COMMENT_INDICATORS.add ("//");
-		COMMENT_INDICATORS.add ("//*");
-		COMMENT_INDICATORS.add ("ENTITLED");
-	}
-
 	public String getIdnLead () { return IDN_LEAD; }
 	public String getWhiteSpace () { return WHITE_SPACE; }
 	public String getMultiCharacterOperator () { return MULTI_CHARACTER_OPERATOR; }

@@ -215,7 +215,7 @@ public class ContextSpecificTokenizer extends ExpressionTokenParser
 	/**
 	 * request white-space segments be treated as tokens
 	 */
-	public void trackWS () { trackingWS = true; }
+	public void trackWS () { trackingWS = true; } // must be set for analyzer to render correctly
 	protected boolean trackingWS = false;
 
 

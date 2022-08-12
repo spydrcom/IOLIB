@@ -14,10 +14,17 @@ public abstract class ContextSpecificAnalyzer implements SnipToolScanner
 
 
 	public ContextSpecificAnalyzer ()
-	{
-		this.parser = new ContextSpecificParser ();
-	}
+	{ this (new ContextSpecificParser ()); }
+
+	public ContextSpecificAnalyzer
+	(ContextSpecificParser parser) { this.parser = parser; }
 	protected ContextSpecificParser parser;
+
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.editor.SnipToolScanner#trackWS()
+	 */
+	public void trackWS () { parser.trackWS (); }
 
 
 	/* (non-Javadoc)
@@ -65,13 +72,6 @@ public abstract class ContextSpecificAnalyzer implements SnipToolScanner
 	 */
 	public int getDefaultStyleCode () { return defaultStyle; }
 	protected int defaultStyle;
-
-
-	/* (non-Javadoc)
-	 * @see net.myorb.gui.editor.SnipToolScanner#trackWS()
-	 */
-	public void trackWS () { parser.trackWS (); trackingWS = true; }
-	boolean trackingWS = false;
 
 
 }
