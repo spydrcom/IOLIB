@@ -76,7 +76,9 @@ public class Parameters extends SimpleUtilities.ListOfNames
 	{
 		if (names.size () != 0)
 		{
-			buffer.append (names.get (0));
+			buffer.append
+				(formatParameter (names.get (0), withNotations));
+			// bug fix 8/19/2022: original source just started with names[0] absent withNotations
 			for (int i = 1; i < names.size (); i++)
 			{
 				buffer.append (", ").append
