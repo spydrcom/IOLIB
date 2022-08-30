@@ -75,7 +75,7 @@ public class JxrScriptChoice
 	 * empty the script list
 	 */
 	public static void resetScripts () {
-		scripts.clear ();
+		scripts.clear (); preparation = null; conclusion = null;
 	}
 
 	/**
