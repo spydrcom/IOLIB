@@ -10,6 +10,10 @@ import java.awt.Dimension;
 import java.awt.Color;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import java.util.HashMap;
+//import java.util.Map;
 
 /**
  * swing displays of color lists
@@ -30,9 +34,30 @@ public class ColorDisplays extends SimpleScreenIO
 	public static Panel getDisplayFor
 	(String name, String comment, String tip, MouseListener listener)
 	{
+//		Panel cell = new Panel ();
+//		cell.setBorder (new LineBorder (Color.WHITE, 2));
+//		Color color = ColorNames.MAP.get (name); int rgb = color.getRGB ();
+//		String code = Integer.toHexString (rgb & ColorNames.RGB_MASK).toUpperCase ();
+//		Label l = new Label (name + " [" + code + "] " + comment); cell.setBackground (color);
+//		if (listener != null) { cell.addMouseListener (listener); l.addMouseListener (listener); }
+//		int g = color.getGreen () / 32, b = color.getBlue () / 32;
+//		if (g < 4 || b < 4) l.setForeground (Colour.WHITE);
+//		if (tip != null) l.setToolTipText (tip);
+//		l.setName (name); cell.setName (name);
+//		cell.add (l);
+//		return cell;
+		return getDisplayFor (name, comment, tip, ColorNames.MAP, listener);
+	}
+	public static Panel getDisplayFor
+		(
+			String name, String comment, String tip,
+			HashMap <String, Color> colorMap,
+			MouseListener listener
+		)
+	{
 		Panel cell = new Panel ();
 		cell.setBorder (new LineBorder (Color.WHITE, 2));
-		Color color = ColorNames.MAP.get (name); int rgb = color.getRGB ();
+		Color color = colorMap.get (name); int rgb = color.getRGB ();
 		String code = Integer.toHexString (rgb & ColorNames.RGB_MASK).toUpperCase ();
 		Label l = new Label (name + " [" + code + "] " + comment); cell.setBackground (color);
 		if (listener != null) { cell.addMouseListener (listener); l.addMouseListener (listener); }
@@ -42,6 +67,60 @@ public class ColorDisplays extends SimpleScreenIO
 		l.setName (name); cell.setName (name);
 		cell.add (l);
 		return cell;
+	}
+
+
+	/**
+	 * @param names the list of color names
+	 * @param map a map of names to the colors
+	 * @param p the panel to be appended
+	 */
+	public static void addToPalettePanel
+		(
+			List <String> names,
+			HashMap <String, Color> map,
+			Panel p
+		)
+	{
+		int rgb, prv = -1;
+		for (String name : names)
+		{
+			if ((rgb = map.get (name).getRGB ()) == prv) continue;
+			p.add (getDisplayFor (name, "", null, map, getPaletteMouseListener (map)));
+			prv = rgb;
+		}
+	}
+
+
+	/**
+	 * @param names the list of color names
+	 * @param map a map of names to the colors
+	 * @return the panel being built
+	 */
+	public static Panel paletteColumnPanel
+		(
+			List <String> names,
+			HashMap <String, Color> map
+		)
+	{
+		Panel p = startGridPanel (null, 0, 1);
+		addToPalettePanel (names, map, p);
+		return p;
+	}
+
+	/**
+	 * @param names the list of color names
+	 * @param map a map of names to the colors
+	 */
+	public static void showPaletteColumn
+		(
+			List <String> names,
+			HashMap <String, Color> map
+		)
+	{
+		Frame f = new Frame
+			(paletteColumnPanel (names, map), "Palate");
+		f.showAndExit ();
 	}
 
 
@@ -56,24 +135,17 @@ public class ColorDisplays extends SimpleScreenIO
 	}
 	public static Panel fullPalettePanel ()
 	{
-		int rgb, prv = -1;
 		Panel p = startGridPanel (null, 0, 8);
-
-		for (String name : ColorNames.byCode ())
-		{
-			if ((rgb = ColorNames.MAP.get (name).getRGB ()) == prv) continue;
-			p.add (getDisplayFor (name, "", null, getPaletteMouseListener ()));
-			prv = rgb;
-		}
-
+		addToPalettePanel (ColorNames.byCode (), ColorNames.MAP, p);
 		return p;
 	}
 
 
 	/**
+	 * @param map the map of names to colors
 	 * @return a listener that fields Palette requests
 	 */
-	public static MouseListener getPaletteMouseListener ()
+	public static MouseListener getPaletteMouseListener (HashMap <String, Color> map)
 	{
 		return new MouseListener ()
 		{
@@ -83,7 +155,7 @@ public class ColorDisplays extends SimpleScreenIO
 			public void mouseClicked (MouseEvent event)
 			{
 				//System.out.println (event.getComponent ().getName ());
-				addToPalette (event.getComponent ().getName ());
+				addToPalette (event.getComponent ().getName (), map);
 			}
 			public void mousePressed (MouseEvent event) {}
 			public void mouseReleased (MouseEvent event) {}
@@ -95,8 +167,9 @@ public class ColorDisplays extends SimpleScreenIO
 
 	/**
 	 * @param name the name of a color
+	 * @param map the map of name to color
 	 */
-	public static void addToPalette (String name)
+	public static void addToPalette (String name, HashMap <String, Color> map)
 	{
 		if (palette == null)
 		{
@@ -109,7 +182,7 @@ public class ColorDisplays extends SimpleScreenIO
 		}
 
 		nameList.add (name); System.out.println (nameList);
-		paletteList.add (getDisplayFor (name, "", null, null));
+		paletteList.add (getDisplayFor (name, "", null, map, null));
 		palette.forceToScreen ();
 	}
 	static Panel paletteList = startGridPanel (null, 0, 1);
@@ -128,7 +201,7 @@ public class ColorDisplays extends SimpleScreenIO
 
 		for (String name : group)
 		{
-			p.add (getDisplayFor (name, "", null, getPaletteMouseListener ()));
+			p.add (getDisplayFor (name, "", null, getPaletteMouseListener (ColorNames.MAP)));
 		}
 
 		Frame f = new Frame (p, "Colors " + group);

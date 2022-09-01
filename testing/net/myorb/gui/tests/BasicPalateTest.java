@@ -2,13 +2,15 @@
 package net.myorb.gui.tests;
 
 import net.myorb.gui.graphics.ColorPropertiesProcessor;
+import net.myorb.gui.graphics.ColorDisplays;
 
 import java.awt.Color;
 
 import java.util.List;
 import java.util.ArrayList;
 
-import java.util.Map;
+import java.util.HashMap;
+//import java.util.Map;
 
 public class BasicPalateTest extends ColorPropertiesProcessor
 {
@@ -25,7 +27,7 @@ public class BasicPalateTest extends ColorPropertiesProcessor
 	throws Exception
 	{
 		BasicPalateTest palate;
-		Map <String, Color> map =
+		HashMap <String, Color> map =
 			(palate = new BasicPalateTest ())
 			.processStandardColorList ()
 			.getColorMap ();
@@ -40,6 +42,7 @@ public class BasicPalateTest extends ColorPropertiesProcessor
 				Integer.toHexString (c.getRGB ())
 			);
 		}
+		ColorDisplays.showPaletteColumn (palate.sourceOrderNames, map);
 	}
 
 }
