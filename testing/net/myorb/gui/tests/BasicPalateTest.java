@@ -9,11 +9,11 @@ import java.awt.Color;
 import java.util.List;
 import java.util.ArrayList;
 
-import java.util.HashMap;
-//import java.util.Map;
+import java.util.Map;
 
 public class BasicPalateTest extends ColorPropertiesProcessor
 {
+
 
 	public void addToList (String name, String value)
 	{
@@ -22,12 +22,13 @@ public class BasicPalateTest extends ColorPropertiesProcessor
 	}
 	List <String> sourceOrderNames = new ArrayList <String> ();
 
+
 	public static void main
 		(String[] args)
 	throws Exception
 	{
 		BasicPalateTest palate;
-		HashMap <String, Color> map =
+		Map <String, Color> map =
 			(palate = new BasicPalateTest ())
 			.processStandardColorList ()
 			.getColorMap ();
@@ -45,4 +46,6 @@ public class BasicPalateTest extends ColorPropertiesProcessor
 		ColorDisplays.showPaletteColumn (palate.sourceOrderNames, map);
 	}
 
+
 }
+

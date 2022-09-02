@@ -5,6 +5,7 @@ import net.myorb.gui.components.SimpleScreenIO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.awt.Color;
 
 /**
@@ -169,7 +170,7 @@ public class ColorNames extends SimpleScreenIO
 	@SuppressWarnings("serial")
 	public static class ColorList extends ArrayList <String> {}
 
-	public static HashMap <String, Color> MAP = new HashMap <> ();
+	public static Map <String, Color> MAP = new HashMap <> ();
 
 	static
 	{

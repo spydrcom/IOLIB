@@ -12,8 +12,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.HashMap;
-//import java.util.Map;
+import java.util.Map;
 
 /**
  * swing displays of color lists
@@ -34,24 +33,12 @@ public class ColorDisplays extends SimpleScreenIO
 	public static Panel getDisplayFor
 	(String name, String comment, String tip, MouseListener listener)
 	{
-//		Panel cell = new Panel ();
-//		cell.setBorder (new LineBorder (Color.WHITE, 2));
-//		Color color = ColorNames.MAP.get (name); int rgb = color.getRGB ();
-//		String code = Integer.toHexString (rgb & ColorNames.RGB_MASK).toUpperCase ();
-//		Label l = new Label (name + " [" + code + "] " + comment); cell.setBackground (color);
-//		if (listener != null) { cell.addMouseListener (listener); l.addMouseListener (listener); }
-//		int g = color.getGreen () / 32, b = color.getBlue () / 32;
-//		if (g < 4 || b < 4) l.setForeground (Colour.WHITE);
-//		if (tip != null) l.setToolTipText (tip);
-//		l.setName (name); cell.setName (name);
-//		cell.add (l);
-//		return cell;
 		return getDisplayFor (name, comment, tip, ColorNames.MAP, listener);
 	}
 	public static Panel getDisplayFor
 		(
 			String name, String comment, String tip,
-			HashMap <String, Color> colorMap,
+			Map <String, Color> colorMap,
 			MouseListener listener
 		)
 	{
@@ -78,7 +65,7 @@ public class ColorDisplays extends SimpleScreenIO
 	public static void addToPalettePanel
 		(
 			List <String> names,
-			HashMap <String, Color> map,
+			Map <String, Color> map,
 			Panel p
 		)
 	{
@@ -100,7 +87,7 @@ public class ColorDisplays extends SimpleScreenIO
 	public static Panel paletteColumnPanel
 		(
 			List <String> names,
-			HashMap <String, Color> map
+			Map <String, Color> map
 		)
 	{
 		Panel p = startGridPanel (null, 0, 1);
@@ -115,11 +102,11 @@ public class ColorDisplays extends SimpleScreenIO
 	public static void showPaletteColumn
 		(
 			List <String> names,
-			HashMap <String, Color> map
+			Map <String, Color> map
 		)
 	{
 		Frame f = new Frame
-			(paletteColumnPanel (names, map), "Palate");
+			(new Scrolling (paletteColumnPanel (names, map)), "Palate");
 		f.showAndExit ();
 	}
 
@@ -143,9 +130,9 @@ public class ColorDisplays extends SimpleScreenIO
 
 	/**
 	 * @param map the map of names to colors
-	 * @return a listener that fields Palette requests
+	 * @return a listener that fields Palate requests
 	 */
-	public static MouseListener getPaletteMouseListener (HashMap <String, Color> map)
+	public static MouseListener getPaletteMouseListener (Map <String, Color> map)
 	{
 		return new MouseListener ()
 		{
@@ -169,11 +156,12 @@ public class ColorDisplays extends SimpleScreenIO
 	 * @param name the name of a color
 	 * @param map the map of name to color
 	 */
-	public static void addToPalette (String name, HashMap <String, Color> map)
+	public static void addToPalette (String name, Map <String, Color> map)
 	{
 		if (palette == null)
 		{
-			palette = new Frame (paletteList, "Palette");
+			palette = new Frame
+				(new Scrolling (paletteList), "Palette");
 			palette.showOrHide (new Dimension (300, 600));
 		}
 		else

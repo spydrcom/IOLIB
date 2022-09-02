@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import java.util.HashMap;
-//import java.util.Map;
+import java.util.Map;
 
 /**
  * set color palate in system properties
@@ -123,7 +123,7 @@ public class ColorPropertiesProcessor implements Processor
 	/**
 	 * @return a map of names to colors
 	 */
-	public HashMap <String, Color> getColorMap () { return colorMap; }
-	protected HashMap <String, Color> colorMap = new HashMap <String, Color> ();
+	public Map <String, Color> getColorMap () { return colorMap; }
+	protected Map <String, Color> colorMap = new HashMap <> ();
 
 }
