@@ -6,6 +6,8 @@ import net.myorb.gui.graphics.ColorDisplays;
 
 import java.awt.Color;
 
+import java.io.File;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -44,6 +46,16 @@ public class BasicPalateTest extends ColorPropertiesProcessor
 			);
 		}
 		ColorDisplays.showPaletteColumn (palate.sourceOrderNames, map);
+	}
+
+
+	/**
+	 * standard file taken from properties/standard.csv
+	 * @return this processor
+	 */
+	public ColorPropertiesProcessor processStandardColorList ()
+	{
+		return processColorCSV (new File ("properties/standard.csv"));
 	}
 
 

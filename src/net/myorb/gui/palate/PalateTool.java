@@ -3,13 +3,14 @@ package net.myorb.gui.palate;
 
 import net.myorb.gui.graphics.ColorDisplays;
 import net.myorb.gui.graphics.ColorPropertiesProcessor;
-
 import net.myorb.gui.components.SimpleScreenIO;
-import net.myorb.gui.components.SimpleScreenIO.Scrolling;
 
 import java.awt.Color;
 
+import java.io.File;
+
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,49 +18,36 @@ import java.util.Map;
  * the palate display manager for application GUI 
  * @author Michael Druckman
  */
-public class PalateTool
+public class PalateTool extends ColorPropertiesProcessor
 {
 
-	public PalateTool ()
+
+	public PalateTool (String filePath)
 	{
-		this.palate = new PalateEnumeration ();
+		processColorCSV (new File (filePath));
 	}
+
 
 	/**
 	 * @return display widget for palate
 	 */
 	public SimpleScreenIO.Widget getPalatePanel ()
 	{
-		return new Scrolling
+		return new SimpleScreenIO.Scrolling
 			(
 				ColorDisplays.paletteColumnPanel
 				(
-					palate.sourceOrderNames,
-					palate.getColorMap ()
+					this.sourceOrderNames,
+					this.getColorMap ()
 				)
 			);
 	}
+
 
 	/**
 	 * @return the current color list from the palate
 	 */
 	public Color[] getPalateColors ()
-	{
-		return this.palate.getPalateColors ();
-	}
-	protected PalateEnumeration palate;
-
-}
-
-/**
- * monitor for the color properties
- */
-class PalateEnumeration extends ColorPropertiesProcessor
-{
-
-	PalateEnumeration () { processStandardColorList (); }
-
-	Color[] getPalateColors ()
 	{
 		int n = 0;
 		Map <String, Color> map = this.getColorMap ();
@@ -69,6 +57,7 @@ class PalateEnumeration extends ColorPropertiesProcessor
 		return colors;
 	}
 
+
 	/* (non-Javadoc)
 	 * @see net.myorb.gui.graphics.ColorPropertiesProcessor#addToList(java.lang.String, java.lang.String)
 	 */
@@ -77,7 +66,8 @@ class PalateEnumeration extends ColorPropertiesProcessor
 		super.addToList (name, value);
 		this.sourceOrderNames.add (name);
 	}
-	protected List <String> sourceOrderNames = new ArrayList <String> ();
+	protected List <String> sourceOrderNames = new ArrayList <> ();
+
 
 }
 

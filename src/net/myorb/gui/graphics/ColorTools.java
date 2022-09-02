@@ -20,8 +20,8 @@ public class ColorTools
 
 
 	/**
-	 * set the alpha value of a palette
-	 * @param colors the palette of colors
+	 * set the alpha value of a palate
+	 * @param colors the palate of colors
 	 * @param alpha the alpha value to be used
 	 */
 	public static void applyAlpha (Color[] colors, int alpha)
@@ -101,7 +101,7 @@ public class ColorTools
 	 */
 	public static int getRgbFor (CommonCommandParser.TokenDescriptor token)
 	{
-		ColorPropertiesProcessor.processColorList ();
+		ColorPropertiesProcessor.getMasterColorList ();
 
 		try
 		{

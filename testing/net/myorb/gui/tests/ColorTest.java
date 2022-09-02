@@ -4,16 +4,25 @@ package net.myorb.gui.tests;
 import net.myorb.gui.graphics.ColorNames;
 import net.myorb.gui.graphics.ColorDisplays;
 import net.myorb.gui.graphics.ColorPropertiesProcessor;
+
 import net.myorb.gui.components.SimpleScreenIO;
 
 import java.awt.Color;
 
+import java.io.File;
+
 public class ColorTest extends SimpleScreenIO
 {
 
-	public ColorTest ()
+	/**
+	 * full list taken from properties/colorlist.csv
+	 * @return this processor
+	 */
+	public static ColorPropertiesProcessor processFullColorList ()
 	{
-		ColorPropertiesProcessor.processColorList ();
+		ColorPropertiesProcessor cpp = new ColorPropertiesProcessor ();
+		cpp.processColorCSV (new File ("properties/colorlist.csv"));
+		return cpp;
 	}
 
 	public Panel getMatrixPanel ()
@@ -28,7 +37,7 @@ public class ColorTest extends SimpleScreenIO
 
 	public static void main(String[] args) throws Exception
 	{
-		ColorPropertiesProcessor.processColorList ();
+		processFullColorList ();
 
 		System.out.println ("Names: ");
 		for (String name : ColorNames.LIST)
