@@ -7,13 +7,7 @@ import net.myorb.data.conventional.CSV;
 import java.awt.Color;
 import java.io.File;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import java.util.Collection;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * set color palate in system properties
@@ -83,10 +77,10 @@ public class ColorPropertiesProcessor
 	/**
 	 * @return the ordered list of color names
 	 */
-	public List <String> getColorNames ()
+	public ColorNames.ColorList getColorNames ()
 	{
-		ArrayList <String>
-			names = new ArrayList <String> ();
+		ColorNames.ColorList
+			names = new ColorNames.ColorList ();
 		names.addAll (colorMap.keySet ());
 		names.sort (null);
 		return names;
@@ -96,8 +90,8 @@ public class ColorPropertiesProcessor
 	/**
 	 * @return a map of names to colors
 	 */
-	public Map <String, Color> getColorMap () { return colorMap; }
-	protected Map <String, Color> colorMap = new HashMap <> ();
+	public ColorNames.ColorMap getColorMap () { return colorMap; }
+	protected ColorNames.ColorMap colorMap = new ColorNames.ColorMap ();
 
 
 	/**

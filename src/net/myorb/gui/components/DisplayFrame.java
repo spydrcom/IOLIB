@@ -175,6 +175,7 @@ public class DisplayFrame implements Runnable
 	 * remove frame from screen
 	 */
 	public void dispose () { GuiToolkit.dispose (frame); }
+	public void forceToTop () { GuiToolkit.setTop (frame); }
 	public void forceToScreen () { GuiToolkit.setVisible (frame, true); }
 	public void removeFromScreen () { GuiToolkit.setVisible (frame, false); }
 	public DisplayContainer getSwingComponent () { return frame; }

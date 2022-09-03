@@ -5,7 +5,6 @@ import net.myorb.gui.components.SimpleScreenIO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.awt.Color;
 
 /**
@@ -167,16 +166,19 @@ public class ColorNames extends SimpleScreenIO
 				"YELLOW_GREEN"
 		};
 
-	@SuppressWarnings("serial")
-	public static class ColorList extends ArrayList <String> {}
+	public static class ColorList extends ArrayList <String>
+	{ private static final long serialVersionUID = 1951234096977901160L; }
 
-	public static Map <String, Color> MAP = new HashMap <> ();
+	public static class ColorMap extends HashMap <String, Color>
+	{ private static final long serialVersionUID = -1556679618027578891L; }
+
+	public static ColorMap systemColorMap = new ColorMap ();
 
 	static
 	{
 		for (String name : LIST)
 		{
-			MAP.put (name, Colour.getColor (name));
+			systemColorMap.put (name, Colour.getColor (name));
 		}
 	}
 
@@ -216,9 +218,13 @@ public class ColorNames extends SimpleScreenIO
 		ColorList list = unsorted ();
 		list.sort
 		(
-			(l, r) -> (MAP.get (l).getRGB () & RGB_MASK) < (MAP.get (r).getRGB () & RGB_MASK) ? -1 : 1
+			(l, r) -> maskedRGB (l) < maskedRGB (r) ? -1 : 1
 		);
 		return list;
+	}
+	public static int maskedRGB (String colorName)
+	{
+		return systemColorMap.get (colorName).getRGB () & RGB_MASK;
 	}
 	public static int RGB_MASK = 0xFFFFFF;
 
@@ -242,7 +248,7 @@ public class ColorNames extends SimpleScreenIO
 
 		for (String name : byCode ())
 		{
-			Color color = MAP.get (name);
+			Color color = systemColorMap.get (name);
 			int g = color.getGreen () / 32, b = color.getBlue () / 32;
 			gb[g][b].add (name);
 		}

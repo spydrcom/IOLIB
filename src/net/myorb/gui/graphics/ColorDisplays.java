@@ -2,17 +2,16 @@
 package net.myorb.gui.graphics;
 
 import net.myorb.gui.components.SimpleScreenIO;
+import net.myorb.gui.components.MenuListFactory;
+import net.myorb.gui.components.MenuManager;
 
 import javax.swing.border.LineBorder;
+
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+
 import java.awt.Dimension;
 import java.awt.Color;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.Map;
 
 /**
  * swing displays of color lists
@@ -23,7 +22,7 @@ public class ColorDisplays extends SimpleScreenIO
 
 
 	/**
-	 * construct display panel for a color
+	 * construct display panel for a palate
 	 * @param name the name of the color to show
 	 * @param comment a comment to append to the name
 	 * @param tip a tip to show as tool tip on mouse over
@@ -33,12 +32,23 @@ public class ColorDisplays extends SimpleScreenIO
 	public static Panel getDisplayFor
 	(String name, String comment, String tip, MouseListener listener)
 	{
-		return getDisplayFor (name, comment, tip, ColorNames.MAP, listener);
+		return getDisplayFor (name, comment, tip, ColorNames.systemColorMap, listener);
 	}
+
+
+	/**
+	 * construct display panel for a palate
+	 * @param name the name of the color to show
+	 * @param comment a comment to append to the name
+	 * @param tip a tip to show as tool tip on mouse over
+	 * @param colorMap the color map to use for the display
+	 * @param listener a mouse listener to add to the display cell
+	 * @return a panel holding the display
+	 */
 	public static Panel getDisplayFor
 		(
 			String name, String comment, String tip,
-			Map <String, Color> colorMap,
+			ColorNames.ColorMap colorMap,
 			MouseListener listener
 		)
 	{
@@ -59,21 +69,40 @@ public class ColorDisplays extends SimpleScreenIO
 
 	/**
 	 * @param names the list of color names
+	 * @param menuFactory the factory for pop-up menu generation
 	 * @param map a map of names to the colors
 	 * @param p the panel to be appended
 	 */
 	public static void addToPalettePanel
 		(
-			List <String> names,
-			Map <String, Color> map,
+			ColorNames.ColorList names,
+			MenuListFactory menuFactory,
+			ColorNames.ColorMap map,
 			Panel p
 		)
 	{
-		int rgb, prv = -1;
+		Panel d;
+		int rgb, prv = -1, item = 0;
+
 		for (String name : names)
 		{
 			if ((rgb = map.get (name).getRGB ()) == prv) continue;
-			p.add (getDisplayFor (name, "", null, map, getPaletteMouseListener (map)));
+
+			p.add
+			(
+				d = getDisplayFor
+				(
+					name, "", null, map,
+					menuFactory != null? null:
+					getPaletteMouseListener (map)
+				)
+			);
+
+			if (menuFactory != null)
+			{
+				MenuManager.addPopup (menuFactory.getActionList (item++), d);
+			}
+
 			prv = rgb;
 		}
 	}
@@ -81,32 +110,41 @@ public class ColorDisplays extends SimpleScreenIO
 
 	/**
 	 * @param names the list of color names
+	 * @param menuFactory the factory for pop-up menu generation
 	 * @param map a map of names to the colors
 	 * @return the panel being built
 	 */
 	public static Panel paletteColumnPanel
 		(
-			List <String> names,
-			Map <String, Color> map
+			ColorNames.ColorList names,
+			MenuListFactory menuFactory,
+			ColorNames.ColorMap map
 		)
 	{
 		Panel p = startGridPanel (null, 0, 1);
-		addToPalettePanel (names, map, p);
+		addToPalettePanel (names, menuFactory, map, p);
 		return p;
 	}
 
+
 	/**
 	 * @param names the list of color names
+	 * @param menuFactory the factory for pop-up menu generation
 	 * @param map a map of names to the colors
 	 */
 	public static void showPaletteColumn
 		(
-			List <String> names,
-			Map <String, Color> map
+			ColorNames.ColorList names,
+			MenuListFactory menuFactory,
+			ColorNames.ColorMap map
 		)
 	{
 		Frame f = new Frame
-			(new Scrolling (paletteColumnPanel (names, map)), "Palate");
+			(
+				new Scrolling
+				(paletteColumnPanel (names, menuFactory, map)),
+				"Palate"
+			);
 		f.showAndExit ();
 	}
 
@@ -123,7 +161,11 @@ public class ColorDisplays extends SimpleScreenIO
 	public static Panel fullPalettePanel ()
 	{
 		Panel p = startGridPanel (null, 0, 8);
-		addToPalettePanel (ColorNames.byCode (), ColorNames.MAP, p);
+		addToPalettePanel
+		(
+			ColorNames.byCode (), null,
+			ColorNames.systemColorMap, p
+		);
 		return p;
 	}
 
@@ -132,7 +174,7 @@ public class ColorDisplays extends SimpleScreenIO
 	 * @param map the map of names to colors
 	 * @return a listener that fields Palate requests
 	 */
-	public static MouseListener getPaletteMouseListener (Map <String, Color> map)
+	public static MouseListener getPaletteMouseListener (ColorNames.ColorMap map)
 	{
 		return new MouseListener ()
 		{
@@ -156,7 +198,7 @@ public class ColorDisplays extends SimpleScreenIO
 	 * @param name the name of a color
 	 * @param map the map of name to color
 	 */
-	public static void addToPalette (String name, Map <String, Color> map)
+	public static void addToPalette (String name, ColorNames.ColorMap map)
 	{
 		if (palette == null)
 		{
@@ -174,7 +216,7 @@ public class ColorDisplays extends SimpleScreenIO
 		palette.forceToScreen ();
 	}
 	static Panel paletteList = startGridPanel (null, 0, 1);
-	static ArrayList <String> nameList = new ArrayList <> ();
+	static ColorNames.ColorList nameList = new ColorNames.ColorList ();
 	static Frame palette = null;
 
 
@@ -189,7 +231,14 @@ public class ColorDisplays extends SimpleScreenIO
 
 		for (String name : group)
 		{
-			p.add (getDisplayFor (name, "", null, getPaletteMouseListener (ColorNames.MAP)));
+			p.add
+			(
+				getDisplayFor
+				(
+					name, "", null,
+					getPaletteMouseListener (ColorNames.systemColorMap)
+				)
+			);
 		}
 
 		Frame f = new Frame (p, "Colors " + group);

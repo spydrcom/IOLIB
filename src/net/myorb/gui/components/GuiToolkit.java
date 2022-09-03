@@ -320,6 +320,17 @@ public class GuiToolkit extends Alerts
     	asComponent (container).setVisible (to);
     }
 
+
+    /**
+     * force frame always-on-top
+     * @param container container JFrame or JInternalFrame
+     */
+    public static void setTop (RootPaneContainer container)
+    {
+    	asFrame (container).setAlwaysOnTop (true);
+    }
+
+
     /**
      * @param container JFrame or JInternalFrame
      * @param title the text of the title
