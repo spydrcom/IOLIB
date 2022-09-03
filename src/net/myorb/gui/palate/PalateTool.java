@@ -5,12 +5,21 @@ import net.myorb.gui.graphics.ColorNames;
 import net.myorb.gui.graphics.ColorDisplays;
 import net.myorb.gui.graphics.ColorPropertiesProcessor;
 
+import net.myorb.gui.components.SimpleScreenIO.Scrolling;
+import net.myorb.gui.components.SimpleScreenIO.Widget;
+import net.myorb.gui.components.SimpleScreenIO.Panel;
+
 import net.myorb.gui.components.MenuListFactory;
 import net.myorb.gui.components.SimpleScreenIO;
+import net.myorb.gui.components.DisplayFrame;
+
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.JColorChooser;
 
 import java.awt.Color;
-
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +31,10 @@ public class PalateTool extends ColorPropertiesProcessor
 {
 
 
-	public enum Commands { Edit, Move_Up, Move_Down, Remove }
+	/**
+	 * list of standard commands for palate edits
+	 */
+	public enum Commands { Edit, Move_Up, Move_Down, Remove, Add }
 
 
 	public PalateTool (String filePath)
@@ -36,16 +48,38 @@ public class PalateTool extends ColorPropertiesProcessor
 	 * @param menuFactory the factory for pop-up menu generation
 	 * @return display widget for palate
 	 */
-	public SimpleScreenIO.Widget getPalatePanel (MenuListFactory menuFactory)
+	public Widget getPalatePanel (MenuListFactory menuFactory)
 	{
-		return new SimpleScreenIO.Scrolling
+		this.menuFactory = menuFactory;
+		this.container = new Scrolling (content ());
+		return this.container;
+	}
+	protected MenuListFactory menuFactory;
+	protected Scrolling container;
+
+
+	/**
+	 * @return a generated palate column for name list
+	 */
+	Panel content ()
+	{
+		return ColorDisplays.paletteColumnPanel
 			(
-				ColorDisplays.paletteColumnPanel
-				(
-					this.sourceOrderNames,
-					menuFactory, this.getColorMap ()
-				)
+				this.sourceOrderNames, this.menuFactory,
+				this.getColorMap ()
 			);
+	}
+
+
+	/**
+	 * replace container view port with fresh column display
+	 */
+	void refresh ()
+	{
+		container.setViewportView
+		(
+			content ()
+		);
 	}
 
 
@@ -95,17 +129,64 @@ public class PalateTool extends ColorPropertiesProcessor
 
 
 	/**
+	 * apply command to specified item
 	 * @param command the command to execute
 	 * @param item the index into th palate list to change
 	 */
 	public void editPalate (Commands command, int item)
 	{
-		System.out.println ("TOOL: " + command + " " + item);
+		switch (command)
+		{
+			case Move_Down:
+				this.exchange (item);
+				break;
+			case Move_Up:
+				this.exchange (item - 1);
+				break;
+			case Remove:
+				this.sourceOrderNames.remove (item);
+				break;
+			case Add:
+				ColorEditor.chooseNewColor
+					(
+						this.sourceOrderNames,
+						this.getColorMap (),
+						this
+					);
+				break;
+			case Edit:
+				ColorEditor.editColor
+					(
+						this.sourceOrderNames.get (item),
+						this.getColorMap (),
+						this
+					);
+				break;
+		}
+
+		this.refresh ();
 	}
 
 
 	/**
-	 * @return the Standard Palate Popup Factory
+	 * exchange identified item with following entry
+	 * @param first the first index of list to exchange
+	 */
+	void exchange (int first)
+	{
+		ColorNames.ColorList names = this.sourceOrderNames;
+		if (first < 0 || first == names.size () - 1) return;
+
+		String name2 = names.get (first + 1);
+		String name1 = names.get (first);
+
+		names.set (first + 1, name1);
+		names.set (first, name2);
+	}
+
+
+	/**
+	 * @return the Standard Palate Pop-up Factory
 	 */
 	public MenuListFactory getStandardPalatePopupFactory ()
 	{
@@ -123,7 +204,7 @@ class PalatePopupFactory extends MenuListFactory
 {
 	PalatePopupFactory (PalateTool tool)
 	{
-		super (PalatePopupProcessor.getNames (), new PalatePopupProcessor (tool));
+		super (PalateToolCommands.getNames (), new PalatePopupProcessor (tool));
 	}
 }
 
@@ -133,15 +214,27 @@ class PalatePopupFactory extends MenuListFactory
  */
 class PalatePopupProcessor implements MenuListFactory.Processor
 {
-
-	PalatePopupProcessor (PalateTool tool)
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.components.MenuListFactory.Processor#process(java.lang.String, int)
+	 */
+	public void process (String command, int item)
 	{
-		this.tool = tool;
+		tool.editPalate (PalateToolCommands.recognize (command), item);
 	}
-	PalateTool tool;
+	PalatePopupProcessor (PalateTool tool) { this.tool = tool; }
+	protected PalateTool tool;
+}
+
+
+/**
+ * enumerate and recognize commands
+ */
+class PalateToolCommands
+{
 
 	/**
-	 * @return the list f command names
+	 * produce list of commands
+	 * @return the list of command names
 	 */
 	static List <String> getNames ()
 	{
@@ -152,15 +245,122 @@ class PalatePopupProcessor implements MenuListFactory.Processor
 		return names;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.myorb.gui.components.MenuListFactory.Processor#process(java.lang.String, int)
+	/**
+	 * identify command to be used
+	 * @param text the name to be recognized
+	 * @return the enumeration for the recognized text
 	 */
-	public void process (String command, int item)
+	static PalateTool.Commands recognize (String text)
 	{
-		PalateTool.Commands c =
-			PalateTool.Commands.valueOf (command.replace (' ', '_'));
-		tool.editPalate (c, item);
+		return PalateTool.Commands.valueOf
+			(text.replace (' ', '_'));
 	}
+
+}
+
+
+/**
+ * use chooser to edit palate
+ */
+class ColorEditor
+	implements ChangeListener
+{
+
+	/**
+	 * add a new color to the palate
+	 * @param names the current list of color names
+	 * @param map the map of name to color in current palate
+	 * @param tool the palate tool requesting the edit
+	 */
+	static void chooseNewColor
+		(
+			ColorNames.ColorList names,
+			ColorNames.ColorMap map,
+			PalateTool tool
+		)
+	{
+		String editing;
+
+		try
+		{
+			editing = SimpleScreenIO.requestTextInput
+					(tool.container, "Name for Color", "New Color");
+			names.add (0, editing);
+		} catch (Exception e) { return; }
+
+		map.put (editing, Color.BLACK);
+		new ColorEditor (editing, map, tool).showChooser ();
+	}
+
+	/**
+	 * modify a color currently in the palate
+	 * @param called the name of the color to be changed
+	 * @param map the map of name to color in current palate
+	 * @param tool the palate tool requesting the edit
+	 */
+	static void editColor
+		(
+			String called,
+			ColorNames.ColorMap map,
+			PalateTool tool
+		)
+	{
+		new ColorEditor (called, map, tool, map.get (called)).showChooser ();
+	}
+
+	ColorEditor
+		(
+			String colorNamed,
+			ColorNames.ColorMap map,
+			PalateTool tool,
+			Color color
+		)
+	{
+		this (colorNamed, map, tool);
+		this.title = "Edit Palate Color";
+		this.chooser.setColor (color);
+	}
+
+	ColorEditor
+		(
+			String colorNamed,
+			ColorNames.ColorMap map,
+			PalateTool tool
+		)
+	{
+		this.title = "Add Palate Color";
+		this.chooser = new JColorChooser ();
+		this.editing = colorNamed; this.map = map;
+		this.chooser.getSelectionModel ().addChangeListener (this);
+		this.tool = tool;
+	}
+	ColorNames.ColorMap map;
+	JColorChooser chooser;
+	PalateTool tool;
+	String editing;
+
+
+	/* (non-Javadoc)
+	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
+	public void stateChanged (ChangeEvent e)
+	{
+	    Color newColor = this.chooser.getColor ();
+		map.put (editing, newColor);
+		tool.refresh ();
+	}
+
+	/**
+	 * create a chooser frame
+	 */
+	void showChooser ()
+	{
+		DisplayFrame f =
+			new DisplayFrame (this.chooser, title);
+		this.chooser.setPreferredSize (SimpleScreenIO.wXh (600, 400));
+		f.showOrHide ();
+	}
+	String title;
 
 }
 
