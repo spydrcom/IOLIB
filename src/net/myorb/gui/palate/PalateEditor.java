@@ -32,17 +32,22 @@ public class PalateEditor
 	 */
 	public void editPalate (Commands command, int item)
 	{
+
 		switch (command)
 		{
+
 			case Move_Down:
 				this.exchange (item);
 				break;
+
 			case Move_Up:
 				this.exchange (item - 1);
 				break;
+
 			case Remove:
 				tool.getCurrentNameList ().remove (item);
 				break;
+
 			case Add:
 				ColorEditor.chooseNewColor
 					(
@@ -51,6 +56,7 @@ public class PalateEditor
 						tool
 					);
 				break;
+
 			case Edit:
 				ColorEditor.editColor
 					(
@@ -59,15 +65,19 @@ public class PalateEditor
 						tool
 					);
 				break;
+
 			case Rename:
 				rename (item);
 				break;
+
 			case Top:
 				top (item);
 				break;
+
 		}
 
 		tool.refresh ();
+
 	}
 
 
@@ -85,7 +95,7 @@ public class PalateEditor
 		{
 			newName = SimpleScreenIO.requestTextInput
 					(tool.container, "New name for Color", "New Name");
-			names.set (index, newName = PalateToolCommands.toUS (newName).toUpperCase ());
+			names.set (index, newName = PalateToolCommands.toConventional (newName));
 		} catch (Exception e) { return; }
 
 		ColorNames.ColorMap map = tool.getColorMap ();
@@ -115,13 +125,15 @@ public class PalateEditor
 	 */
 	void exchange (int first)
 	{
-		ColorNames.ColorList names = tool.getCurrentNameList ();
+		ColorNames.ColorList
+			names = tool.getCurrentNameList ();
 		if (first < 0 || first == names.size () - 1) return;
+		int other = first + 1;
 
-		String name2 = names.get (first + 1);
+		String name2 = names.get (other);
 		String name1 = names.get (first);
 
-		names.set (first + 1, name1);
+		names.set (other, name1);
 		names.set (first, name2);
 	}
 

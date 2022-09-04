@@ -39,14 +39,25 @@ public class ColorEditor implements ChangeListener
 		{
 			editing = SimpleScreenIO.requestTextInput
 					(tool.container, "Name for Color", "New Color");
-			names.add (0, editing = PalateToolCommands.toUS (editing).toUpperCase ());
+			names.add (0, editing = PalateToolCommands.toConventional (editing));
 		} catch (Exception e) { return; }
 	
 		map.put (editing, Color.BLACK);
 		new ColorEditor (editing, map, tool).showChooser ();
 	}
 	
-	
+
+	ColorEditor
+		(
+			String colorNamed,
+			ColorNames.ColorMap map,
+			PalateTool tool
+		)
+	{
+		this ("Add Palate Color", colorNamed, map, tool);
+	}
+
+
 	/**
 	 * modify a color currently in the palate
 	 * @param called the name of the color to be changed
@@ -62,8 +73,8 @@ public class ColorEditor implements ChangeListener
 	{
 		new ColorEditor (called, map, tool, map.get (called)).showChooser ();
 	}
-	
-	
+
+
 	ColorEditor
 		(
 			String colorNamed,
@@ -72,38 +83,54 @@ public class ColorEditor implements ChangeListener
 			Color color
 		)
 	{
-		this (colorNamed, map, tool);
-		this.title = "Edit Palate Color";
+		this ("Edit Palate Color", colorNamed, map, tool);
 		this.chooser.setColor (color);
 	}
+
 	
-	
+	/**
+	 * common constructor entry
+	 * @param title the title for the chooser frame
+	 * @param colorNamed the name of the color being edited
+	 * @param map the color map of names mapped to color objects
+	 * @param tool the palate tool object running commands
+	 */
 	ColorEditor
 		(
+			String title,
 			String colorNamed,
 			ColorNames.ColorMap map,
 			PalateTool tool
 		)
 	{
-		this.title = "Add Palate Color";
-		this.chooser = new JColorChooser ();
+		this ();
+		this.title = title; this.tool = tool;
 		this.editing = colorNamed; this.map = map;
-		this.chooser.getSelectionModel ().addChangeListener (this);
-		this.tool = tool;
 	}
 	protected ColorNames.ColorMap map;
-	protected JColorChooser chooser;
 	protected PalateTool tool;
 	protected String editing;
-	
+
+
+	/**
+	 * construct chooser
+	 */
+	ColorEditor ()
+	{
+		this.chooser = new JColorChooser ();
+		this.chooser.getSelectionModel ().addChangeListener (this);
+	}
+	protected JColorChooser chooser;
+
 	
 	/* (non-Javadoc)
 	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged (ChangeEvent e)
 	{
+		// color associated with name and display is refreshed
 	    Color newColor = this.chooser.getColor ();
-		map.put (editing, newColor);
+		map.put (this.editing, newColor);
 		tool.refresh ();
 	}
 	
@@ -114,7 +141,7 @@ public class ColorEditor implements ChangeListener
 	void showChooser ()
 	{
 		DisplayFrame f =
-			new DisplayFrame (this.chooser, title);
+			new DisplayFrame (this.chooser, this.title);
 		this.chooser.setPreferredSize (SimpleScreenIO.wXh (600, 400));
 		f.showOrHide ();
 	}

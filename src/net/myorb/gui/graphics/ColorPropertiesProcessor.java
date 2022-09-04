@@ -1,6 +1,7 @@
 
 package net.myorb.gui.graphics;
 
+import net.myorb.gui.palate.PalateToolCommands;
 import net.myorb.data.conventional.CharacterDelimited;
 import net.myorb.data.conventional.CSV;
 
@@ -37,7 +38,7 @@ public class ColorPropertiesProcessor
 	 */
 	public void addToList (String name, String value)
 	{
-		String n = name.trim ().replaceAll (" ", "_");
+		String n = PalateToolCommands.toConventional (name);
 		colorMap.put (n, Color.decode (value));
 		System.setProperty (n, value);
 	}
