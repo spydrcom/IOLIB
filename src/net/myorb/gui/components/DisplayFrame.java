@@ -2,16 +2,15 @@
 package net.myorb.gui.components;
 
 import javax.swing.RootPaneContainer;
-
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
 
 import java.awt.event.KeyListener;
-import java.awt.BorderLayout;
-import java.awt.Color;
+
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 
@@ -30,38 +29,6 @@ public class DisplayFrame implements Runnable
 
 
 	public static final int MARGIN = 20;
-
-
-	static HashMap <String, Color> colors;
-
-
-	/*
-	 * recognized colors
-	 */
-
-	static
-	{
-		colors =
-			new HashMap<String, Color> ();
-		colors.put ("BLACK", Color.black);
-		colors.put ("ORANGE", Color.orange);
-		colors.put ("GREEN", Color.green);
-		colors.put ("WHITE", Color.white);
-		colors.put ("BLUE", Color.blue);
-		colors.put ("RED", Color.red);
-	}
-
-
-	/**
-	 * get the AWT color from the name
-	 * @param named the name of the color
-	 * @return the AWT color object
-	 */
-	public static Color getColor (String named)
-	{
-		return colors.get (named);
-	}
-
 
 	/**
 	 * generic display of a panel

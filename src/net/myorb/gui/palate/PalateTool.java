@@ -25,7 +25,7 @@ public class PalateTool extends ColorPropertiesProcessor
 	/**
 	 * list of standard commands for palate edits
 	 */
-	public enum Commands { Edit, Move_Up, Move_Down, Remove, Add, Rename, Top }
+	public enum Commands { Add, Edit, Move_Up, Move_Down, Rename, Remove, Top }
 
 
 	public PalateTool (String filePath)

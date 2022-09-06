@@ -9,8 +9,14 @@ import net.myorb.gui.components.MenuListFactory;
  */
 class PalatePopupFactory extends MenuListFactory
 {
+	/**
+	 * menu items from the pop-up invoke palate editor commands
+	 * @param editor the palate editor that implements the commands
+	 */
 	PalatePopupFactory (PalateEditor editor)
 	{
+		// the names are coming from the enum of editor commands
+		// - the palate processor accepts the commands and passes on to the editor
 		super (PalateToolCommands.getNames (), new PalatePopupProcessor (editor));
 	}
 }
@@ -26,6 +32,8 @@ class PalatePopupProcessor implements MenuListFactory.Processor
 	 */
 	public void process (String command, int item)
 	{
+		// the processor recognizes the editor commands
+		// - recognized commands are passed to the editor for action
 		editor.editPalate (PalateToolCommands.recognize (command), item);
 	}
 	PalatePopupProcessor (PalateEditor editor) { this.editor = editor; }

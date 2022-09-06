@@ -30,6 +30,7 @@ public class MenuListFactory
 	}
 
 	/**
+	 * a factory connects a processor to a command list
 	 * @param itemNames the names of the actions to offer
 	 * @param processor an implementation of the Processor contract
 	 */
@@ -42,10 +43,11 @@ public class MenuListFactory
 		this.itemNames = itemNames;
 		this.processor = processor;
 	}
-	MenuListFactory.Processor processor;
-	List <String> itemNames;
+	protected MenuListFactory.Processor processor;
+	protected List <String> itemNames;
 
 	/**
+	 * build an action list for the item specified by index
 	 * @param forItem the item of the list being built
 	 * @return the action item list for the pop-up
 	 */
@@ -73,10 +75,11 @@ class ItemActionList extends ActionList
 		this.forItemNumber = forItem;
 		this.buildList (itemNames);
 	}
-	MenuListFactory.Processor processor;
-	int forItemNumber;
+	protected MenuListFactory.Processor processor;
+	protected int forItemNumber;
 
 	/**
+	 * add an action for each item named in list
 	 * @param itemNames the names of the menu items
 	 */
 	void buildList (List <String> itemNames)
@@ -88,6 +91,7 @@ class ItemActionList extends ActionList
 	}
 
 	/**
+	 * call processor to recognize and act on named command
 	 * @param command the text of the command from an action item
 	 */
 	void takeAction (String command)
@@ -109,8 +113,8 @@ class ItemAction implements ActionListener
 		this.itemName = itemName;
 		this.action = action;
 	}
-	ItemActionList action;
-	String itemName;
+	protected ItemActionList action;
+	protected String itemName;
 
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

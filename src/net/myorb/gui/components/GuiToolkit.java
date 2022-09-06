@@ -327,6 +327,8 @@ public class GuiToolkit extends Alerts
      */
     public static void setTop (RootPaneContainer container)
     {
+    	if (container instanceof JInternalFrame)
+    	{ System.err.println ("Always-on-top request invalid for internal frame"); }
     	asFrame (container).setAlwaysOnTop (true);
     }
 
