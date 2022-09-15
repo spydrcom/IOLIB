@@ -85,6 +85,7 @@ public class RegEx extends ArrayList <String>
 
 	/**
 	 * force comparisons to lower case versions
+	 * @param to new value for the flag
 	 */
 	public void setIgnoreCase (boolean to)
 	{
