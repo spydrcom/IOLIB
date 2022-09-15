@@ -58,7 +58,7 @@ public class FindWidget extends RegEx implements TableProperties
 	{
 		this.startList ();
 
-		for (int r = 0; r < from.getRowCount(); r++)
+		for (int r = 0; r < from.getRowCount (); r++)
 		{
 			this.addToList (from.getValueAt (r, number).toString ());
 		}
