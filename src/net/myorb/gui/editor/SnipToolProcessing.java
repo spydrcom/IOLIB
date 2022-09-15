@@ -1,8 +1,6 @@
 
 package net.myorb.gui.editor;
 
-//import net.myorb.gui.editor.model.*;
-
 import net.myorb.gui.components.*;
 
 import java.awt.Component;
@@ -96,7 +94,7 @@ public class SnipToolProcessing extends SnipToolMenu
 
 
 	/**
-	 * save contents of selected tab to file with tab name
+	 * read contents of selected file to tab
 	 * @param properties access to display components
 	 */
 	static void open (SnipToolPropertyAccess properties)

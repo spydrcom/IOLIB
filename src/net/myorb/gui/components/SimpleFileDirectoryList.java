@@ -211,7 +211,8 @@ public class SimpleFileDirectoryList extends SimpleFileList
 	public static void main (String... args) throws Exception
 	{
 		SimpleFileDirectoryList list;
-		String dir = args[0], type = null;
+		String dir = "data", type = null;
+		if (args.length > 0) dir = args[0];
 		if (args.length > 1) type = args[1];
 		(list = new SimpleFileDirectoryList ()).show (dir);
 		list.setEntriesFrom (new File (dir), type);

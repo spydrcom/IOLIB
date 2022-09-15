@@ -1,12 +1,20 @@
 
 package net.myorb.gui.editor;
 
+import java.io.File;
+
 /**
  * an editor specifically for tool content
  * @author Michael Druckman
  */
 public class SnipTool extends SnipToolDisplays
 {
+
+
+	public static void addSnip (File source, SnipToolPropertyAccess properties)
+	{
+		SnipToolProcessing.process (source, properties);
+	}
 
 
 	/**
