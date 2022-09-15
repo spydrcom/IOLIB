@@ -22,8 +22,8 @@ public class RegExTool extends FindWidget
 	public RegExTool (String columnName)
 	{
 		super (columnName);
-		this.setIgnoreCase (true);
-		this.setExpression (".+");
+		this.setIgnoreCase (true);		// default to ignore case
+		this.setExpression (".+");		// default will match everything
 	}
 
 
@@ -103,20 +103,25 @@ class SearchComponent extends SimpleScreenIO
 
 		this.icase = addCheckBox (panel, "Ignore Case", true);
 		this.eol = addCheckBox (panel, "Wild EOL", true);
-		addChangeDetection (this.tool = tool);
+
+		addChangeDetection
+		(
+			new ChangeDetection (this.tool = tool)
+		);
 	}
 
 	/**
 	 * add listeners to components to detect changes
+	 * @param detector listeners to be used
 	 */
-	void addChangeDetection (RegExTool tool)
+	void addChangeDetection (ChangeDetection detector)
 	{
-		ChangeDetection detector =
-			new ChangeDetection (tool);
 		this.icase.addItemListener (detector);
 		this.regex.addKeyListener (detector);
 		this.eol.addItemListener (detector);
 	}
+	// flags for Ignore-Case and Wild-EOL features
+	// - see getQuery method to understand the implementation
 	protected CheckBox icase, eol;
 
 	/**

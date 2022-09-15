@@ -22,7 +22,7 @@ public class FindWidget extends RegEx implements TableProperties
 	public interface SelectionAction
 	{
 		/**
-		 * @param text the data of the table selected
+		 * @param text the data of the table item selected
 		 */
 		void process (String text);
 	}
@@ -184,6 +184,5 @@ public class FindWidget extends RegEx implements TableProperties
 
 
 	private static final long serialVersionUID = -77948030724233209L;
-
 }
 
