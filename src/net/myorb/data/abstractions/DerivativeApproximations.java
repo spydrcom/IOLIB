@@ -52,11 +52,12 @@ public class DerivativeApproximations
 	 */
 	public static double first (FunctionWrapper.F <Double> f, double x, double delta)
 	{
-		// evaluation points for computation of rise
-		double e1 = f.body (x), e2 = f.body (x + delta);
-		// compute rise and divide by run
-		double d = (e2 - e1) / delta;
-		return d;
+		return riseOverRun
+		(
+			f.body (x),				// beginning at
+			f.body (x + delta),		// ending at
+			delta					// length
+		);
 	}
 
 
@@ -67,16 +68,64 @@ public class DerivativeApproximations
 	 * @param delta the value to use of the run
 	 * @return the computed approximation
 	 */
-	public static double second (FunctionWrapper.F <Double> f, double x, double delta)
+	public static double second
+		(
+			FunctionWrapper.F <Double> f,
+			double x, double delta
+		)
 	{
-		// evaluation points for computation of rise
-		double e1 = f.body (x - delta), e2 = f.body (x);
-		double e3 = e2, e4 = f.body (x + delta);
-		// derivative rise/run calculation
-		double d1 = (e2 - e1) / delta;
-		double d2 = (e4 - e3) / delta;
-		// rise or fall of derivatives
-		return (d2 - d1) / delta;
+		return second (f, f.body (x), x, delta);
+	}
+	public static double second
+		(
+			FunctionWrapper.F <Double> f,
+			double evaluatedAtX, double x, double delta
+		)
+	{
+		double
+			earlyDerivative =		// evaluate at delta before X
+					riseOverRun
+					(
+						f.body (x - delta), evaluatedAtX, delta
+					),
+			lateDerivative =		// evaluate at delta after X
+					riseOverRun
+					(
+						evaluatedAtX, f.body (x + delta), delta
+					);
+		return riseOverRun			// evaluate tangent of derivative
+		(
+			earlyDerivative, lateDerivative, delta
+		);
+	}
+
+
+	/**
+	 * elementary calculus derivative formula
+	 * @param evaluationBeforeRun compute f(x) where x is evaluation point
+	 * @param evaluationAfterRun compute f(x+delta)
+	 * @param lengthOfRun the value of delta
+	 * @return the computed derivative
+	 */
+	public static double riseOverRun
+		(
+			double evaluationBeforeRun,
+			double evaluationAfterRun,
+			double lengthOfRun
+		)
+	{
+		return
+			(evaluationAfterRun - evaluationBeforeRun)	// the value of the rise
+						/ lengthOfRun;					// the value of the run
+		//
+		// this has approximated the computation
+		// of the  tangent  to the  function  curve
+		// at the evaluation point specified by X
+		//
+		//   ---   the quality of this
+		// approximation depends on how small
+		// delta is relative to X
+		//
 	}
 
 
