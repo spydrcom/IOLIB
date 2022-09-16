@@ -15,7 +15,7 @@ public class SnipToolProcessing extends SnipToolMenu
 {
 
 
-	public static int W = 1000, H = 600, margain = 100;
+	public static int W = 900, H = 600, margain = 100;
 
 
 	/**
