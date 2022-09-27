@@ -256,7 +256,7 @@ public class CommonTokenProcessing
 	{
 		String markers;
 		int startingPosition = position, endingPosition = position + 1;
-		if ((markers = segments.getSequenceCaptureMarkers ()) != null)
+		if ((markers = segments.getCaptureEndMarker ()) != null)
 		{
 			for ( ;  ! endMarkerFound (buffer, endingPosition, markers) ; endingPosition++ ) ;
 			addToken (buffer, startingPosition, endingPosition+1, tokens, TokenType.SEQ);

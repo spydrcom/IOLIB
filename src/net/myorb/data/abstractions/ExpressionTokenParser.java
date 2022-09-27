@@ -36,7 +36,7 @@ public class ExpressionTokenParser extends CommonCommandParser
 
 	public static final String
 	OPERATOR = "+-*/^~!@#%&$|<>,.:;[]()=\\?'",
-	MULTI_CHARACTER_OPERATOR = "<>\\+-~=*^!$@&|#'.:;/%",
+	MULTI_CHARACTER_OPERATOR = "<>{}\\+-~=*^!$@&|#'.:;/%",
 	OPERATOR_EXTENDED = MULTI_CHARACTER_OPERATOR;
 
 	public static final String
@@ -44,10 +44,11 @@ public class ExpressionTokenParser extends CommonCommandParser
 
 	public String getIdnLead () { return IDN_LEAD; }
 	public String getWhiteSpace () { return WHITE_SPACE; }
-	public String getSequenceCaptureMarkers () { return "{}"; }
 	public Collection<String> getCommentIndicators () { return null; }
 	public String getMultiCharacterOperator () { return MULTI_CHARACTER_OPERATOR; }
 	public String getExtendedOperator () { return OPERATOR_EXTENDED; }
+	public String getCaptureStartMarker () { return "{"; }
+	public String getCaptureEndMarker () { return "}"; }
 	public String getOperator () { return OPERATOR; }
 	public String getIdnBody () { return IDN_BODY; }
 

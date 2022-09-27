@@ -93,7 +93,8 @@ public class CommonCommandParser extends CommonTokenProcessing
 	 */
 	public interface SpecialTokenSegments
 	{
-		String getSequenceCaptureMarkers ();
+		String getCaptureStartMarker ();
+		String getCaptureEndMarker ();
 		Collection<String> getCommentIndicators ();
 		String getMultiCharacterOperator ();
 		String getExtendedOperator ();
@@ -118,7 +119,7 @@ public class CommonCommandParser extends CommonTokenProcessing
 		while (position < last)
 		{
 			if (belongsTo (buffer, position, segments.getWhiteSpace ())) { position = ignoreWhitespace (buffer, position, segments); }
-			else if (belongsTo (buffer, position, segments.getSequenceCaptureMarkers ())) { position = parseSequenceCapture (buffer, position, tokens, segments); }
+			else if (belongsTo (buffer, position, segments.getCaptureStartMarker ())) { position = parseSequenceCapture (buffer, position, tokens, segments); }
 			else if (belongsTo (buffer, position, segments.getMultiCharacterOperator ())) { position = parseBigOperator (buffer, position, tokens, segments); }
 			else if (belongsTo (buffer, position, segments.getIdnLead ())) { position = parseIdentifier (buffer, position, tokens, segments); }
 			else if (belongsTo (buffer, position, segments.getOperator ())) { position = parseOperator (buffer, position, tokens); }
