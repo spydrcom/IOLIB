@@ -126,7 +126,7 @@ public class ErrorHandling
 			switch (s.getLevel ())
 			{
 				case Terminate:
-					throw new Terminator (e.getMessage ());
+					throw new Terminator (e.getMessage (), e);
 				case Notify:
 					( (Messages) e ).show (stream);
 				default:
