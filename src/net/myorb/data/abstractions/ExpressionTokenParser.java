@@ -36,7 +36,7 @@ public class ExpressionTokenParser extends CommonCommandParser
 
 	public static final String
 	OPERATOR = "+-*/^~!@#%&$|<>,.:;[]()=\\?'",
-	MULTI_CHARACTER_OPERATOR = "<>{}\\+-~=*^!$@&|#'.:;/%?",
+	MULTI_CHARACTER_OPERATOR = "<>{}\\+-~=*^!$@&$|#'.:;/%?",
 	OPERATOR_EXTENDED = MULTI_CHARACTER_OPERATOR;
 
 	public static final String
