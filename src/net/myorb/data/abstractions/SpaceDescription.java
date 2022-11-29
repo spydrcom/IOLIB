@@ -61,6 +61,14 @@ public interface SpaceDescription<T>
 	T invert (T x);
 
 	/**
+	 * compute x^e for integer exponent
+	 * @param x value to be used as base in expression
+	 * @param exponent the value of the exponent
+	 * @return the computed value
+	 */
+	T pow (T x, int exponent);
+
+	/**
 	 * get the conjugate of the specified value
 	 * @param x the value to be used to compute conjugate
 	 * @return the conjugate of the parameter
