@@ -83,6 +83,7 @@ public class ObjectManagement
 		return result;
 	}
 
+
 	/**
 	 * @param classDescriptor description of class identified by attributes
 	 * @param constructorParameters objects holding parameters for constructor
