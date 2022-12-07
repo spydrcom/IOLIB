@@ -6,7 +6,7 @@ package net.myorb.data.abstractions;
  * @param <T> type on which operations are to be executed
  * @author Michael Druckman
  */
-public interface SpaceDescription<T>
+public interface SpaceDescription <T> extends Portable.AsJson <T>
 {
 
 	/**
