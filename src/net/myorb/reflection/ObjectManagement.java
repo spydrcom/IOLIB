@@ -103,5 +103,24 @@ public class ObjectManagement
 	}
 
 
+	/**
+	 * @param classPath path to the target object
+	 * @param parameters the parameters to the constructor
+	 * @return the newly constructed object based on the class descriptor
+	 * @throws Exception for illegal access
+	 */
+	public static Object doConstruct
+		(
+			String classPath, Object... parameters
+		)
+	throws Exception
+	{
+		ObjectList constructorParameters = new ObjectList ();
+		Class <?> classDescriptor = Class.forName (classPath);
+		for (Object P : parameters) constructorParameters.add (P);
+		return ObjectManagement.doConstruct (classDescriptor, constructorParameters);
+	}
+
+
 }
 
