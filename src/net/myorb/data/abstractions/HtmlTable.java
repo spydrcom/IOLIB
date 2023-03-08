@@ -229,7 +229,7 @@ public class HtmlTable
 	 */
 	public void setTitle (String title)
 	{
-		this.title = title;
+		this.title = escape (title);
 	}
 	private String title = null;
 
@@ -239,7 +239,7 @@ public class HtmlTable
 	 */
 	public void setTableHeader (String to)
 	{
-		tableHeader = to;
+		tableHeader = escape (to);
 	}
 	private String tableHeader = null;
 
