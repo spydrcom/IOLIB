@@ -61,6 +61,18 @@ public class CommonTokenProcessing
 
 
 	/**
+	 * simple token allocation
+	 * @param text the text to use for token
+	 * @param type the type of the token
+	 * @return the new token
+	 */
+	public static Token newToken (String text, TokenType type)
+	{
+		return new Token (type, text);
+	}
+
+
+	/**
 	 * process section of buffer as token
 	 * @param buffer the source text being parsed
 	 * @param startingPosition the starting index of the token
