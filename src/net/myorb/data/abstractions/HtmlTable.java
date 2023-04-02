@@ -287,13 +287,17 @@ public class HtmlTable
 	 */
 	public String escape (String source)
 	{
-		return source
-		.replaceAll ("&", "&amp;")
-		.replaceAll ("<", "&lt;")
-		.replaceAll (">", "&gt;")
-//		java label translation is NOT consistent
-//		.replaceAll ("'", "&apos;")
-		.replaceAll ("\"", "&quot;");
+		if (source != null)
+		{
+			return source
+					.replaceAll ("&", "&amp;")
+					.replaceAll ("<", "&lt;")
+					.replaceAll (">", "&gt;")
+//					java label translation is NOT consistent
+//					.replaceAll ("'", "&apos;")
+					.replaceAll ("\"", "&quot;");
+		}
+		return "";
 	}
 
 
