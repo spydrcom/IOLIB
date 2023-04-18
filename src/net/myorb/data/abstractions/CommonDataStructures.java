@@ -50,4 +50,48 @@ public class CommonDataStructures
 	}
 
 
+	/**
+	 * text Identifier with generic value
+	 * @param <V> type of values being mapped
+	 */
+	public static class NamedValue <V>
+	{
+		/**
+		 * constructor for name value pair
+		 * @param name the name part of the pair
+		 * @param value the value part of the pair
+		 */
+		public NamedValue (String name, V value)
+		{this.nameOfSymbol = name; this.namedValue = value; }
+		public String getIdentifier () { return nameOfSymbol; }
+		public String toString () { return namedValue.toString (); }
+		public V getIdentifiedContent () { return namedValue; }
+		private String nameOfSymbol; private V namedValue;
+	}
+
+	/**
+	 * lookup table for named values
+	 * @param <V> type of values being mapped
+	 */
+	public static class IdentifiedValue <V> extends SymbolicMap < NamedValue < V > >
+	{
+		/**
+		 * @param name symbol to be assigned
+		 * @param value the generic value to assign to symbol
+		 */
+		public void include (String name, V value)
+		{ this.put ( name, new NamedValue < V > ( name, value ) ); }
+
+		/**
+		 * lookup value directly from name
+		 * @param name the symbol that was assigned
+		 * @return the generic value assigned to the symbol
+		 */
+		public V getIdentifiedContent (String name)
+		{ return this.get (name).getIdentifiedContent (); }
+
+		private static final long serialVersionUID = -7725017701187451480L;
+	}
+
+
 }
