@@ -31,10 +31,31 @@ public class CommonDataStructures
 
 
 	/**
+	 * hash map with ordering of KEY values
+	 * @param <KEY> the key type for the mapping
+	 * @param <TARGET> the object type of the mapping
+	 */
+	public static class OrderedMap <KEY,TARGET> extends HashMap <KEY, TARGET>
+	{
+		/**
+		 * @return ordered list of KEY values
+		 */
+		public ItemList <KEY> getOrderedValues ()
+		{
+			ItemList <KEY> values = new ItemList <> ();
+			values.addAll ( this.keySet () ); values.sort (null);
+			return values;
+		}
+		private static final long serialVersionUID = 2941846059003887184L;
+	}
+
+
+	/**
 	 * symbol table translation
 	 * @param <TARGET> the object type of the mapping
 	 */
-	public static class SymbolicMap <TARGET> extends HashMap <String, TARGET>
+	public static class SymbolicMap <TARGET>
+				extends OrderedMap <String, TARGET>
 	{ private static final long serialVersionUID = -58202141273735090L; }
 
 
