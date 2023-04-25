@@ -18,6 +18,7 @@ public class CommonDataStructures
 	public static class ItemList <T> extends ArrayList <T>
 	{
 		public ItemList () {}
+		public ItemList (T item) { this.add (item); }
 		public ItemList (Collection <T> items) { this.addAll (items); }
 		private static final long serialVersionUID = -4619972438389917002L;
 	}
