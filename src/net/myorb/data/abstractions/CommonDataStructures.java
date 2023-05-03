@@ -28,7 +28,8 @@ public class CommonDataStructures
 	/**
 	 * add all items to list
 	 * @param items an array of items to add
-	 * @param list the list being appended
+	 * @param toList the list being appended
+	 * @param <T> data type being used
 	 */
 	public static <T> void addAll
 		( T [] items, Collection <T> toList )
