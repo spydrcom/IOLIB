@@ -20,15 +20,46 @@ public class CommonDataStructures
 		public ItemList () {}
 		public ItemList (T item) { this.add (item); }
 		public ItemList (Collection <T> items) { this.addAll (items); }
+		public ItemList (T [] items) { CommonDataStructures.addAll (items, this); }
 		private static final long serialVersionUID = -4619972438389917002L;
 	}
+
+
+	/**
+	 * add all items to list
+	 * @param items an array of items to add
+	 * @param list the list being appended
+	 */
+	public static <T> void addAll
+		( T [] items, Collection <T> toList )
+	{ for ( T t : items ) { toList.add (t); } }
 
 
 	/**
 	 * lists of symbols
 	 */
 	public static class TextItems extends ItemList <String>
-	{ private static final long serialVersionUID = -58202141273735090L; }
+	{
+		public TextItems () {}
+		public TextItems (String item) { super (item); }
+		public TextItems (String [] items) { super (items); }
+		public TextItems (Collection <String> items) { super (items); }
+		private static final long serialVersionUID = -58202141273735090L;
+	}
+
+
+	/**
+	 * set of items of specified object type
+	 * @param <T> type of items
+	 */
+	public static class PrimitiveSet <T> extends HashSet <T>
+	{
+		public PrimitiveSet () {}
+		public PrimitiveSet (T item) { this.add (item); }
+		public PrimitiveSet (Collection <T> items) { this.addAll (items); }
+		public PrimitiveSet (T [] items) { CommonDataStructures.addAll (items, this); }
+		private static final long serialVersionUID = 3039467719588772607L;
+	}
 
 
 	/**
@@ -61,18 +92,6 @@ public class CommonDataStructures
 
 
 	/**
-	 * set of items of specified object type
-	 * @param <T> type of items
-	 */
-	public static class PrimitiveSet <T> extends HashSet <T>
-	{
-		public PrimitiveSet () {}
-		public PrimitiveSet (Collection <T> items) { this.addAll (items); }
-		private static final long serialVersionUID = 3039467719588772607L;
-	}
-
-
-	/**
 	 * text Identifier with generic value
 	 * @param <V> type of values being mapped
 	 */
@@ -90,6 +109,7 @@ public class CommonDataStructures
 		public V getIdentifiedContent () { return namedValue; }
 		private String nameOfSymbol; private V namedValue;
 	}
+
 
 	/**
 	 * lookup table for named values
@@ -117,3 +137,4 @@ public class CommonDataStructures
 
 
 }
+
