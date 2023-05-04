@@ -137,5 +137,49 @@ public class CommonDataStructures
 	}
 
 
+	/**
+	 * treat list of values as vector
+	 */
+	public static class Vector <T> extends ItemList <T>
+	{
+
+		public Vector () {}
+
+		public Vector (Collection <T> items) { super (items); }
+
+		/**
+		 * construct a parameter list for a function call
+		 * @param items the values of the parameter to be included
+		 */
+		public Vector (double [] items, SpaceConversion <T> converter)
+		{
+			for (double item : items)
+			{
+				this.add ( converter.convertFromDouble (item) );
+			}
+		}
+
+		/**
+		 * compute sum of squares of vector components
+		 * - standard Pythagorean algorithm for distance computation
+		 * @param converter a conversion object for the data type
+		 * @return the magnitude
+		 */
+		public double computeMagnitude (SpaceConversion <T> converter)
+		{
+			double result = 0.0, v;
+			for (int i = 0; i < this.size (); i++)
+			{
+				v = converter.convertToDouble (this.get (i));
+				result += v * v;
+			}
+			return Math.sqrt (result);
+		}
+
+		private static final long serialVersionUID = 877255080759661227L;
+
+	}
+
+
 }
 
