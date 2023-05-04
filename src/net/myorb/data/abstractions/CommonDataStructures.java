@@ -151,11 +151,11 @@ public class CommonDataStructures
 		 * construct a parameter list for a function call
 		 * @param items the values of the parameter to be included
 		 */
-		public Vector (double [] items, SpaceConversion <T> converter)
+		public Vector (Number [] items, SpaceConversion <T> converter)
 		{
-			for (double item : items)
+			for (Number item : items)
 			{
-				this.add ( converter.convertFromDouble (item) );
+				this.add ( converter.convertFromDouble ( item.doubleValue () ) );
 			}
 		}
 
