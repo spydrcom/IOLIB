@@ -150,6 +150,7 @@ public class CommonDataStructures
 		/**
 		 * construct a parameter list for a function call
 		 * @param items the values of the parameter to be included
+		 * @param converter a conversion object for the data type
 		 */
 		public Vector (Number [] items, SpaceConversion <T> converter)
 		{
