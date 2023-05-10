@@ -6,6 +6,7 @@ import net.myorb.data.abstractions.SimpleUtilities;
 import net.myorb.data.abstractions.Status;
 
 import net.myorb.gui.BackgroundTask;
+import net.myorb.gui.BackgroundTaskQueue;
 
 import javax.swing.SwingUtilities;
 import javax.swing.ImageIcon;
@@ -1193,7 +1194,20 @@ public class SimpleScreenIO
 		return BG;
 	}
 
+	/**
+	 * schedule task in serial queue
+	 * @param task the Runnable to be scheduled
+	 */
+	public static void scheduleBackgroundTask (Runnable task)
+	{
+		queue.schedule (task);
+	}
+
+	static
+	// allocate a queue that will serially schedule executions
+	{ queue = new BackgroundTaskQueue (); }
+	static BackgroundTaskQueue queue;
+
 
 }
-
 
