@@ -86,7 +86,7 @@ public class ColorDisplays extends SimpleScreenIO
 
 		for (String name : names)
 		{
-			if ((rgb = map.get (name).getRGB ()) == prv) continue;
+			if ((rgb = RGBfor (name, map)) == prv) continue;
 
 			p.add
 			(
@@ -105,6 +105,10 @@ public class ColorDisplays extends SimpleScreenIO
 
 			prv = rgb;
 		}
+	}
+	static int RGBfor (String name, ColorNames.ColorMap map)
+	{
+		return map.get (name).getRGB ();
 	}
 
 
@@ -150,6 +154,20 @@ public class ColorDisplays extends SimpleScreenIO
 
 
 	/**
+	 * @param CL list of color names
+	 * @param map color object for given name
+	 * @return grid panel for display
+	 */
+	public static Panel palettePanelFor
+		(ColorNames.ColorList CL, ColorNames.ColorMap map)
+	{
+		Panel p = startGridPanel ( null, 0, 8 );
+		addToPalettePanel ( CL, null, map, p );
+		return p;
+	}
+
+
+	/**
 	 * show all colors ordered by RGB code
 	 */
 	public static void showFullPalette ()
@@ -160,13 +178,61 @@ public class ColorDisplays extends SimpleScreenIO
 	}
 	public static Panel fullPalettePanel ()
 	{
-		Panel p = startGridPanel (null, 0, 8);
-		addToPalettePanel
+		return palettePanelFor
 		(
-			ColorNames.byCode (), null,
-			ColorNames.systemColorMap, p
+			ColorNames.byCode (),
+			ColorNames.systemColorMap
 		);
-		return p;
+	}
+
+
+	/**
+	 * color list built for Temperature model
+	 */
+	public static void showTempPalette ()
+	{
+		Frame f = new Frame
+			( tempPalettePanel (), "Temperature Palette" );
+		f.showAndExit ();
+	}
+	public static Panel tempPalettePanel ()
+	{
+		ColorNames.ColorMap map; ColorNames.ColorList CL;
+
+		ColorNames.fillTemperatureMap
+		(
+			CL = new ColorNames.ColorList (),
+			map = new ColorNames.ColorMap ()
+		);
+
+		return palettePanelFor ( CL, map );
+
+	}
+
+
+	/**
+	 * color list built by hue
+	 */
+	public static void showHSBPalette ()
+	{
+		Frame f = new Frame
+			( hsbPalettePanel (), "HSB Palette" );
+		f.showAndExit ();
+	}
+	public static Panel hsbPalettePanel ()
+	{
+		ColorNames.ColorList CL;
+		dumpHSB ( CL = ColorNames.buildHsbMap () );
+		return palettePanelFor ( CL, ColorNames.hsbAlgorithmMap );
+	}
+	public static void dumpHSB (ColorNames.ColorList CL)
+	{
+		for (String name : CL)
+		{
+			int rgb = RGBfor ( name, ColorNames.hsbAlgorithmMap );
+			String rep = Integer.toHexString ( rgb ).toUpperCase ();
+			System.out.println ( rep.substring (2) );
+		}
 	}
 
 
