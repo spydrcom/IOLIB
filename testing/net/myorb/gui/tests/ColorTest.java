@@ -57,6 +57,8 @@ public class ColorTest extends SimpleScreenIO
 		System.out.println (ColorNames.byCode ());
 		System.out.println ();
 
+		ColorDisplays.showHSBPalette ();
+		ColorDisplays.showTempPalette ();
 		ColorDisplays.showFullPalette ();
 		ColorDisplays.showGBmatrix ();
 	}
