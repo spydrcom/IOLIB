@@ -5,6 +5,7 @@ import net.myorb.gui.components.SimpleScreenIO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import java.awt.Color;
 
 /**
@@ -166,15 +167,116 @@ public class ColorNames extends SimpleScreenIO
 				"YELLOW_GREEN"
 		};
 
+	public static class ColorIndex extends ArrayList <Color>
+	{ private static final long serialVersionUID = 5137669896473178319L; }
+
 	public static class ColorList extends ArrayList <String>
 	{ private static final long serialVersionUID = 1951234096977901160L; }
 
 	public static class ColorMap extends HashMap <String, Color>
 	{ private static final long serialVersionUID = -1556679618027578891L; }
 
-	public static ColorMap systemColorMap = new ColorMap ();
+	public static ColorMap hsbAlgorithmMap, systemColorMap = new ColorMap ();
+	public static ColorIndex TemperatureColorIndex = new ColorIndex ();
+	static { buildSystemMap (); buildTemperatureMap (); }
 
-	static
+
+	// computation of temperature model colors using hue algorithm
+
+
+	/**
+	 * @param CL the list of color names being built
+	 * @param map the map from names in list to color associated
+	 */
+	public static void fillTemperatureMap
+		(ColorNames.ColorList CL, ColorNames.ColorMap map)
+	{
+		for (int i = 0; i <= 100; i++)
+		{
+			String name = Integer.toString ( 1000 + i ).substring (1);
+			Color C = ColorNames.TemperatureColorIndex.get (i);
+			CL.add ( name ); map.put ( name, C );
+		}
+	}
+
+
+	/**
+	 * fill hsbAlgorithmMap for display
+	 * @return the list of constructed names
+	 */
+	public static ColorList buildHsbMap ()
+	{
+		ColorList CL;
+
+		fillTemperatureMap
+		(
+			CL = new ColorList (),
+			hsbAlgorithmMap = new ColorMap ()
+		);
+
+		return CL;
+	}
+
+
+	/**
+	 * construct Temperature Map based on hue algorithm
+	 */
+	public static void buildTemperatureMap ()
+	{
+		// temperature sequence of colors low to high
+		// >> Blue Green Yellow Orange Red
+
+		for (int i = 101; i > 0; i--)
+		{
+			float hue = (float) ( i - 4 ) / 135.0f;
+			Color C = Color.getHSBColor ( hue, 0.9f, 0.9f );
+			TemperatureColorIndex.add ( C );
+		}
+	}
+
+
+	/**
+	 * @return the raw data map
+	 */
+	public static ColorMap hsb100 () { return hsbAlgorithmMap; }
+
+
+	/**
+	 * get color based on value range
+	 * @param value a value in the range lo..hi
+	 * @param lo the low end of the value domain
+	 * @param hi the high end of the value domain
+	 * @return the Color object for given value
+	 */
+	public static Color getTemperatureColorFrom (double value, double lo, double hi)
+	{
+		double range = hi - lo;
+		double adjustedValue = value - lo;
+		return getTemperatureColorFor (adjustedValue / range);
+	}
+
+
+	/**
+	 * get color for standard 0..1 range
+	 * @param value the requested entry specified as float range 0..1
+	 * @return the Color object for given value
+	 */
+	public static Color getTemperatureColorFor (double value)
+	{
+		if ( value < 0.0 || value > 1.0 )
+		{ throw new RuntimeException ("Temperature Color request out of range 0..1"); }
+		Number index = 100.0 * value; int entryNumber = index.intValue ();
+		return TemperatureColorIndex.get (entryNumber);
+	}
+
+
+	// colors from Java system database
+
+
+	/**
+	 * construct named color map from system data
+	 */
+	public static void buildSystemMap ()
 	{
 		for (String name : LIST)
 		{
