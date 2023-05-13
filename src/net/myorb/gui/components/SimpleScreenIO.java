@@ -245,6 +245,7 @@ public class SimpleScreenIO
 		public JComponent toComponent () { return this; }
 		public Image (String path) { super (iconFor (path)); }
 		public Image (javax.swing.Icon content) { super (content); }
+		public javax.swing.Icon getContent () { return this.getIcon (); }
 		public static javax.swing.ImageIcon iconFor (String path) { return new javax.swing.ImageIcon (path); }
 		public void changeTo (javax.swing.Icon content) { this.setIcon (content); }
 		private static final long serialVersionUID = -7741959665020441814L;
@@ -489,8 +490,9 @@ public class SimpleScreenIO
 	{
 		public Label (String text) { super (text); }
 		public Label (ImageIcon icon) { super (icon); }
-		public JComponent toComponent () { return this; }
 		public String getValue () { return getText (); }
+		public JComponent toComponent () { return this; }
+		public Label (Color C) { this.setForeground (C); }
 		public String getTextRepresentation () { return getValue (); }
 		public Label (String text, int alignment) { super (text, alignment); }
 		private static final long serialVersionUID = -1971436064810744614L;
