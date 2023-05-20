@@ -1,6 +1,8 @@
 
 package net.myorb.data.abstractions;
 
+import net.myorb.data.abstractions.SpaceDescription;
+
 import java.util.*;
 
 /**
@@ -175,6 +177,19 @@ public class CommonDataStructures
 				result += v * v;
 			}
 			return Math.sqrt (result);
+		}
+
+		/**
+		 * add elements in point
+		 * @param manager a space description for point domain
+		 * @return the sum of the elements
+		 */
+		public T sumOfElements (SpaceDescription <T> manager)
+		{
+			T result = manager.getZero ();
+			for (int i = 0; i < this.size (); i++)
+			{ result = manager.add (result, this.get (i)); }
+			return result;
 		}
 
 		private static final long serialVersionUID = 877255080759661227L;
