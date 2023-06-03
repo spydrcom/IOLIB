@@ -265,6 +265,10 @@ public class CharacterDelimited extends SimpleStreamIO
 	{
 		processTextStream (new TextSource (file), sink);
 	}
+	public void parse (TextSource source, TextSink sink) throws Exception
+	{
+		processTextStream (source, sink);
+	}
 
 	public CharacterDelimited () {}
 	public CharacterDelimited (DateFormat dateManager) { this.dateManager = dateManager; }
