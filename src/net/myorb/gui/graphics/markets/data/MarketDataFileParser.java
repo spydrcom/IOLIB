@@ -1,13 +1,10 @@
 
 package net.myorb.gui.graphics.markets.data;
 
-import net.myorb.data.conventional.OHLCV;
-
-import net.myorb.data.conventional.TDF;
-import net.myorb.data.conventional.CSV;
+import net.myorb.data.conventional.*;
 
 import java.util.List;
-import java.io.File;
+import java.io.*;
 
 /**
  * file parser for market data
@@ -15,6 +12,26 @@ import java.io.File;
  */
 public class MarketDataFileParser
 {
+
+
+	public interface PeriodDescription
+	{
+		PeriodDescription describing
+			(String periodName);
+		String getPeriodId ();
+		String getMultiplier ();
+		String getStartDate ();
+		String getEndDate ();
+		
+	}
+
+	public interface StreamParser
+	{
+		void parse
+		(String market, PeriodDescription period, OHLCV.Series series)
+		throws Exception;
+	}
+
 
 	/**
 	 * file extensions recognized
@@ -53,4 +70,25 @@ public class MarketDataFileParser
 		}
 	}
 
+	/**
+	 * @param market name of the market quoted
+	 * @param period a description of the time period
+	 * @param parser a parser for the stream source
+	 * @return the list of bars parsed from file
+	 * @throws Exception for IO errors
+	 */
+	public static List<OHLCV.Bar> read
+		(
+			String market,
+			PeriodDescription period,
+			StreamParser parser
+		)
+	throws Exception
+	{
+		OHLCV.Series series = new OHLCV.Series ();
+		parser.parse (market, period, series);
+		return series.getBars ();
+	}
+
 }
+
