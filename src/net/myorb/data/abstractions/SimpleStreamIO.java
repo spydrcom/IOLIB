@@ -566,5 +566,16 @@ public class SimpleStreamIO
 	}
 
 
+	/**
+	 * treat string as text source
+	 * @param text a block of text to use as source
+	 * @return a text source access object
+	 */
+	public static TextSource sourceFor (String text)
+	{
+		return new TextSource (new StringReader (text));
+	}
+
+
 }
 
