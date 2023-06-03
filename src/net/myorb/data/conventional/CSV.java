@@ -42,6 +42,10 @@ public class CSV extends CharacterDelimited
 	{
 		parse (file, parser = new CommaSeparatedValuesParser (processor, dateManager));
 	}
+	public void parse (TextSource source, Processor processor) throws Exception
+	{
+		parse (source, parser = new CommaSeparatedValuesParser (processor, dateManager));
+	}
 
 	/* (non-Javadoc)
 	 * @see net.myorb.data.conventional.CharacterDelimited.CommonProcessing#getParser()
