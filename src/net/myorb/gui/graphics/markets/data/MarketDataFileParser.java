@@ -1,6 +1,8 @@
 
 package net.myorb.gui.graphics.markets.data;
 
+import net.myorb.gui.graphics.markets.data.MarketQuoteParameters.*;
+
 import net.myorb.data.conventional.*;
 
 import java.util.List;
@@ -12,26 +14,6 @@ import java.io.*;
  */
 public class MarketDataFileParser
 {
-
-
-	public interface PeriodDescription
-	{
-		PeriodDescription describing
-			(String periodName);
-		String getPeriodId ();
-		String getMultiplier ();
-		String getStartDate ();
-		String getEndDate ();
-		
-	}
-
-	public interface StreamParser
-	{
-		void parse
-		(String market, PeriodDescription period, OHLCV.Series series)
-		throws Exception;
-	}
-
 
 	/**
 	 * file extensions recognized
