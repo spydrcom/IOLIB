@@ -41,8 +41,19 @@ public class ServerAccess
 		this.hostName = hostName;
 		this.portNumber = portNumber;
 	}
-	String hostName;
-	int portNumber;
+	protected String hostName;
+	protected int portNumber;
+
+
+	/**
+	 * get network access
+	 * @return new socket for host and port
+	 * @throws Exception for errors
+	 */
+	public Socket access () throws Exception
+	{
+		return new Socket (hostName, portNumber);
+	}
 
 
 	/**
@@ -57,7 +68,7 @@ public class ServerAccess
 		try
 		{
 			Socket s = null;
-		    writeTo (s = new Socket (hostName, portNumber), request);
+		    writeTo (s = access (), request);
 		    return new TextSource (s.getInputStream ());
 		}
 		catch (Exception e)
@@ -114,14 +125,16 @@ public class ServerAccess
 	
 		try
 		{
-		    s = new Socket
-		    	(hostName, portNumber);
-		    writeTo (s, request);
+		    writeTo
+		    	(s = access (), request);
 		    response = readFrom (s);
 		}
 		catch (Exception e)
 		{
-			throw new ServerError ("Error producing response to socket request", e);
+			throw new ServerError
+			(
+				"Error producing response to socket request", e
+			);
 		}
 		finally
 		{

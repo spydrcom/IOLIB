@@ -28,7 +28,7 @@ public class ChartMouseMotionHandler extends MouseMotionHandler
 	 */
 	public void processEvent (Point point)
 	{
-		chart.showDateTip ((int) point.getX ());
+		chart.showDateTip ( (int) point.getX () );
 	}
 
 	/* (non-Javadoc)
@@ -36,7 +36,7 @@ public class ChartMouseMotionHandler extends MouseMotionHandler
 	 */
 	public void processDrag (Point from, Point to)
 	{
-		chart.zoom ((int) from.getX (), (int) to.getX ());
+		chart.zoom ( (int) from.getX (), (int) to.getX () );
 	}
 
 	/* (non-Javadoc)

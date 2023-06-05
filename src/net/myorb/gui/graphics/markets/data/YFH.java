@@ -4,7 +4,7 @@ package net.myorb.gui.graphics.markets.data;
 import net.myorb.data.conventional.CSV;
 
 /**
- * Yahoo Financial History
+ * YAHOO Financial History
  *  file type manager based on CSV
  *  with date formatting of the type YYYY-MM-DD
  * @author Michael Druckman

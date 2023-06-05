@@ -1,8 +1,7 @@
 
 package net.myorb.gui.graphics.markets.data;
 
-import net.myorb.gui.graphics.markets.data.MarketQuoteParameters.*;
-
+import net.myorb.gui.graphics.markets.data.MarketQuoteParameters.Periods;
 import net.myorb.data.conventional.*;
 
 import java.util.List;
@@ -15,12 +14,15 @@ import java.io.*;
 public class MarketDataFileParser
 {
 
+
 	/**
 	 * file extensions recognized
 	 */
 	public enum Type { CSV, CSVR, TDF, TDFR, YFH }
 
+
 	/**
+	 * parse a historical market source
 	 * @param source path to source file
 	 * @param market name of the market quoted
 	 * @return the list of bars parsed from file
@@ -52,25 +54,52 @@ public class MarketDataFileParser
 		}
 	}
 
+
 	/**
-	 * @param market name of the market quoted
-	 * @param period a description of the time period
-	 * @param parser a parser for the stream source
-	 * @return the list of bars parsed from file
-	 * @throws Exception for IO errors
+	 * identify file type assuming YAHOO historical format
+	 * @param periodId the time frame for the data of interest
+	 * @return the extension for the time frame
 	 */
-	public static List<OHLCV.Bar> read
-		(
-			String market,
-			PeriodDescription period,
-			StreamParser parser
-		)
-	throws Exception
+	public static String typeFor (Periods periodId)
 	{
-		OHLCV.Series series = new OHLCV.Series ();
-		parser.parse (market, period, series);
-		return series.getBars ();
+		switch (periodId)
+		{
+			case DAY: return "Daily.yfh";
+			case HOUR: return "Hourly.yfh";
+			case QUARTER: return "Quarterly.yfh";
+			case WEEK: return "Weekly.yfh";
+			case MONTH: return "Monthly.yfh";
+			case YEAR: return "Yearly.yfh";
+			default: return "???.yfh";
+		}
 	}
+
+
+	/**
+	 * construct file path to historical data
+	 * @param market name of the market quoted
+	 * @param timeFrame the time period of interest
+	 * @return the path to the data file
+	 * @throws Exception for errors
+	 */
+	public static String pathFor (String market, MarketQuoteParameters.Periods timeFrame) throws Exception
+	{
+		return "data/" + market + "-" + typeFor (timeFrame);
+	}
+
+
+	/**
+	 * read file of historical data
+	 * @param market name of the market quoted
+	 * @param timeFrame the time period of interest
+	 * @return the data parsed into a list of bars
+	 * @throws Exception for any errors
+	 */
+	public static List<OHLCV.Bar> read (String market, MarketQuoteParameters.Periods timeFrame) throws Exception
+	{
+		return read ( pathFor (market, timeFrame), market );
+	}
+
 
 }
 
