@@ -65,12 +65,19 @@ public class MarketQuoteParameters
 	 */
 	public interface PeriodDescription
 	{
+
 		/**
 		 * @param periodId minute hour day week month quarter year
 		 * @return a chain return of the description object
 		 */
 		PeriodDescription describing
 			(Periods periodId);
+
+		PeriodDescription describing
+			(
+				Periods periodId,
+				String starting
+			);
 
 		/**
 		 * @return minute hour day week month quarter year
@@ -131,6 +138,7 @@ public class MarketQuoteParameters
 	{
 		OHLCV.Series series = new OHLCV.Series ();
 		parser.parse (market, period, series);
+		series.setMarketName (market);
 		return series.getBars ();
 	}
 
@@ -144,7 +152,24 @@ public class MarketQuoteParameters
 		public Averaging
 		(java.util.HashMap <String,String> record)
 		{ this.putAll (record); }
-		
+
+		/**
+		 * @return file type for historical price data
+		 */
+		public String getHistoryType ()
+		{
+			return get ("HistoryType");
+		}
+
+		/**
+		 * @param timeFrame time frame being averaged
+		 * @return the start date for live stream
+		 */
+		public String getLiveDate (Periods timeFrame)
+		{
+			return strip ( get (frequencyFor (timeFrame) + "LiveDate") );
+		}
+
 		/**
 		 * @param timeFrame time frame being averaged
 		 * @return the period to use for average
@@ -166,11 +191,25 @@ public class MarketQuoteParameters
 		int parse (Periods timeFrame, String field)
 		{
 			String ID = frequencyFor (timeFrame) + field;
-			String digits = get (ID).replaceAll (" ", "");
-			return Integer.parseInt (digits);
+			return Integer.parseInt ( strip ( get (ID) ) );
 		}
 
 		private static final long serialVersionUID = -6998196258628689885L;
+	}
+
+
+	/**
+	 * remove blank space from text
+	 * @param text the source of the data
+	 * @return text minus BS
+	 */
+	public static String strip (String text)
+	{
+		return text.replaceAll (" ", "");
+	}
+	public static String stripUC (String text)
+	{
+		return strip (text).toUpperCase ();
 	}
 
 
