@@ -41,6 +41,26 @@ public class MarketQuoteParameters
 
 
 	/**
+	 * frequency term for time frame
+	 * @param periodId the generic ID for the time frame
+	 * @return the frequency title
+	 */
+	public static String frequencyFor (Periods periodId)
+	{
+		switch (periodId)
+		{
+			case DAY: return "Daily";
+			case HOUR: return "Hourly";
+			case QUARTER: return "Quarterly";
+			case WEEK: return "Weekly";
+			case MONTH: return "Monthly";
+			case YEAR: return "Yearly";
+			default: return "???";
+		}
+	}
+
+
+	/**
 	 * describe the time frame for the quote
 	 */
 	public interface PeriodDescription
@@ -112,6 +132,45 @@ public class MarketQuoteParameters
 		OHLCV.Series series = new OHLCV.Series ();
 		parser.parse (market, period, series);
 		return series.getBars ();
+	}
+
+
+	/**
+	 * parameters applied to market moving averages
+	 */
+	public static class Averaging extends java.util.HashMap <String, String>
+	{
+
+		public Averaging
+		(java.util.HashMap <String,String> record)
+		{ this.putAll (record); }
+		
+		/**
+		 * @param timeFrame time frame being averaged
+		 * @return the period to use for average
+		 */
+		public int getPeriod (Periods timeFrame)
+		{
+			return parse (timeFrame, "Period");
+		}
+
+		/**
+		 * @param timeFrame time frame of interest
+		 * @return number of bars for display
+		 */
+		public int getBars (Periods timeFrame)
+		{
+			return parse (timeFrame, "Bars");
+		}
+
+		int parse (Periods timeFrame, String field)
+		{
+			String ID = frequencyFor (timeFrame) + field;
+			String digits = get (ID).replaceAll (" ", "");
+			return Integer.parseInt (digits);
+		}
+
+		private static final long serialVersionUID = -6998196258628689885L;
 	}
 
 
