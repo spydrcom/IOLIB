@@ -1,7 +1,7 @@
 
 package net.myorb.gui.graphics.markets.data;
 
-import net.myorb.gui.graphics.markets.data.MarketQuoteParameters.Periods;
+import net.myorb.gui.graphics.markets.data.MarketQuoteParameters.*;
 import net.myorb.data.conventional.*;
 
 import java.util.List;
@@ -57,21 +57,12 @@ public class MarketDataFileParser
 
 	/**
 	 * identify file type assuming YAHOO historical format
-	 * @param periodId the time frame for the data of interest
+	 * @param timeFrame the time frame for the data of interest
 	 * @return the extension for the time frame
 	 */
-	public static String typeFor (Periods periodId)
+	public static String typeFor (Periods timeFrame)
 	{
-		switch (periodId)
-		{
-			case DAY: return "Daily.yfh";
-			case HOUR: return "Hourly.yfh";
-			case QUARTER: return "Quarterly.yfh";
-			case WEEK: return "Weekly.yfh";
-			case MONTH: return "Monthly.yfh";
-			case YEAR: return "Yearly.yfh";
-			default: return "???.yfh";
-		}
+		return MarketQuoteParameters.frequencyFor (timeFrame) + ".yfh";
 	}
 
 
