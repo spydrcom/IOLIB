@@ -360,7 +360,8 @@ public class MarketChart extends ScreenPlotter
 	 * @param x the scaled x value from the plot
 	 * @return the Bar.Series structure index for this x
 	 */
-	int toIndex (int x) { return x / PIXELS_PER_BAR - 2; }
+	int toIndex (int x) { return x / PIXELS_PER_BAR - 1; }
+	// was -2 changed to -1 on 6/6/23 to correct tool tip
 
 	/**
 	 * @param index the translated index from the plot mouse-over
