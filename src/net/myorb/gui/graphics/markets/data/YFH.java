@@ -3,6 +3,9 @@ package net.myorb.gui.graphics.markets.data;
 
 import net.myorb.data.conventional.CSV;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * YAHOO Financial History
  *  file type manager based on CSV
@@ -13,7 +16,7 @@ public class YFH extends CSV
 {
 
 	/**
-	 * parser for Yahoo Financial CSV date format YYYY-MM-DD
+	 * parser for YAHOO Financial CSV date format YYYY-MM-DD
 	 */
 	public static class DateManager extends DateFormat
 	{
@@ -34,6 +37,11 @@ public class YFH extends CSV
 		protected DateManager () { super (Order.YMD); }
 
 	}
+
+	public String getTodaysDate ()
+	{ return formatter.format (new Date ()); }
+	public SimpleDateFormat getFormatter () { return formatter; }
+	protected SimpleDateFormat formatter = new SimpleDateFormat ("YYYY-MM-dd");
 
 	public YFH () { super (new DateManager ()); }
 
