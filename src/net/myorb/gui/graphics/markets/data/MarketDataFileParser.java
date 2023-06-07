@@ -2,7 +2,6 @@
 package net.myorb.gui.graphics.markets.data;
 
 import net.myorb.gui.graphics.markets.data.MarketQuoteParameters.*;
-import net.myorb.gui.graphics.markets.data.MarketQuoteParameters;
 import net.myorb.data.conventional.*;
 
 import java.util.List;
