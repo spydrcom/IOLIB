@@ -9,7 +9,7 @@ import java.util.List;
  * generic descriptions of parameters to quote systems
  * @author Michael Druckman
  */
-public class MarketQuoteParameters
+public class MarketQuoteParameters extends MarketDateProcessing
 {
 
 
@@ -214,3 +214,4 @@ public class MarketQuoteParameters
 
 
 }
+
