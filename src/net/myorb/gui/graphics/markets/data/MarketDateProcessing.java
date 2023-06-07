@@ -1,0 +1,62 @@
+
+package net.myorb.gui.graphics.markets.data;
+
+import net.myorb.data.abstractions.SimpleStreamIO;
+import net.myorb.data.conventional.OHLCV;
+
+import java.util.Date;
+
+/**
+ * management of date specific data using YAHOO history formats
+ * @author Michael Druckman
+ */
+public class MarketDateProcessing
+{
+
+
+	// time-zone correction
+	static Long SEC_PER_HR = 60*60L;
+	static Long MS_PER_HR = SEC_PER_HR*1000;
+	static Long TZONE_DIFFERENCE = 8L;
+
+
+	// YAHOO CSV is adopted convention
+	public static final YFH YAHOO = new YFH ();
+
+
+	/**
+	 * @return text representation of todays date YYYY-MM-dd
+	 */
+	public static String getTodaysDate () { return YAHOO.getTodaysDate (); }
+
+
+	/**
+	 * convert long number value to date by 1970 milli standard
+	 * @param N the number taken from the JSON object field
+	 * @return the YYYY-mm-dd formatted date
+	 */
+	public static String dateFrom (Number N)
+	{
+		long
+			msSince1970 = N.longValue (),
+			localTime = msSince1970 + TZONE_DIFFERENCE*MS_PER_HR;
+		return YAHOO.getFormatter ().format (new Date (localTime));
+	}
+
+
+	/**
+	 * parse historical data from the YAHOO CSV format
+	 * @param source text source for history to be read
+	 * @param series a series of bars collecting price history
+	 * @throws Exception for any error
+	 */
+	public static void parseHistory
+		(SimpleStreamIO.TextSource source, OHLCV.Series series)
+	throws Exception
+	{
+		YAHOO.parse (source, series);
+	}
+
+
+}
+
