@@ -1,9 +1,10 @@
 
 package net.myorb.gui.graphics.markets.data;
 
-import net.myorb.gui.graphics.markets.MarketChart;
 import net.myorb.gui.graphics.ScreenPlotter;
+import net.myorb.gui.graphics.markets.MarketChart;
 
+import net.myorb.data.abstractions.CommonDataStructures;
 import net.myorb.data.abstractions.Range;
 
 import java.awt.Color;
@@ -18,6 +19,11 @@ import java.util.List;
  */
 public class Study extends ArrayList <Double>
 {
+
+
+	public static class Parameters extends CommonDataStructures.NumericParameterization
+	{ private static final long serialVersionUID = -2743966556712161463L; }
+
 
 	/**
 	 * empty study, treated as List
