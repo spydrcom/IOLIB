@@ -95,6 +95,32 @@ public class CommonDataStructures
 
 
 	/**
+	 * name-value pairs forming a symbol table
+	 */
+	public static class NumericParameterization extends SymbolicMap <Number>
+	{
+		/**
+		 * @param name a symbol name to evaluate
+		 * @param defaultValue value to use if not mapped
+		 * @return the value determined for the symbol given
+		 */
+		public Number evaluate (String name, Number defaultValue)
+		{
+			Number found;
+			if ( (found = this.get (name)) == null ) return defaultValue;
+			else return found;
+		}
+
+		/**
+		 * @param name symbol to be assigned
+		 * @param value the value to give the symbol
+		 */
+		public void assign (String name, Number value) { put (name, value); }
+		private static final long serialVersionUID = -8411978027902480605L;
+	}
+
+
+	/**
 	 * text Identifier with generic value
 	 * @param <V> type of values being mapped
 	 */
