@@ -37,10 +37,20 @@ public class MarketDateProcessing
 	 */
 	public static String dateFrom (Number N)
 	{
-		long
-			msSince1970 = N.longValue (),
-			localTime = msSince1970 + TZONE_DIFFERENCE*MS_PER_HR;
-		return YAHOO.getFormatter ().format (new Date (localTime));
+		long localTime = timeZoneAdjust (N);
+		return YAHOO.getDateFormatter ().format (new Date (localTime));
+	}
+
+	public static String timeFrom (Number N)
+	{
+		long localTime = timeZoneAdjust (N);
+		String T = YAHOO.getTimeFormatter ().format (new Date (localTime));
+		return T.replace (' ', ',');
+	}
+
+	static long timeZoneAdjust (Number N)
+	{
+		return N.longValue() + TZONE_DIFFERENCE*MS_PER_HR;
 	}
 
 
