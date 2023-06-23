@@ -39,9 +39,11 @@ public class YFH extends CSV
 	}
 
 	public String getTodaysDate ()
-	{ return formatter.format (new Date ()); }
-	public SimpleDateFormat getFormatter () { return formatter; }
-	protected SimpleDateFormat formatter = new SimpleDateFormat ("YYYY-MM-dd");
+	{ return dateFormatter.format (new Date ()); }
+	public SimpleDateFormat getDateFormatter () { return dateFormatter; }
+	public SimpleDateFormat getTimeFormatter () { return timeFormatter; }
+	protected SimpleDateFormat dateFormatter = new SimpleDateFormat ("YYYY-MM-dd");
+	protected SimpleDateFormat timeFormatter = new SimpleDateFormat ("YYYY-MM-dd hh:mm");
 
 	public YFH () { super (new DateManager ()); }
 
