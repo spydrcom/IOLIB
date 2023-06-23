@@ -43,7 +43,7 @@ public class YFH extends CSV
 	public SimpleDateFormat getDateFormatter () { return dateFormatter; }
 	public SimpleDateFormat getTimeFormatter () { return timeFormatter; }
 	protected SimpleDateFormat dateFormatter = new SimpleDateFormat ("YYYY-MM-dd");
-	protected SimpleDateFormat timeFormatter = new SimpleDateFormat ("YYYY-MM-dd hh:mm");
+	protected SimpleDateFormat timeFormatter = new SimpleDateFormat ("YYYY-MM-dd HH:mm");
 
 	public YFH () { super (new DateManager ()); }
 
