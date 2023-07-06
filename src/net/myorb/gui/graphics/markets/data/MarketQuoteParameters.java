@@ -67,6 +67,11 @@ public class MarketQuoteParameters extends MarketDateProcessing
 	{
 
 		/**
+		 * @return a new series of bars objects
+		 */
+		OHLCV.Series genSeries ();
+
+		/**
 		 * @param periodId minute hour day week month quarter year
 		 * @return a chain return of the description object
 		 */
@@ -136,7 +141,7 @@ public class MarketQuoteParameters extends MarketDateProcessing
 		)
 	throws Exception
 	{
-		OHLCV.Series series = new OHLCV.Series ();
+		OHLCV.Series series = period.genSeries ();
 		parser.parse (market, period, series);
 		series.setMarketName (market);
 		return series.getBars ();
