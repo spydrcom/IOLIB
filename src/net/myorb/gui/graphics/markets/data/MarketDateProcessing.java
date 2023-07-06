@@ -29,6 +29,16 @@ public class MarketDateProcessing
 	 */
 	public static String getTodaysDate () { return YAHOO.getTodaysDate (); }
 
+	/**
+	 * @param daysAgo number of days past
+	 * @return the formatted date for specified day
+	 */
+	public static String getPriorDate (long daysAgo)
+	{
+		long time = System.currentTimeMillis ();
+		return dateFrom (time - daysAgo * MS_PER_HR * 24);
+	}
+
 
 	/**
 	 * convert long number value to date by 1970 milli standard
