@@ -77,6 +77,12 @@ public class OHLCV implements CharacterDelimited.Processor
 		void associateStudyValue (String name, double value);
 
 		/**
+		 * @param name study field name
+		 * @return the associated value
+		 */
+		double getStudyValue (String name);
+
+		/**
 		 * @param data object to use for capture
 		 */
 		void captureData (HistoricalData data);
@@ -95,6 +101,11 @@ public class OHLCV implements CharacterDelimited.Processor
 		 * @return the name of the market described
 		 */
 		String getMarketName ();
+
+		/**
+		 * @param toValue the new value to use
+		 */
+		void setDate (String toValue);
 
 		/**
 		 * @return the time-stamp for the bar
@@ -118,8 +129,19 @@ public class OHLCV implements CharacterDelimited.Processor
 		/* (non-Javadoc)
 		 * @see net.myorb.data.conventional.CharacterDelimited.Processor#process(net.myorb.data.conventional.CharacterDelimited.Reader)
 		 */
-		public void process (CharacterDelimited.Reader reader) { bars.add (new Event (reader)); }
+		public void process (CharacterDelimited.Reader reader)
+		{
+			Bar B;
+			bars.add (B = new Event (reader));
+			annotate (B, reader);
+		}
 		protected List<Bar> bars = new ArrayList<Bar> ();
+
+		/**
+		 * @param bar a new bar to be extended with content
+		 * @param fromReader the CSV reader being used to parse source
+		 */
+		public void annotate (Bar bar, CharacterDelimited.Reader fromReader) {}
 
 		/**
 		 * @param name the name of the market described
@@ -156,8 +178,9 @@ public class OHLCV implements CharacterDelimited.Processor
 	public double getOpen () { return o; }
 	public double getClose () { return c; }
 	public long getVolume () { return volume; }
-	public String getDate () { return date==null ? "Predictive" : date; }
 
+	public String getDate () { return date==null ? "Predictive" : date; }
+	public void setDate (String toValue) { this.date = toValue; }
 
 	/*
 	 * study associations
@@ -171,6 +194,11 @@ public class OHLCV implements CharacterDelimited.Processor
 	(String name, double value) { studies.add (name); values.put (name, value); }
 	protected HashMap<String,Double> values = new HashMap<String,Double>();
 	protected List<String> studies = new ArrayList<String>();
+
+	public double getStudyValue (String name)
+	{
+		return values.get (name);
+	}
 
 	/**
 	 * @return a display of the name/value pairs
@@ -248,10 +276,16 @@ public class OHLCV implements CharacterDelimited.Processor
 	{
 		date = reader.getFormattedDate ("Date");
 		volume = reader.getNumber ("Volume").longValue ();
+
 		o = reader.getNumber ("Open").doubleValue ();
 		c = reader.getNumber ("Close").doubleValue ();
 		h = reader.getNumber ("High").doubleValue ();
 		l = reader.getNumber ("Low").doubleValue ();
+
+//		String time = reader.getText ("Time");
+//		String hrs [] = time.split (":");
+//		System.out.println (time);
+//		date += "H" + hrs[0];
 	}
 	protected String date; protected long volume;
 	protected double o, h, l, c;
