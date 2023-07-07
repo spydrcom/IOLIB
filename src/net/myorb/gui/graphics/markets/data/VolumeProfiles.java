@@ -101,6 +101,9 @@ public class VolumeProfiles
 		public Number getClose () { return close; }
 		public Number getHigh () { return high; }
 		
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
 		public String toString ()
 		{
 			CommonDataStructures.ItemList <Number> prices;
