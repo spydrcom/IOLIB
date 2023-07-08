@@ -212,7 +212,7 @@ public class VolumeProfiles
 	/**
 	 * scale values to percent of max
 	 * @param items the values to be scaled
-	 * @param high the max value
+	 * @param max the max value
 	 */
 	public static void scale
 		(
