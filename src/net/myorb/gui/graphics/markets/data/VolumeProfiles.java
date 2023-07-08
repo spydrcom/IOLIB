@@ -1,7 +1,11 @@
 
 package net.myorb.gui.graphics.markets.data;
 
-import net.myorb.data.abstractions.CommonDataStructures;
+import net.myorb.data.abstractions.CommonDataStructures.OrderedMap;
+import net.myorb.data.abstractions.CommonDataStructures.TextItems;
+import net.myorb.data.abstractions.CommonDataStructures.ItemList;
+
+import net.myorb.data.notations.json.JsonSemantics;
 
 /**
  * collect data for Volume Profile
@@ -27,6 +31,19 @@ public class VolumeProfiles
 	}
 
 	/**
+	 * enumerate an item from the profile
+	 */
+	public interface Query
+	{
+		/**
+		 * get value contained
+		 * @param from a Portions object
+		 * @return the extracted value
+		 */
+		Number selecting (Portions from);
+	}
+
+	/**
 	 * details collected for portions
 	 */
 	public static class AccumulationPortions implements Portions
@@ -41,19 +58,43 @@ public class VolumeProfiles
 	}
 
 	/**
+	 * objects holding lists of numbers
+	 */
+	public static class ValueList extends ItemList <Number>
+	{ private static final long serialVersionUID = 4592012507980597589L; }
+
+	/**
 	 * use price key as index to volume
 	 */
-	public static class Accumulations extends CommonDataStructures.OrderedMap <Number, AccumulationPortions>
-	{
-		private static final long serialVersionUID = 5210401532427507500L;
-	}
+	public static class Accumulations
+		extends OrderedMap <Number, AccumulationPortions>
+	{ private static final long serialVersionUID = 5210401532427507500L; }
 
 	/**
 	 * OHLC data and accumulation map
 	 */
 	public interface Profile
 	{
+
+		/**
+		 * @return map of prices to volume portions
+		 */
 		Accumulations getAccumulations ();
+
+		/**
+		 * @param into list to contain enumerated price list
+		 */
+		void enumeratePrices (ValueList into);
+
+		/**
+		 * list relative amounts
+		 * @param portions portion percent of maximum
+		 * @param counts block count percent of maximum
+		 */
+		void enumerateProfile
+		(
+			ValueList portions, ValueList counts
+		);
 
 		Number getOpen ();
 		Number getClose ();
@@ -106,10 +147,10 @@ public class VolumeProfiles
 		 */
 		public String toString ()
 		{
-			CommonDataStructures.ItemList <Number> prices;
+			ValueList prices;
 			StringBuffer S = new StringBuffer ().append (open).append (",")
 				.append (high).append (",").append (low).append (",").append (close).append ("\r\n");
-			enumeratePrices ( prices  = new CommonDataStructures.ItemList <Number> () );
+			enumeratePrices ( prices  = new ValueList () );
 
 			for (Number price : prices)
 			{
@@ -121,15 +162,68 @@ public class VolumeProfiles
 			return S.toString ();
 		}
 
-		/**
-		 * @param into list to contain enumerated price list
+		/* (non-Javadoc)
+		 * @see net.myorb.gui.graphics.markets.data.VolumeProfiles.Profile#enumeratePrices(net.myorb.data.abstractions.CommonDataStructures.ItemList)
 		 */
-		public void enumeratePrices ( CommonDataStructures.ItemList <Number> into )
+		public void enumeratePrices ( ValueList into )
 		{
 			into.addAll ( accumulations.keySet () );
 			into.sort ( (n1, n2) -> compare (n1, n2) );
 		}
 
+		/* (non-Javadoc)
+		 * @see net.myorb.gui.graphics.markets.data.VolumeProfiles.Profile#enumerateProfile(net.myorb.gui.graphics.markets.data.VolumeProfiles.ValueList, net.myorb.gui.graphics.markets.data.VolumeProfiles.ValueList)
+		 */
+		public void enumerateProfile
+			(
+				ValueList portions, ValueList counts
+			)
+		{
+			enumerate (this, portions, (P) -> P.getTotalVolume ());
+			enumerate (this, counts, (P) -> P.getBlockCount ());
+		}
+
+	}
+
+	/**
+	 * digest data collected in profile
+	 * @param profile the profile to process
+	 * @param items the list being built of values
+	 * @param using the Query for extracting values
+	 */
+	public static void enumerate
+		(
+			Profile profile, ValueList items, Query using
+		)
+	{
+		Accumulations A = profile.getAccumulations ();
+		Long high = 0l, value; ValueList prices; Number item;
+		profile.enumeratePrices ( prices  = new ValueList () );
+
+		for (Number PP : prices)
+		{
+			items.add ( item = using.selecting (A.get (PP)) );
+			if ( (value = item.longValue ()) > high) high = value;
+		}
+
+		scale (items, high);
+	}
+
+	/**
+	 * scale values to percent of max
+	 * @param items the values to be scaled
+	 * @param high the max value
+	 */
+	public static void scale
+		(
+			ValueList items, long max
+		)
+	{
+		for (int index = 0; index < items.size (); index++)
+		{
+			long N = 100 * items.get (index).longValue ();
+			items.set (index, N / max);
+		}
 	}
 
 	/**
@@ -146,6 +240,51 @@ public class VolumeProfiles
 		if (n0 == n1) return 0;
 		if (n0 < n1) return 1;
 		return -1;
+	}
+
+	/**
+	 * produce list of price points
+	 * @param profile the profile to enumerate
+	 * @param tick the tick value for the prices
+	 * @return the list of price points
+	 */
+	public static TextItems enumeratePricePoints
+		(Profile profile, double tick)
+	{
+		ValueList prices;
+		TextItems pricePoints = new TextItems ();
+
+		profile.enumeratePrices ( prices  = new ValueList () );
+		long current = fromUnits (prices.get (0), tick);
+
+		for (Number PP : prices)
+		{
+			String item = "- ";
+			long units = fromUnits (PP, tick);
+			if (current != units) { item += (current = units); }
+			pricePoints.add (item);
+		}
+		return pricePoints;
+	}
+
+	/**
+	 * treat price as multiple of tick objects
+	 * @param N the price value to be converted to units
+	 * @param tick the size of the tick for the value
+	 * @return the number of ticks for value
+	 */
+	public static long toUnits
+		(JsonSemantics.JsonNumber N, double tick)
+	{
+		Double units = Math.floor
+			(N.getNumber().doubleValue () / tick);
+		return units.longValue ();
+	}
+	public static long fromUnits (Number N, double tick)
+	{
+		Double ticks = Math.floor
+			(N.doubleValue () * tick);
+		return ticks.longValue ();
 	}
 
 }
