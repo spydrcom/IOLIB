@@ -197,6 +197,7 @@ public class OHLCV implements CharacterDelimited.Processor
 
 	public double getStudyValue (String name)
 	{
+		if ( ! values.containsKey (name) ) return 0.0;
 		return values.get (name);
 	}
 
@@ -281,11 +282,6 @@ public class OHLCV implements CharacterDelimited.Processor
 		c = reader.getNumber ("Close").doubleValue ();
 		h = reader.getNumber ("High").doubleValue ();
 		l = reader.getNumber ("Low").doubleValue ();
-
-//		String time = reader.getText ("Time");
-//		String hrs [] = time.split (":");
-//		System.out.println (time);
-//		date += "H" + hrs[0];
 	}
 	protected String date; protected long volume;
 	protected double o, h, l, c;
