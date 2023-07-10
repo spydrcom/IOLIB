@@ -160,6 +160,22 @@ public class DisplayImaging extends SimpleScreenIO
 	/**
 	 * prepare display of an image
 	 * @param image a buffered image for display
+	 * @param listener mouse listener
+	 * @return access to display
+	 */
+	public static Widget constructDisplayWidget
+		(BufferedImage image, MouseMotionListener listener)
+	{
+		Panel panel = new Panel ();
+		panel.setLayout (new GridLayout ());
+		buildImagePanel (panel, image, listener);
+		return (Widget) panel;
+	}
+
+
+	/**
+	 * prepare display of an image
+	 * @param image a buffered image for display
 	 * @param title the title for the frame
 	 * @param listener mouse listener
 	 * @return access to display
