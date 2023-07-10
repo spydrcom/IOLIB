@@ -1,9 +1,12 @@
 
 package net.myorb.gui.graphics;
 
-import java.awt.image.BufferedImage;
-
 import net.myorb.data.abstractions.Range;
+import net.myorb.gui.components.DisplayFrame;
+import net.myorb.gui.components.SimpleScreenIO.Widget;
+
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 
 import java.awt.Graphics2D;
 import java.awt.Dimension;
@@ -13,7 +16,8 @@ import java.awt.Color;
  * an AWT implementation of the plotter interface
  * @author Michael Druckman
  */
-public class ScreenPlotter implements Plotter, CoordinateTranslation.Scaling
+public class ScreenPlotter
+	implements Plotter, CoordinateTranslation.Scaling
 {
 
 
@@ -161,11 +165,34 @@ public class ScreenPlotter implements Plotter, CoordinateTranslation.Scaling
 
 
 	/**
+	 * build frame for plot (without listener) and show
 	 * @param title the text to use for frame title
 	 */
 	public void show (String title)
 	{
-		DisplayImaging.showImage (image, title, null);
+		constructPlotFrame (title, null).show ();
+	}
+
+	/**
+	 * build frame object for plot
+	 * @param title the text to use for frame title
+	 * @param listener mouse motion event prcessing object
+	 * @return the frame with the content
+	 */
+	public DisplayFrame constructPlotFrame
+		(String title, MouseMotionListener listener)
+	{
+		return new DisplayFrame (constructPlotWidget (listener), title);
+	}
+
+	/**
+	 * prepare display of plot
+	 * @param listener mouse listener
+	 * @return access to display
+	 */
+	public Widget constructPlotWidget (MouseMotionListener listener)
+	{
+		return DisplayImaging.constructDisplayWidget (image, listener);
 	}
 
 
