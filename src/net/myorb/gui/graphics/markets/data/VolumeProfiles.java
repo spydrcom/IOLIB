@@ -1,6 +1,8 @@
 
 package net.myorb.gui.graphics.markets.data;
 
+import net.myorb.gui.graphics.markets.VolumeProfilePlotter;
+
 import net.myorb.data.abstractions.CommonDataStructures.OrderedMap;
 import net.myorb.data.abstractions.CommonDataStructures.TextItems;
 import net.myorb.data.abstractions.CommonDataStructures.ItemList;
@@ -13,6 +15,30 @@ import net.myorb.data.notations.json.JsonSemantics;
  */
 public class VolumeProfiles
 {
+
+	/**
+	 * display for Volume Profile plots
+	 */
+	public interface Plotter
+	{
+
+		/**
+		 * @param profile profile to be displayed
+		 */
+		void digest (Profile profile);
+
+		/**
+		 * @param title the title text for the frame
+		 * @param iconPath path to an icon
+		 */
+		void show (String title, String iconPath);
+
+		/**
+		 * @param price the units price to use for annotation
+		 */
+		public void annotate (int price);
+
+	}
 
 	/**
 	 * describe contributions to accumulations
@@ -261,7 +287,7 @@ public class VolumeProfiles
 		{
 			String item = "- ";
 			long units = fromUnits (PP, tick);
-			if (current != units) { item += (current = units); }
+			if (current != units) { item += ( (current = units) + 1 ); }
 			pricePoints.add (item);
 		}
 		return pricePoints;
@@ -285,6 +311,16 @@ public class VolumeProfiles
 		Double ticks = Math.floor
 			(N.doubleValue () * tick);
 		return ticks.longValue ();
+	}
+
+	/**
+	 * build a new plotter instance
+	 * @param tick the tick value for the display
+	 * @return the new plotter object
+	 */
+	public static Plotter newInstance  (double tick)
+	{
+		return new VolumeProfilePlotter (tick);
 	}
 
 }
