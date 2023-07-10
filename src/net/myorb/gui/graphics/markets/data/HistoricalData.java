@@ -26,6 +26,7 @@ public class HistoricalData extends SimpleScreenIO
 	}
 	public HistoricalData () { initDisplay ();  }
 	protected HashMap<String,Label> itemMap = new HashMap<String,Label> ();
+	protected HashMap<String,Double> valueMap = new HashMap<String,Double> ();
 	protected String[] titles;
 
 	/**
@@ -70,7 +71,13 @@ public class HistoricalData extends SimpleScreenIO
 		if (value instanceof Long)
 		{ set (name, value.toString ()); return; }
 		set (name, String.format ("%8.2f", value.doubleValue ()));
+		valueMap.put (name, value.doubleValue ());
 	}
+
+	/**
+	 * @return name-value pairs of values captured
+	 */
+	public HashMap<String,Double> getValues () { return valueMap; }
 
 	/**
 	 * @return a duplicate data object
