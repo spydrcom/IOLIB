@@ -277,19 +277,28 @@ public class VolumeProfiles
 	public static TextItems enumeratePricePoints
 		(Profile profile, double tick)
 	{
-		ValueList prices;
+		Number H, L = 0;
+		ValueList prices; boolean OK = false;
 		TextItems pricePoints = new TextItems ();
 
 		profile.enumeratePrices ( prices  = new ValueList () );
-		long current = fromUnits (prices.get (0), tick);
+		long current = fromUnits (H = prices.get (0), tick);
 
 		for (Number PP : prices)
 		{
 			String item = "- ";
-			long units = fromUnits (PP, tick);
-			if (current != units) { item += ( (current = units) + 1 ); }
+			long units = fromUnits (L = PP, tick);
+			if (current != units) { item += ( (current = units) + 1 ); OK = true; }
 			pricePoints.add (item);
 		}
+
+		if ( ! OK )
+		{
+			int N = pricePoints.size () - 1;
+			pricePoints.set (0, Double.toString (H.doubleValue () * tick));
+			pricePoints.set (N, Double.toString (L.doubleValue () * tick));
+		}
+
 		return pricePoints;
 	}
 
