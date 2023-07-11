@@ -175,6 +175,7 @@ public class JsonSemantics extends JsonLowLevel
 		implements JsonValue
 	{
 		public JsonArray () {}
+
 		public <N extends Number> JsonArray
 		(List <N> numbers) { includingNumbers (numbers); }
 
@@ -218,6 +219,19 @@ public class JsonSemantics extends JsonLowLevel
 			if (v.getJsonValueType () != ValueTypes.ARRAY)
 			{ throw new RuntimeException ("JSON array expected"); }
 			return (JsonArray) v;
+		}
+
+		/**
+		 * select a segment of elements
+		 * @param from the index of the segment start
+		 * @param to the index of the segment end
+		 * @return the segment as new array
+		 */
+		public JsonArray section (int from, int to)
+		{
+			JsonArray A = new JsonArray ();
+			A.addAll (this.subList (from, to));
+			return A;
 		}
 
 		private static final long serialVersionUID = -5991990239117935625L;
