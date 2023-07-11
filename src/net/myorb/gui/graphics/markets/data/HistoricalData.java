@@ -3,7 +3,7 @@ package net.myorb.gui.graphics.markets.data;
 
 import net.myorb.gui.components.SimpleScreenIO;
 
-import java.util.HashMap;
+import net.myorb.data.abstractions.CommonDataStructures.*;
 
 /**
  * display object for market data
@@ -12,22 +12,29 @@ import java.util.HashMap;
 public class HistoricalData extends SimpleScreenIO
 {
 
+
+	public static class LabelMap extends SymbolicMap <Label>
+	{ private static final long serialVersionUID = 6375712551609853095L; }
+
+	public static class ValueMap extends SymbolicMap <Double>
+	{ private static final long serialVersionUID = -2608452612522234172L; }
+
+
 	/**
 	 * @param titles the names of fields to be shown
 	 */
 	public HistoricalData (String[] titles)
 	{
 		this ();
-		for (String title : titles)
-		{
-			addItem (title);
-		}
 		this.titles = titles;
+		for (String title : titles)
+		{ addItem (title); }
 	}
 	public HistoricalData () { initDisplay ();  }
-	protected HashMap<String,Label> itemMap = new HashMap<String,Label> ();
-	protected HashMap<String,Double> valueMap = new HashMap<String,Double> ();
+	protected ValueMap valueMap = new ValueMap ();
+	protected LabelMap itemMap = new LabelMap ();
 	protected String[] titles;
+
 
 	/**
 	 * set/reset display to empty panel
@@ -35,6 +42,7 @@ public class HistoricalData extends SimpleScreenIO
 	public void initDisplay () { display = startGridPanel (null, 0, 2);}
 	public Panel getDisplayPanel () { return display; }
 	protected Panel display;
+
 
 	/**
 	 * @param title name of a field to be added
@@ -50,6 +58,7 @@ public class HistoricalData extends SimpleScreenIO
 		itemMap.put (title.getText (), dataItem);
 		display.add (dataItem);
 	}
+
 
 	/**
 	 * @param name the name of a field
@@ -74,10 +83,24 @@ public class HistoricalData extends SimpleScreenIO
 		valueMap.put (name, value.doubleValue ());
 	}
 
+
+	/**
+	 * @return an array of names of support levels
+	 */
+	public String [] getTypes ()
+	{ return valueMap.keySet ().toArray (new String[]{}); }
+
+	/**
+	 * @param type name of a type of support
+	 * @return the value for the named item
+	 */
+	public double getValue (String type) { return valueMap.get (type); }
+
 	/**
 	 * @return name-value pairs of values captured
 	 */
-	public HashMap<String,Double> getValues () { return valueMap; }
+	public ValueMap getValues () { return valueMap; }
+
 
 	/**
 	 * @return a duplicate data object
@@ -92,7 +115,7 @@ public class HistoricalData extends SimpleScreenIO
 	 */
 	public void hide ()
 	{
-		if (frame != null) frame.dispose();
+		if (frame != null) frame.dispose ();
 	}
 
 	/**
