@@ -41,6 +41,14 @@ public class MarketChart extends ScreenPlotter
 		void showToUser (MarketChart chart, String type);
 	}
 
+	/**
+	 * provide source of Display Manager objects
+	 */
+	public interface DisplayManagerFactory
+	{
+		DisplayManager newDisplayManager ();
+	}
+
 
 	/*
 	 * chart object constructors
@@ -429,19 +437,34 @@ public class MarketChart extends ScreenPlotter
 	/**
 	 * @param manager the display manager to be used
 	 */
-	public static void setDisplayManager (DisplayManager manager)
+	public static void setDisplayManager
+		(DisplayManager manager) { defaultManager = manager; }
+	public static DisplayManager defaultManager;
+
+	/**
+	 * @return new manager from determined source
+	 */
+	DisplayManager getDisplayManager ()
 	{
-		selectedManager = manager;
+		if (displayManagerFactory == null) return defaultManager;
+		else return displayManagerFactory.newDisplayManager ();
 	}
-	static DisplayManager selectedManager;
+
+	/**
+	 * identify factory for DisplayManager object
+	 * @param chosenDisplayManagerFactory chosen factory object
+	 */
+	public static void setDisplayManagerFactory
+	(DisplayManagerFactory chosenDisplayManagerFactory)
+	{ displayManagerFactory = chosenDisplayManagerFactory; }
+	public static DisplayManagerFactory displayManagerFactory = null;
 
 	/**
 	 * @param type the time frame of the chart
 	 */
 	public void showToUser (String type)
-	{
-		selectedManager.showToUser	(this, type);
-	}
+		{ selectedManager.showToUser (this, type); }
+	protected DisplayManager selectedManager = getDisplayManager ();
 
 	/**
 	 * @return component holding the chart
