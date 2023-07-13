@@ -200,11 +200,21 @@ public class DisplayImaging extends SimpleScreenIO
 	public static Label buildImagePanel
 	(Panel panel, BufferedImage image, MouseMotionListener listener)
 	{
-		Label label = new Label (new ImageIcon (image));
+		Label label = constructDisplayWidget (image);
 		panel.setPreferredSize (imageFrameDimensions (image));
 		if (listener != null) add (listener, label);
 		panel.add (label);
 		return label;
+	}
+
+
+	/**
+	 * @param image the image to be included
+	 * @return label containing image
+	 */
+	public static Label constructDisplayWidget (BufferedImage image)
+	{
+		return new Label ( new ImageIcon (image) );
 	}
 
 
