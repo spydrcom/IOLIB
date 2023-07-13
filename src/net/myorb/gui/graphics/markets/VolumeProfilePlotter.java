@@ -1,15 +1,23 @@
 
 package net.myorb.gui.graphics.markets;
 
+import net.myorb.gui.graphics.ScreenPlotter;
+import net.myorb.gui.graphics.MouseMotionHandler;
+import net.myorb.gui.graphics.CoordinateTranslation;
+
 import net.myorb.gui.graphics.markets.data.VolumeProfiles;
 import net.myorb.gui.graphics.markets.data.VolumeProfiles.Profile;
 import net.myorb.gui.graphics.markets.data.VolumeProfiles.ValueList;
 
 import net.myorb.data.abstractions.CommonDataStructures.TextItems;
+import net.myorb.gui.components.SimpleScreenIO.Widget;
+import net.myorb.gui.components.SimpleScreenIO;
 import net.myorb.gui.components.DisplayFrame;
-import net.myorb.gui.graphics.ScreenPlotter;
+
+import java.awt.event.MouseEvent;
 
 import java.awt.Color;
+import java.awt.Point;
 
 /**
  * a ScreenPlotter for Volume Profile display generation
@@ -149,12 +157,30 @@ public class VolumeProfilePlotter
 	}
 
 
+	/**
+	 * @return a widget holding the plot image
+	 */
+	public Widget constructDisplayWidget ()
+	{
+		ProfileListener listener;
+		Widget displayComponent = getWidgetForPlot ();
+		displayComponent.toComponent ().addMouseMotionListener
+			( listener = new ProfileListener ( this, H+D, tick ) );
+		listener.connect ( displayComponent );
+		return displayComponent;
+	}
+
+
 	/* (non-Javadoc)
 	 * @see net.myorb.gui.graphics.markets.data.VolumeProfiles.Plotter#show(java.lang.String, java.lang.String)
 	 */
 	public void show (String title, String iconPath)
 	{
-		this.frame = constructPlotFrame (title, null);
+		this.frame = new DisplayFrame
+			(
+				constructDisplayWidget (),
+				title
+			);
 		this.frame.setIcon (iconPath);
 		this.frame.show ();
 	}
@@ -173,6 +199,34 @@ public class VolumeProfilePlotter
 		}
 	}
 
+
+}
+
+
+/**
+ * MouseMotionHandler for price display in profile
+ */
+class ProfileListener extends MouseMotionHandler
+{
+
+	ProfileListener (CoordinateTranslation.Scaling scaling, double D, double tick)
+	{ super (scaling); this.D = D; this.scale = scaling.getYScale (); this.tick = tick; }
+
+	void connect (Widget widget) { this.widget = widget; }
+	protected Widget widget;
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.graphics.MouseMotionHandler#mouseMoved(java.awt.event.MouseEvent)
+	 */
+	public void mouseMoved (MouseEvent event)
+	{
+		double price = tick * ( D - event.getY () / scale );
+		String display = VolumeProfiles.numeric.format (price);
+		SimpleScreenIO.setToolTipText ( widget, display );
+	}
+	public void processEnterExitEvent
+		(Point point, boolean entering) {}
+	double D, scale, tick;
 
 }
 
