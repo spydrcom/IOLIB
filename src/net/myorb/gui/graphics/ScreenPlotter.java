@@ -3,7 +3,7 @@ package net.myorb.gui.graphics;
 
 import net.myorb.data.abstractions.Range;
 import net.myorb.gui.components.DisplayFrame;
-import net.myorb.gui.components.SimpleScreenIO.Widget;
+import net.myorb.gui.components.SimpleScreenIO;
 
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
@@ -176,7 +176,7 @@ public class ScreenPlotter
 	/**
 	 * build frame object for plot
 	 * @param title the text to use for frame title
-	 * @param listener mouse motion event prcessing object
+	 * @param listener mouse motion event processing object
 	 * @return the frame with the content
 	 */
 	public DisplayFrame constructPlotFrame
@@ -190,11 +190,16 @@ public class ScreenPlotter
 	 * @param listener mouse listener
 	 * @return access to display
 	 */
-	public Widget constructPlotWidget (MouseMotionListener listener)
+	public SimpleScreenIO.Widget constructPlotWidget (MouseMotionListener listener)
 	{
 		return DisplayImaging.constructDisplayWidget (image, listener);
 	}
 
+	/**
+	 * @return display image as widget
+	 */
+	public SimpleScreenIO.Widget getWidgetForPlot ()
+	{ return DisplayImaging.constructDisplayWidget (image); }
 
 }
 
