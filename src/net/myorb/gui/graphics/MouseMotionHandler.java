@@ -1,10 +1,10 @@
 
 package net.myorb.gui.graphics;
 
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
+import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+
 import java.awt.Point;
 
 /**
