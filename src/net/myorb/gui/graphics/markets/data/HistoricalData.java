@@ -13,11 +13,16 @@ public class HistoricalData extends SimpleScreenIO
 {
 
 
-	public static class LabelMap extends SymbolicMap <Label>
-	{ private static final long serialVersionUID = 6375712551609853095L; }
+	public static String PRICE_FORMAT = "%8.2f";
 
-	public static class ValueMap extends SymbolicMap <Double>
-	{ private static final long serialVersionUID = -2608452612522234172L; }
+
+	/**
+	 * names for labels
+	 */
+	public static class LabelMap extends SymbolicMap <Label>
+	{
+		private static final long serialVersionUID = 6375712551609853095L;
+	}
 
 
 	/**
@@ -31,7 +36,7 @@ public class HistoricalData extends SimpleScreenIO
 		{ addItem (title); }
 	}
 	public HistoricalData () { initDisplay ();  }
-	protected ValueMap valueMap = new ValueMap ();
+	protected NamedValueMap valueMap = new NamedValueMap (PRICE_FORMAT);
 	protected LabelMap itemMap = new LabelMap ();
 	protected String[] titles;
 
@@ -59,7 +64,6 @@ public class HistoricalData extends SimpleScreenIO
 		display.add (dataItem);
 	}
 
-
 	/**
 	 * @param name the name of a field
 	 * @param value the new (text) value to be shown
@@ -77,30 +81,53 @@ public class HistoricalData extends SimpleScreenIO
 	 */
 	public void set (String name, Number value)
 	{
-		if (value instanceof Long)
-		{ set (name, value.toString ()); return; }
-		set (name, String.format ("%8.2f", value.doubleValue ()));
 		valueMap.put (name, value.doubleValue ());
+		if (value instanceof Long) { set (name, value.toString ()); }
+		else { set (name, valueMap.formatted (name)); }
 	}
 
+	/**
+	 * @return a tabulation of the values
+	 */
+	public StringBuffer tabulated (double last)
+	{
+		StringBuffer text = new StringBuffer ();
+		NamedValueMap copy = new NamedValueMap (PRICE_FORMAT);
+		copy.put ("Last Session Close", last);
+		copy.putAll (valueMap);
+
+		for (String name : copy.ordered ())
+		{
+			text.append ("\t")
+				.append (copy.formatted (name))
+				.append ("\t").append (name)
+				.append ("\r\n");
+		}
+		text.append ("\r\n");
+		return text;
+	}
 
 	/**
 	 * @return an array of names of support levels
 	 */
-	public String [] getTypes ()
-	{ return valueMap.keySet ().toArray (new String[]{}); }
+	public TextItems getTypes ()
+	{
+		return valueMap.names ();
+	}
 
 	/**
 	 * @param type name of a type of support
 	 * @return the value for the named item
 	 */
-	public double getValue (String type) { return valueMap.get (type); }
+	public double getValue (String type)
+	{
+		return valueMap.get (type).doubleValue ();
+	}
 
 	/**
 	 * @return name-value pairs of values captured
 	 */
-	public ValueMap getValues () { return valueMap; }
-
+	public NamedValueMap getValues () { return valueMap; }
 
 	/**
 	 * @return a duplicate data object
