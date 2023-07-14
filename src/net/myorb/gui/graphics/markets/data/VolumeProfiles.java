@@ -9,8 +9,6 @@ import net.myorb.data.abstractions.CommonDataStructures.ItemList;
 
 import net.myorb.data.notations.json.JsonSemantics;
 
-import java.text.NumberFormat;
-
 /**
  * collect data for Volume Profile
  * @author Michael Druckman
@@ -18,14 +16,6 @@ import java.text.NumberFormat;
 public class VolumeProfiles
 {
 
-	public static NumberFormat numeric;
-
-	static
-	{
-		numeric = NumberFormat.getNumberInstance ();
-		numeric.setMaximumFractionDigits (2);
-		numeric.setMinimumFractionDigits (2);
-	}
 
 	/**
 	 * display for Volume Profile plots
@@ -306,8 +296,8 @@ public class VolumeProfiles
 		if ( ! OK )
 		{
 			int N = pricePoints.size () - 1;
-			pricePoints.set (0, numeric.format (H.doubleValue () * tick));
-			pricePoints.set (N, numeric.format (L.doubleValue () * tick));
+			pricePoints.set (0, HistoricalData.format (H.doubleValue () * tick));
+			pricePoints.set (N, HistoricalData.format (L.doubleValue () * tick));
 		}
 
 		return pricePoints;
