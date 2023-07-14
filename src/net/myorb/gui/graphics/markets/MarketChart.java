@@ -131,6 +131,7 @@ public class MarketChart extends ScreenPlotter
 	public static final int PIXELS_PER_BAR = 10;
 
 	public List<OHLCV.Bar> getBarData () { return barData; }
+	public OHLCV.Bar getLastBar () { return barData.get (barData.size()-1); }
 	protected List<OHLCV.Bar> barData;
 
 
