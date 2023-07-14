@@ -13,6 +13,15 @@ public class HistoricalData extends SimpleScreenIO
 {
 
 
+	/**
+	 * convention for price display
+	 * @param price the price to be formatted
+	 * @return the text of the formatted value
+	 */
+	public static String format (double price)
+	{
+		return String.format (PRICE_FORMAT, price);
+	}
 	public static String PRICE_FORMAT = "%8.2f";
 
 
