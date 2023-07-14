@@ -2,22 +2,20 @@
 package net.myorb.gui.graphics.markets;
 
 import net.myorb.gui.graphics.ScreenPlotter;
-import net.myorb.gui.graphics.MouseMotionHandler;
+import net.myorb.gui.graphics.ToolTipHandler;
 import net.myorb.gui.graphics.CoordinateTranslation;
 
 import net.myorb.gui.graphics.markets.data.VolumeProfiles;
 import net.myorb.gui.graphics.markets.data.VolumeProfiles.Profile;
 import net.myorb.gui.graphics.markets.data.VolumeProfiles.ValueList;
+import net.myorb.gui.graphics.markets.data.HistoricalData;
 
 import net.myorb.data.abstractions.CommonDataStructures.TextItems;
 import net.myorb.gui.components.SimpleScreenIO.Widget;
-import net.myorb.gui.components.SimpleScreenIO;
 import net.myorb.gui.components.DisplayFrame;
 
 import java.awt.event.MouseEvent;
-
 import java.awt.Color;
-import java.awt.Point;
 
 /**
  * a ScreenPlotter for Volume Profile display generation
@@ -40,7 +38,7 @@ public class VolumeProfilePlotter
 		super.ignoreAspectRatio ();
 		this.tick = tick;
 	}
-	double tick;
+	protected double tick;
 
 
 	/**
@@ -73,7 +71,7 @@ public class VolumeProfilePlotter
 			0, X_MAX, L-D, H+D
 		);
 	}
-	int O, H, L, C, D;
+	protected int O, H, L, C, D;
 
 
 	/**
@@ -162,12 +160,12 @@ public class VolumeProfilePlotter
 	 */
 	public Widget constructDisplayWidget ()
 	{
-		ProfileListener listener;
-		Widget displayComponent = getWidgetForPlot ();
-		displayComponent.toComponent ().addMouseMotionListener
-			( listener = new ProfileListener ( this, H+D, tick ) );
-		listener.connect ( displayComponent );
-		return displayComponent;
+		ProfileTipHandler listener;
+		Widget displayWidget = getWidgetForPlot ();
+		displayWidget.toComponent ().addMouseMotionListener
+			( listener = new ProfileTipHandler ( this ) );
+		listener.connect ( displayWidget );
+		return displayWidget;
 	}
 
 
@@ -184,7 +182,7 @@ public class VolumeProfilePlotter
 		this.frame.setIcon (iconPath);
 		this.frame.show ();
 	}
-	DisplayFrame frame;
+	protected DisplayFrame frame;
 
 
 	/* (non-Javadoc)
@@ -200,33 +198,24 @@ public class VolumeProfilePlotter
 	}
 
 
-}
-
-
-/**
- * MouseMotionHandler for price display in profile
- */
-class ProfileListener extends MouseMotionHandler
-{
-
-	ProfileListener (CoordinateTranslation.Scaling scaling, double D, double tick)
-	{ super (scaling); this.D = D; this.scale = scaling.getYScale (); this.tick = tick; }
-
-	void connect (Widget widget) { this.widget = widget; }
-	protected Widget widget;
-
-	/* (non-Javadoc)
-	 * @see net.myorb.gui.graphics.MouseMotionHandler#mouseMoved(java.awt.event.MouseEvent)
+	/**
+	 * ToolTipHandler for price display in profile displays
 	 */
-	public void mouseMoved (MouseEvent event)
+	class ProfileTipHandler extends ToolTipHandler
 	{
-		double price = tick * ( D - event.getY () / scale );
-		String display = VolumeProfiles.numeric.format (price);
-		SimpleScreenIO.setToolTipText ( widget, display );
+		ProfileTipHandler (CoordinateTranslation.Scaling scaling)
+		{ super (scaling); this.scale = scaling.getYScale (); this.top = H + D; }
+		protected double scale, top;
+
+		/* (non-Javadoc)
+		 * @see net.myorb.gui.graphics.ToolTipHandler#formatTip(java.awt.event.MouseEvent)
+		 */
+		public String formatTip (MouseEvent event)
+		{
+			return HistoricalData.format ( tick * ( top - event.getY () / scale ) );
+		}
 	}
-	public void processEnterExitEvent
-		(Point point, boolean entering) {}
-	double D, scale, tick;
+
 
 }
 
