@@ -95,6 +95,63 @@ public class CommonDataStructures
 
 
 	/**
+	 * SymbolicMap for numeric values
+	 */
+	public static class NamedValueMap extends SymbolicMap <Number>
+	{
+
+		public NamedValueMap () {}
+		public NamedValueMap (String format) { this.format = format; }
+		protected String format;
+
+		/**
+		 * get value of name formatted as specified
+		 * @param name the symbol to find in map
+		 * @return the formatted value
+		 */
+		public String formatted (String name)
+		{
+			return String.format (format, get (name));
+		}
+
+		/**
+		 * @return a list of the names
+		 */
+		public TextItems names ()
+		{
+			return new TextItems ( keySet () );
+		}
+
+		/**
+		 * get value sorted symbol references
+		 * @return sorted names from value map
+		 */
+		public TextItems ordered ()
+		{
+			TextItems enumeration = names ();
+			enumeration.sort ( (i1, i2) -> ordered ( i1, i2 ) );
+			return enumeration;
+		}
+
+		/**
+		 * comparator for value map entries
+		 * @param item1 name of one map entry
+		 * @param item2 name of another map entry
+		 * @return 1 for LT and -1 for GT
+		 */
+		public int ordered (String item1, String item2)
+		{
+			double
+				i1 = get (item1).doubleValue (),
+				i2 = get (item2).doubleValue ();
+			return i1 < i2 ? 1 : -1;
+		}
+
+		private static final long serialVersionUID = 2460668451896898561L;
+	}
+
+
+	/**
 	 * name-value pairs forming a symbol table
 	 */
 	public static class NumericParameterization extends SymbolicMap <Number>
