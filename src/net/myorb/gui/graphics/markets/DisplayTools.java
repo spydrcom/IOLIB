@@ -4,8 +4,7 @@ package net.myorb.gui.graphics.markets;
 import net.myorb.gui.components.DisplayFrame;
 import net.myorb.gui.components.SimpleScreenIO;
 
-import net.myorb.gui.graphics.markets.data.HistoricalData;
-import net.myorb.gui.graphics.markets.data.Study;
+import net.myorb.gui.graphics.markets.data.*;
 
 import net.myorb.gui.graphics.DisplayImaging;
 import net.myorb.gui.graphics.ScreenPlotter;
@@ -63,6 +62,11 @@ public class DisplayTools extends SimpleScreenIO
 	 */
 	public static Panel makeConsolidatedPanel (MarketChart chart, String type)
 	{
+		if (type.startsWith ("D"))
+		{
+			displayReport (chart);
+		}
+
 		return makeConsolidatedPanel
 		(
 			makeChartPanel (chart, type), makeQuotePanel (chart)
@@ -79,6 +83,27 @@ public class DisplayTools extends SimpleScreenIO
 		Panel consolidatedPanel = new Panel ();
 		consolidatedPanel.add (chartPanel); consolidatedPanel.add (quotePanel);
 		return consolidatedPanel;
+	}
+
+
+	/*
+	 * S&R report formatter
+	 */
+
+	public static void displayReport (MarketChart chart)
+	{
+		double last = chart.getLastBar ().getClose ();
+		String today = MarketDateProcessing.getTodaysDate ();
+		StringBuffer report = new StringBuffer ();
+
+		report.append ("\r\n")
+			.append ("\t").append (today).append ("\t");
+		report.append (chart.getMarketName ()).append ("\t")
+			.append (last).append ("\r\n").append ("\r\n");
+		report.append (chart.getSrData ().tabulated (last));
+		report.append ("\r\n");
+
+		System.out.println (report);
 	}
 
 
