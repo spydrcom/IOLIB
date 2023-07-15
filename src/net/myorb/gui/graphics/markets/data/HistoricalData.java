@@ -5,6 +5,8 @@ import net.myorb.gui.components.SimpleScreenIO;
 
 import net.myorb.data.abstractions.CommonDataStructures.*;
 
+import net.myorb.data.conventional.OHLCV;
+
 /**
  * display object for market data
  * @author Michael Druckman
@@ -98,14 +100,16 @@ public class HistoricalData extends SimpleScreenIO
 	/**
 	 * @return a tabulation of the values
 	 */
-	public StringBuffer tabulated (double last)
+	public StringBuffer tabulated (OHLCV.Bar last)
 	{
 		StringBuffer text = new StringBuffer ();
 		NamedValueMap copy = new NamedValueMap (PRICE_FORMAT);
-		copy.put ("Last Session Close", last);
+		copy.put ("Last Session Close", last.getClose ());
+		copy.put ("Last Session High", last.getHi ());
+		copy.put ("Last Session Low", last.getLow ());
 		copy.putAll (valueMap);
 
-		for (String name : copy.ordered ())
+		for (String name : copy.ordered (false))
 		{
 			text.append ("\t")
 				.append (copy.formatted (name))
