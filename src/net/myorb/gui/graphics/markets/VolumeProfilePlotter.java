@@ -7,10 +7,10 @@ import net.myorb.gui.graphics.CoordinateTranslation;
 
 import net.myorb.gui.graphics.markets.data.VolumeProfiles;
 import net.myorb.gui.graphics.markets.data.VolumeProfiles.Profile;
-import net.myorb.gui.graphics.markets.data.VolumeProfiles.ValueList;
 import net.myorb.gui.graphics.markets.data.HistoricalData;
 
 import net.myorb.data.abstractions.CommonDataStructures.TextItems;
+import net.myorb.data.abstractions.CommonDataStructures.ValueList;
 import net.myorb.gui.components.SimpleScreenIO.Widget;
 import net.myorb.gui.components.DisplayFrame;
 
