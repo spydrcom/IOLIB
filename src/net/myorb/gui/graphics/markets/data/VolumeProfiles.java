@@ -3,9 +3,9 @@ package net.myorb.gui.graphics.markets.data;
 
 import net.myorb.gui.graphics.markets.VolumeProfilePlotter;
 
-import net.myorb.data.abstractions.CommonDataStructures.OrderedMap;
 import net.myorb.data.abstractions.CommonDataStructures.TextItems;
-import net.myorb.data.abstractions.CommonDataStructures.ItemList;
+import net.myorb.data.abstractions.CommonDataStructures.OrderedMap;
+import net.myorb.data.abstractions.CommonDataStructures.ValueList;
 
 import net.myorb.data.notations.json.JsonSemantics;
 
@@ -83,12 +83,6 @@ public class VolumeProfiles
 		protected long totalAccumulation;
 		protected int blocks;
 	}
-
-	/**
-	 * objects holding lists of numbers
-	 */
-	public static class ValueList extends ItemList <Number>
-	{ private static final long serialVersionUID = 4592012507980597589L; }
 
 	/**
 	 * use price key as index to volume
@@ -195,7 +189,7 @@ public class VolumeProfiles
 		public void enumeratePrices ( ValueList into )
 		{
 			into.addAll ( accumulations.keySet () );
-			into.sort ( (n1, n2) -> compare (n1, n2) );
+			into.sort ( (n1, n2) -> ValueList.ordered (n1, n2, 1) );
 		}
 
 		/* (non-Javadoc)
@@ -254,22 +248,6 @@ public class VolumeProfiles
 	}
 
 	/**
-	 * implementation of Comparator for Number objects
-	 * @param arg0 first of values to compare
-	 * @param arg1 second value to compare
-	 * @return standard -1 0 or 1
-	 */
-	public static int compare (Number arg0, Number arg1)
-	{
-		double
-			n0 = arg0.doubleValue (),
-			n1 = arg1.doubleValue ();
-		if (n0 == n1) return 0;
-		if (n0 < n1) return 1;
-		return -1;
-	}
-
-	/**
 	 * produce list of price points
 	 * @param profile the profile to enumerate
 	 * @param tick the tick value for the prices
@@ -289,7 +267,7 @@ public class VolumeProfiles
 		{
 			String item = "- ";
 			long units = fromUnits (L = PP, tick);
-			if (current != units) { item += ( (current = units) + 1 ); OK = true; }
+			if (current != units) { item += ( current = units ); OK = true; }
 			pricePoints.add (item);
 		}
 
