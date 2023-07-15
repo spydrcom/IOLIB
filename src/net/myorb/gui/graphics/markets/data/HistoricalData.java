@@ -98,6 +98,8 @@ public class HistoricalData extends SimpleScreenIO
 	}
 
 	/**
+	 * produce report document from session analysis
+	 * @param last closing bar for last session
 	 * @return a tabulation of the values
 	 */
 	public StringBuffer tabulated (OHLCV.Bar last)
