@@ -9,6 +9,9 @@ import net.myorb.gui.graphics.markets.data.*;
 import net.myorb.gui.graphics.DisplayImaging;
 import net.myorb.gui.graphics.ScreenPlotter;
 
+import net.myorb.data.abstractions.SimpleStreamIO;
+import net.myorb.data.conventional.OHLCV;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JComponent;
@@ -64,7 +67,7 @@ public class DisplayTools extends SimpleScreenIO
 	{
 		if (type.startsWith ("D"))
 		{
-			displayReport (chart);
+			appendReport (chart);
 		}
 
 		return makeConsolidatedPanel
@@ -90,20 +93,77 @@ public class DisplayTools extends SimpleScreenIO
 	 * S&R report formatter
 	 */
 
-	public static void displayReport (MarketChart chart)
+	/**
+	 * add chart data to report
+	 * @param chart the chart to add to the report
+	 */
+	public static void appendReport (MarketChart chart)
 	{
-		double last = chart.getLastBar ().getClose ();
-		String today = MarketDateProcessing.getTodaysDate ();
+		OHLCV.Bar lastBar = chart.getLastBar ();
 		StringBuffer report = new StringBuffer ();
 
-		report.append ("\r\n")
-			.append ("\t").append (today).append ("\t");
-		report.append (chart.getMarketName ()).append ("\t")
-			.append (last).append ("\r\n").append ("\r\n");
-		report.append (chart.getSrData ().tabulated (last));
+		// date, ticker and last session close
+		String today = MarketDateProcessing.getTodaysDate ();
+		report.append ("\r\n\t").append (today).append ("\t");
+		report.append (chart.getMarketName ()).append ("\t\t");
+		F (lastBar.getClose (), report).append ("\r\n");
+
+		// session range
+		report.append ("\t");
+		F (lastBar.getLow (), report).append ("\t - \t");
+		F (lastBar.getHi (), report).append ("\r\n").append ("\r\n");
+
+		// tabulated support and resistance levels
+		report.append (chart.getSrData ().tabulated (lastBar));
 		report.append ("\r\n");
 
-		System.out.println (report);
+		// add to report buffer
+		sessionReport.append (report);
+	}
+	static StringBuffer F (double price, StringBuffer report)
+	{
+		report.append (HistoricalData.format (price));
+		return report;
+	}
+	static StringBuffer sessionReport = new StringBuffer ();
+
+	/**
+	 * save collected data to file
+	 * @param called file name to use
+	 */
+	public static void saveReport (String called)
+	{
+		try
+		{
+			SimpleStreamIO.saveToFile
+			(
+				sessionReport.toString (),
+				new java.io.File ("data", called + ".txt")
+			);
+			sessionReport = new StringBuffer ();
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException ("Error saving report", e);
+		}
+	}
+
+	/**
+	 * @param group an identifier for a watch list if needed
+	 */
+	public static void saveReportAs (String group)
+	{
+		String name = MarketDateProcessing.getTodaysDate ();
+		if (group != null) name += "-" + group;
+		saveReport (name);
+	}
+
+	/**
+	 * report with date as name with no group
+	 */
+	public static void saveReport ()
+	{
+		saveReport (null);
 	}
 
 
