@@ -28,6 +28,45 @@ public class CommonDataStructures
 
 
 	/**
+	 * ItemList for Number objects
+	 */
+	public static class ValueList extends ItemList <Number>
+	{
+		public ValueList () {}
+		public ValueList (Number item) { this.add (item); }
+		public ValueList (Collection <Number> items) { this.addAll (items); }
+		public ValueList (Number [] items) { CommonDataStructures.addAll (items, this); }
+
+		/**
+		 * get sorted value list
+		 * @param increasing TRUE for increasing sort
+		 * @return sorted value list
+		 */
+		public ValueList ordered (boolean increasing)
+		{
+			ValueList copy = new ValueList ( this );
+			copy.sort ( (i1, i2) -> ordered ( i1, i2, increasing ? 1 : -1 ) );
+			return copy;
+		}
+
+		/**
+		 * comparator for Number objects
+		 * @param item1 value of one entry
+		 * @param item2 value of another entry
+		 * @param direction 1 for increasing -1 decreasing order
+		 * @return -1 for LT and 1 for GT
+		 */
+		public static int ordered (Number item1, Number item2, int direction)
+		{
+			double i1 = item1.doubleValue (), i2 = item2.doubleValue ();
+			return i1 > i2 ? direction : -direction;
+		}
+
+		private static final long serialVersionUID = -6426739487940281609L;
+	}
+
+
+	/**
 	 * add all items to list
 	 * @param items an array of items to add
 	 * @param toList the list being appended
@@ -143,13 +182,7 @@ public class CommonDataStructures
 		 * @return -1 for LT and 1 for GT
 		 */
 		public int ordered (String item1, String item2, int direction)
-		{
-			double
-				i1 = get (item1).doubleValue (),
-				i2 = get (item2).doubleValue ();
-			return i1 > i2 ? direction : -direction;
-		}
-
+		{ return ValueList.ordered (get (item1), get (item2), direction); }
 		private static final long serialVersionUID = 2460668451896898561L;
 	}
 
