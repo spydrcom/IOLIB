@@ -124,12 +124,14 @@ public class CommonDataStructures
 
 		/**
 		 * get value sorted symbol references
+		 * @param increasing TRUE for increasing sort
 		 * @return sorted names from value map
 		 */
-		public TextItems ordered ()
+		public TextItems ordered (boolean increasing)
 		{
 			TextItems enumeration = names ();
-			enumeration.sort ( (i1, i2) -> ordered ( i1, i2 ) );
+			int direction = increasing ? 1 : -1;
+			enumeration.sort ( (i1, i2) -> ordered ( i1, i2, direction ) );
 			return enumeration;
 		}
 
@@ -137,14 +139,15 @@ public class CommonDataStructures
 		 * comparator for value map entries
 		 * @param item1 name of one map entry
 		 * @param item2 name of another map entry
-		 * @return 1 for LT and -1 for GT
+		 * @param direction 1 for increasing -1 decreasing order
+		 * @return -1 for LT and 1 for GT
 		 */
-		public int ordered (String item1, String item2)
+		public int ordered (String item1, String item2, int direction)
 		{
 			double
 				i1 = get (item1).doubleValue (),
 				i2 = get (item2).doubleValue ();
-			return i1 < i2 ? 1 : -1;
+			return i1 > i2 ? direction : -direction;
 		}
 
 		private static final long serialVersionUID = 2460668451896898561L;
