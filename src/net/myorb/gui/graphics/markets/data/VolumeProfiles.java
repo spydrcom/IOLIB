@@ -98,6 +98,11 @@ public class VolumeProfiles
 	{
 
 		/**
+		 * @return total volume accumulated over profile duration
+		 */
+		long getTotalVolume ();
+
+		/**
 		 * @return map of prices to volume portions
 		 */
 		Accumulations getAccumulations ();
@@ -138,6 +143,12 @@ public class VolumeProfiles
 			getAccumulations () { return accumulations; }
 		protected Accumulations accumulations;
 
+		/* (non-Javadoc)
+		 * @see net.myorb.gui.graphics.markets.data.VolumeProfiles.Profile#getTotalVolume()
+		 */
+		public long getTotalVolume () { return totalVolume; }
+		protected long totalVolume = 0l;
+
 		/**
 		 * @param price the price point
 		 * @param volume the increase in volume to note
@@ -147,6 +158,7 @@ public class VolumeProfiles
 			if (accumulations.containsKey (price))
 			{ accumulations.get (price).increase (volume); }
 			else accumulations.put (price, new AccumulationPortions (volume));
+			this.totalVolume += volume.longValue ();
 		}
 
 		public void setClose (Number close) { this.close = close; }
