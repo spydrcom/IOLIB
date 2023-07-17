@@ -123,7 +123,17 @@ public class VolumeProfilePlotter
 				blockCol + counts.get (index).intValue ()
 			);
 		}
+
+		String V = sessionVolume (profile.getTotalVolume ());
+		setColor (Color.WHITE); g.drawString (V, 10, 20);
 	}
+	String sessionVolume (long total)
+	{
+		long V = total; byte scale = 0;
+		while (V > 1024) { V /= 1024; scale++; }
+		return Long.toString (V) + SCALES.charAt (scale);
+	}
+	static final String SCALES = "KMGTEP";
 
 
 	/**
