@@ -130,10 +130,10 @@ public class VolumeProfilePlotter
 	String sessionVolume (long total)
 	{
 		long V = total; byte scale = 0;
-		while (V > 1024) { V /= 1024; scale++; }
+		while (V > 10240) { V /= 1024; scale++; }
 		return Long.toString (V) + SCALES.charAt (scale);
 	}
-	static final String SCALES = "KMGTEP";
+	static final String SCALES = " KMGTEP";
 
 
 	/**
