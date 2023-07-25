@@ -163,7 +163,7 @@ public class DisplayTools extends SimpleScreenIO
 	 */
 	public static void saveReport ()
 	{
-		saveReport (null);
+		saveReport (MarketDateProcessing.getTodaysDate () + "-SupRes");
 	}
 
 
