@@ -7,13 +7,13 @@ import net.myorb.gui.graphics.markets.data.Study;
 import net.myorb.gui.graphics.ScreenPlotter;
 
 import net.myorb.data.abstractions.Range;
+import net.myorb.data.abstractions.CommonDataStructures;
 import net.myorb.data.conventional.OHLCV;
 
 import javax.swing.JComponent;
 import java.awt.Dimension;
 import java.awt.Color;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,6 +91,25 @@ public class MarketChart extends ScreenPlotter
 
 
 	/*
+	 * constant range and threshold features
+	 */
+
+	/**
+	 * @return the range set by caller
+	 */
+	public Range getFixedRange () { return fixedRange; }
+	public void setFixedRange (Number low, Number high)
+	{ this.fixedRange = new Range (low, high); }
+	protected Range fixedRange = null;
+
+	/**
+	 * @param at level to mark as threshold
+	 */
+	public void addThreshold (Number at) { thresholds.add (at); }
+	protected CommonDataStructures.ItemList <Number> thresholds;
+
+
+	/*
 	 * chart graphics
 	 */
 
@@ -101,7 +120,8 @@ public class MarketChart extends ScreenPlotter
 	{
 		int events = bars.size () + 1;
 		buildVolumeThresholds (OHLCV.getVolumeRange (bars));
-		scaleForTimeSeries (events, PIXELS_PER_BAR, OHLCV.getPriceRange (bars));
+		Range rangeForChart = fixedRange==null? OHLCV.getPriceRange (bars): fixedRange;
+		scaleForTimeSeries (events, PIXELS_PER_BAR, rangeForChart);
 
 		int x = PIXELS_PER_BAR;
 		for (OHLCV.Bar bar : bars)
@@ -309,7 +329,7 @@ public class MarketChart extends ScreenPlotter
 		newStudy.setName (named);
 		hData.addItem (named);
 	}
-	protected List<Study> studies = new ArrayList<Study>();
+	protected List<Study> studies = new CommonDataStructures.ItemList <Study> ();
 
 
 	/*

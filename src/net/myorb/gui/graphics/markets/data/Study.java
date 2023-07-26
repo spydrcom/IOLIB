@@ -83,6 +83,47 @@ public class Study extends ArrayList <Double>
 	}
 
 
+	/*
+	 * constant range and threshold features
+	 */
+
+	/**
+	 * @return the range set by caller
+	 */
+	public Range getFixedRange () { return fixedRange; }
+	public void setFixedRange (Number low, Number high)
+	{ this.fixedRange = new Range (low, high); }
+	protected Range fixedRange = null;
+
+	/**
+	 * @param defaultRange the computed range
+	 * @return the computed range or fixed if set
+	 */
+	public Range chooseRange (Range defaultRange)
+	{
+		return fixedRange==null? defaultRange: fixedRange;
+	}
+
+	/**
+	 * @param at level to mark as threshold
+	 */
+	public void addThreshold (Number at) { thresholds.add (at); }
+	protected CommonDataStructures.ItemList <Number> thresholds = new CommonDataStructures.ItemList <Number> ();
+
+	/**
+	 * add threshold lines to plot
+	 * @param plotter the plotter being updated
+	 */
+	public void drawThresholds (ScreenPlotter plotter, double xMax)
+	{
+		for (Number threshold : thresholds)
+		{
+			double value = threshold.doubleValue ();
+			plotter.drawLine (0, value, xMax, value);
+		}
+	}
+
+
 	// study plot drawing methods
 
 	/**
@@ -123,7 +164,8 @@ public class Study extends ArrayList <Double>
 	{
 		plotter.ignoreAspectRatio ();
 		double scale = plotter.scaleForTimeSeries
-			( size (), pixelsPerEvent, range );
+			( size (), pixelsPerEvent, chooseRange (range) );
+		drawThresholds ( plotter, size () * pixelsPerEvent );
 		drawStudy ( plotter, pixelsPerEvent, scale );
 	}
 
