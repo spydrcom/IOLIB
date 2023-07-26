@@ -113,6 +113,7 @@ public class Study extends ArrayList <Double>
 	/**
 	 * add threshold lines to plot
 	 * @param plotter the plotter being updated
+	 * @param xMax the high value of X axis
 	 */
 	public void drawThresholds (ScreenPlotter plotter, double xMax)
 	{
