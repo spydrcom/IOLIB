@@ -126,9 +126,9 @@ public class MarketChart extends ScreenPlotter
 		int x = PIXELS_PER_BAR;
 		for (OHLCV.Bar bar : bars)
 		{
-			int w = drawBar (bar, x);							// High / Low
-			drawSpur ((int) bar.getClose (), x, x + w + 2);		// Close
-			drawSpur ((int) bar.getOpen (), x - 2, x);			// Open
+			int w = drawBar (bar, x);						// High / Low
+			drawSpur (bar.getClose (), x, x + w + 2);		// Close
+			drawSpur (bar.getOpen (), x - 2, x);			// Open
 			x += PIXELS_PER_BAR;
 		}
 
@@ -141,14 +141,19 @@ public class MarketChart extends ScreenPlotter
 		for (int i = 0; i < w; i++)
 		{
 			setColor (barColor[i]);
-			drawLine (x+i, (int) bar.getLow (), x+i, (int) bar.getHi ());
+			drawLine (x+i, bar.getLow (), x+i, bar.getHi ());
 		}
 		setColor (Color.white);
 		return w;
 	}
-	void drawSpur (int at, int from, int to) { drawLine (from, at, to, at); }
+	void drawSpur (double at, int from, int to) { drawLine (from, at, to, at); }
 	protected Color[] barColor = new Color[]{Color.white, Color.yellow, Color.magenta, Color.pink};
 	public static final int PIXELS_PER_BAR = 10;
+
+
+	/*
+	 * Bar data access
+	 */
 
 	public List<OHLCV.Bar> getBarData () { return barData; }
 	public OHLCV.Bar getLastBar () { return barData.get (barData.size()-1); }
@@ -306,7 +311,7 @@ public class MarketChart extends ScreenPlotter
 			if (studyItem != null)
 			{
 				if (lastItem != null)
-				{ drawLine (lastX, lastItem.intValue (), nextX, studyItem.intValue ()); }
+				{ drawLine (lastX, lastItem, nextX, studyItem); }
 				if (index == bars.size ()) predictive.associateStudyValue (named, studyItem);
 				else bars.get (index).associateStudyValue (named, lastItem = studyItem);
 			}

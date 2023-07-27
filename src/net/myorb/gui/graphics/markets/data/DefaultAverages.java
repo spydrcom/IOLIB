@@ -24,6 +24,7 @@ public class DefaultAverages extends MarketQuoteParameters.Averaging
 		{
 			case MONTH: return 12;
 			case HOUR: return 48;
+			case MIN: return 100;
 			default: break;
 		}
 		return 30;
@@ -37,7 +38,8 @@ public class DefaultAverages extends MarketQuoteParameters.Averaging
 		switch (timeFrame)
 		{
 			case MONTH: return 12;
-			case HOUR: return 30;
+			case HOUR: return 10;
+			case MIN: return 9;
 			default: break;
 		}
 		return 13;
