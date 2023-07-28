@@ -348,6 +348,21 @@ public class OHLCV implements CharacterDelimited.Processor
 		return new Range (lo, hi);
 	}
 
+	/**
+	 * @param bars the list of Bar items to examine
+	 * @return the average volume for the list of bars
+	 */
+	public static Long getAverageVolume (List<Bar> bars)
+	{
+		long sum = 0, count = 0;
+		for (Bar bar : bars)
+		{
+			long v = bar.getVolume ();
+			sum += v; count++;
+		}
+		return sum / count;
+	}
+
 
 }
 
