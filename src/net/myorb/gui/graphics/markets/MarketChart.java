@@ -24,6 +24,10 @@ public class MarketChart extends ScreenPlotter
 {
 
 
+	/*
+	 * display component model specifications
+	 */
+
 	public static final Dimension
 	DEFAULT_CHART_DIMENSION = new Dimension (1200, 800),
 	SPLIT_VIEW_DIMENSION = new Dimension (1500, 400);
@@ -35,6 +39,7 @@ public class MarketChart extends ScreenPlotter
 	public interface DisplayManager
 	{
 		/**
+		 * produce chart display
 		 * @param chart the chart to be shown
 		 * @param type the time frame type for the chart
 		 */
@@ -46,7 +51,31 @@ public class MarketChart extends ScreenPlotter
 	 */
 	public interface DisplayManagerFactory
 	{
+		/**
+		 * @return newly constructed display manager
+		 */
 		DisplayManager newDisplayManager ();
+	}
+
+
+	/**
+	 * draw individual bar showing volume information
+	 */
+	public interface VolumeDetail
+	{
+		/**
+		 * evaluate volume data
+		 * @param bars the chart bars to be plotted
+		 */
+		void buildVolumeThresholds (List<OHLCV.Bar> bars);
+
+		/**
+		 * draw OHLC with volume hint
+		 * @param bar the bar being drawn
+		 * @param x the x axis offset being drawn
+		 * @return width of bar drawn
+		 */
+		int drawBar (OHLCV.Bar bar, int x);
 	}
 
 
@@ -60,8 +89,10 @@ public class MarketChart extends ScreenPlotter
 	public MarketChart (Dimension chartSize)
 	{
 		super (chartSize);
-		ignoreAspectRatio ();
+		this.volumeDetail = new AverageRelativeVolume (this);
+		this.ignoreAspectRatio ();
 	}
+	protected VolumeDetail volumeDetail;
 
 	/**
 	 * create 1200x800 display
@@ -110,23 +141,24 @@ public class MarketChart extends ScreenPlotter
 
 
 	/*
-	 * chart graphics
+	 * chart rendering
 	 */
 
 	/**
+	 * render sequence of bars
 	 * @param bars the OHLC data to plot
 	 */
-	public void drawChart (List<OHLCV.Bar> bars)
+	public void drawChart (List <OHLCV.Bar> bars)
 	{
 		int events = bars.size () + 1;
-		buildVolumeThresholds (OHLCV.getVolumeRange (bars));
+		volumeDetail.buildVolumeThresholds (bars);
 		Range rangeForChart = fixedRange==null? OHLCV.getPriceRange (bars): fixedRange;
 		scaleForTimeSeries (events, PIXELS_PER_BAR, rangeForChart);
 
 		int x = PIXELS_PER_BAR;
 		for (OHLCV.Bar bar : bars)
 		{
-			int w = drawBar (bar, x);						// High / Low
+			int w = volumeDetail.drawBar (bar, x);			// High / Low
 			drawSpur (bar.getClose (), x, x + w + 2);		// Close
 			drawSpur (bar.getOpen (), x - 2, x);			// Open
 			x += PIXELS_PER_BAR;
@@ -135,19 +167,8 @@ public class MarketChart extends ScreenPlotter
 		buildTitleFor (bars, events - 2);
 		this.barData = bars;
 	}
-	int drawBar (OHLCV.Bar bar, int x)
-	{
-		int w = getBarWidth (bar.getVolume ());
-		for (int i = 0; i < w; i++)
-		{
-			setColor (barColor[i]);
-			drawLine (x+i, bar.getLow (), x+i, bar.getHi ());
-		}
-		setColor (Color.white);
-		return w;
-	}
-	void drawSpur (double at, int from, int to) { drawLine (from, at, to, at); }
-	protected Color[] barColor = new Color[]{Color.white, Color.yellow, Color.magenta, Color.pink};
+	public void drawSpur
+		(double at, int from, int to) { drawLine (from, at, to, at); }
 	public static final int PIXELS_PER_BAR = 10;
 
 
@@ -222,36 +243,6 @@ public class MarketChart extends ScreenPlotter
 	public void appendTypeToTitle (String type)
 	{
 		appendToTitle (DisplayTools.typeIndicator (type));
-	}
-
-
-	/*
-	 * logarithmic volume display implementation
-	 */
-
-	/**
-	 * @param volume the volume to be represented
-	 * @return 1 for lightest, 2 for 2X - 4X, 3 for 4X - 8X, 4 for higher
-	 */
-	int getBarWidth (long volume)
-	{
-		if (volume < doubleThreshold) return 1;
-		if (volume < redoubleThreshold) return 2;
-		if (volume < extremeThreshold) return 3;
-		return 4;
-	}
-	protected long doubleThreshold, redoubleThreshold, extremeThreshold;
-
-	/**
-	 * @param volumeRange the lo and hi volume seen in the series
-	 */
-	void buildVolumeThresholds (Range volumeRange)
-	{
-		long lightestVolumeOfSeries =
-			volumeRange.getLo ().longValue ();
-		doubleThreshold = 2 * lightestVolumeOfSeries;
-		redoubleThreshold = 4 * lightestVolumeOfSeries;
-		extremeThreshold = 8 * lightestVolumeOfSeries;
 	}
 
 
@@ -505,6 +496,115 @@ public class MarketChart extends ScreenPlotter
 	{ return this.display = display; }
 	protected JComponent display;
 
+
+}
+
+
+/**
+ * volume attribute for bar representation using Average Relative model
+ */
+class AverageRelativeVolume implements MarketChart.VolumeDetail
+{
+
+	AverageRelativeVolume
+		(ScreenPlotter plot) { this.plot = plot; }
+	protected ScreenPlotter plot;
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.graphics.markets.MarketChart.VolumeDetail#buildVolumeThresholds(java.util.List)
+	 */
+	public void buildVolumeThresholds (List<OHLCV.Bar> bars)
+	{
+		this.averageVolume =
+			OHLCV.getAverageVolume (bars);
+		this.reduced = averageVolume / 4;
+		this.doubleAverage = averageVolume * 2;
+		this.extreme = averageVolume * 3;
+		this.light = averageVolume / 8;
+	}
+	protected Long averageVolume, reduced, light, doubleAverage, extreme;
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.graphics.markets.MarketChart.VolumeDetail#drawBar(net.myorb.data.conventional.OHLCV.Bar, int)
+	 */
+	public int drawBar (OHLCV.Bar bar, int x)
+	{
+		int n = 0;
+		long volume = bar.getVolume ();
+
+		if (volume < light) { draw (bar, Color.pink, x); n++; }
+		if (volume < reduced) { draw (bar, Color.magenta, x+n); n++; }
+		draw (bar, Color.white, x+n); n++;
+
+		if (volume > doubleAverage) { draw (bar, Color.yellow, x+n); n++; }
+		if (volume > extreme) { draw (bar, Color.red, x+n); n++; }
+
+		plot.setColor (Color.white);
+		return n;
+	}
+	void draw (OHLCV.Bar bar, Color color, int x)
+	{
+		plot.setColor (color);
+		plot.drawLine (x, bar.getLow (), x, bar.getHi ());
+	}
+
+}
+
+
+/**
+ * volume attribute for bar representation using Logarithmic model
+ */
+class LogarithmicVolume implements MarketChart.VolumeDetail
+{
+
+	LogarithmicVolume
+		(ScreenPlotter plot) { this.plot = plot; }
+	protected ScreenPlotter plot;
+
+	/*
+	 * logarithmic volume display implementation
+	 */
+
+	/**
+	 * @param volume the volume to be represented
+	 * @return 1 for lightest, 2 for 2X - 4X, 3 for 4X - 8X, 4 for higher
+	 */
+	public int getBarWidth (long volume)
+	{
+		if (volume < doubleThreshold) return 1;
+		if (volume < redoubleThreshold) return 2;
+		if (volume < extremeThreshold) return 3;
+		return 4;
+	}
+	protected long doubleThreshold, redoubleThreshold, extremeThreshold;
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.graphics.markets.MarketChart.VolumeDetail#buildVolumeThresholds(java.util.List)
+	 */
+	public void buildVolumeThresholds (List<OHLCV.Bar> bars)
+	{
+		Range volumeRange = OHLCV.getVolumeRange (bars);
+		long lightestVolumeOfSeries = volumeRange.getLo ().longValue ();
+		redoubleThreshold = 4 * lightestVolumeOfSeries;
+		extremeThreshold = 8 * lightestVolumeOfSeries;
+		doubleThreshold = 2 * lightestVolumeOfSeries;
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myorb.gui.graphics.markets.MarketChart.VolumeDetail#drawBar(net.myorb.data.conventional.OHLCV.Bar, int)
+	 */
+	public int drawBar (OHLCV.Bar bar, int x)
+	{
+		int w = getBarWidth (bar.getVolume ());
+		for (int i = 0; i < w; i++)
+		{
+			plot.setColor (barColor[i]);
+			plot.drawLine (x+i, bar.getLow (), x+i, bar.getHi ());
+		}
+		plot.setColor (Color.white);
+		return w;
+	}
+	protected Color[] barColor = new Color[]{Color.white, Color.yellow, Color.magenta, Color.pink};
 
 }
 
