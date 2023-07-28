@@ -42,7 +42,7 @@ public class DefaultAverages extends MarketQuoteParameters.Averaging
 			case MIN: return 9;
 			default: break;
 		}
-		return 13;
+		return 10;
 	}
 
 	/* (non-Javadoc)
