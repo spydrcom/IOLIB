@@ -61,9 +61,17 @@ public class OHLCV implements CharacterDelimited.Processor
 		double getClose ();
 
 		/**
-		 * @return the weighted value for the bar
+		 * describe point computed with specified weight
+		 * @return computed weight
 		 */
 		double getValue ();
+
+		/**
+		 * compute the point value using specified weight
+		 * @param weight the weighting algorithm to use
+		 * @return computed weight
+		 */
+		double getValue (Weights weight);
 
 		/**
 		 * @return the VOLUME for the bar
@@ -258,17 +266,29 @@ public class OHLCV implements CharacterDelimited.Processor
 	 */
 
 	/**
-	 * @return weights applied for averages
+	 * describe point computed with specified weight
+	 * @return computed weight
 	 */
 	public double getValue ()
 	{
-		switch (usingWeight)
+		return getValue (usingWeight);
+	}
+
+	/**
+	 * compute the point value using specified weight
+	 * @param weight the weighting algorithm to use
+	 * @return computed weight
+	 */
+	public double getValue (Weights weight)
+	{
+		switch (weight)
 		{
 			case CLOSE_WEIGHTED:	return (2*c + l + h) / 4;
 			case EVEN_WEIGHTED:		return (c + l + h) / 3;
 			default:				return c;
 		}
 	}
+
 
 	/* (non-Javadoc)
 	 * @see net.myorb.data.conventional.CharacterDelimited.Processor#process(net.myorb.data.conventional.CharacterDelimited.Reader)
