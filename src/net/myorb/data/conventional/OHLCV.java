@@ -348,7 +348,7 @@ public class OHLCV implements CharacterDelimited.Processor
 			if ((l = bar.getLow ()) < lo) lo = l;
 			if ((h = bar.getHi ()) > hi) hi = h;
 		}
-		return new Range (lo, hi);
+		return new Range (lo-1, hi+1);
 	}
 
 	/**
