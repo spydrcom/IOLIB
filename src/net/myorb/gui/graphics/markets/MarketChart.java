@@ -153,7 +153,7 @@ public class MarketChart extends ScreenPlotter
 		int events = bars.size () + 1;
 		volumeDetail.buildVolumeThresholds (bars);
 		Range rangeForChart = fixedRange==null? OHLCV.getPriceRange (bars): fixedRange;
-		scaleForTimeSeries (events, PIXELS_PER_BAR, rangeForChart);
+		scaleForBarSeries (events, PIXELS_PER_BAR, rangeForChart);
 
 		int x = PIXELS_PER_BAR;
 		for (OHLCV.Bar bar : bars)
