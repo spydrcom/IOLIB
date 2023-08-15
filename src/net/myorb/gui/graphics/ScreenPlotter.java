@@ -111,6 +111,24 @@ public class ScreenPlotter
 	}
 	static final double SCALED_MAX = 1E9;
 
+	/**
+	 * @param timeUnits number of events
+	 * @param pixelsPerUnit x-axis pixels allocated per event
+	 * @param range the y-axis range of values
+	 * @return scale reduction factor
+	 */
+	public void scaleForBarSeries
+		(int timeUnits, int pixelsPerUnit, Range range)
+	{
+		width = timeUnits * pixelsPerUnit;
+		float yMax = range.getHi ().floatValue (),
+			yMin = range.getLo ().floatValue (), dif = yMax - yMin;
+		if (dif < 1) { dif += 1; } height = (int) Math.floor (dif) + 1;
+		xScale = edgeSizeX / (float) width; yScale = ( (float) edgeSizeY ) / height;
+		if (mustPreserveAspectRatio) preserveAspectRatio ();
+		xAdj = 0; yAdj = (int) Math.floor (yMin);
+	}
+
 	/* (non-Javadoc)
 	 * @see net.myorb.gui.graphics.CoordinateTranslation.Scaling#getXScale()
 	 */
