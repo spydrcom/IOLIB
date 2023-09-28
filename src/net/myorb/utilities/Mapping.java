@@ -127,7 +127,7 @@ public class Mapping
 		/* (non-Javadoc)
 		 * @see net.myorb.utilities.Mapping.IdentifiedGroup#include(net.myorb.utilities.Mapping.IdentifiedItem)
 		 */
-		public void include (IdentifiedItem <String> item) { this.add ( (IdentifiedItem <String>) item ); }
+		public void include (IdentifiedItem <String> item) { this.add ( item ); }
 	}
 
 	/**
