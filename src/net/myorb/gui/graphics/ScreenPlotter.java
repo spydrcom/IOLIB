@@ -115,7 +115,6 @@ public class ScreenPlotter
 	 * @param timeUnits number of events
 	 * @param pixelsPerUnit x-axis pixels allocated per event
 	 * @param range the y-axis range of values
-	 * @return scale reduction factor
 	 */
 	public void scaleForBarSeries
 		(int timeUnits, int pixelsPerUnit, Range range)

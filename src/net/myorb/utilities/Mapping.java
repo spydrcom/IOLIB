@@ -83,6 +83,7 @@ public class Mapping
 
 		/**
 		 * @param item object to be included in mapping for associated key
+		 * @return group identified for item association
 		 */
 		public IdentifiedGroup <Key> include (IdentifiedItem <Key> item)
 		{
