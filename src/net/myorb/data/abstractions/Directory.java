@@ -58,8 +58,8 @@ public class Directory
 		if ( ! ">>>".equals (group) )
 		{
 			description
-				.append ("\t").append (group)
-				.append (items.summary ())
+				.append ("\t").append (group).append (items.summary ())
+				.append (" (").append (items.size ()).append (" entries) ")
 				.append("\r\n");
 		}
 
