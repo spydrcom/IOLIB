@@ -173,8 +173,10 @@ public class Directory
 				.append (parent).append (":").append (name);
 			return formatted.toString ();
 		}
+		public String getParent () { return parent; }
 		public void setParent (String parent) { this.parent = parent; }
 		public void setName (String name) { this.name = name; }
+		public String getName () { return this.name; }
 		protected String name, type, parent;
 
 		/* (non-Javadoc)
@@ -192,6 +194,7 @@ public class Directory
 			if ( ! isDirectory ) return "\r\n\t\t" + name;
 			return "\r\n" + parent + ":" + name + enumerate ();
 		}
+		public boolean isStructured () { return isDirectory; }
 		protected boolean isDirectory = false;
 
 		/* (non-Javadoc)

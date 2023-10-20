@@ -48,6 +48,7 @@ public class FileSystemMetadata extends Directory
 			descriptor.setKey (simpleName.substring (dot+1).toUpperCase ());
 			if (dot >= 0) { descriptor.setName (simpleName.substring (0, dot)); }
 			else { descriptor.setName (descriptor.getKey ()); }
+//			System.out.println (descriptor.getName ());
 			descriptor.setSize (item.length ());
 		}
 
